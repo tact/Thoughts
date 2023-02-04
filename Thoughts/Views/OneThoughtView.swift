@@ -9,7 +9,7 @@ import SwiftUI
 
 struct OneThoughtView: View {
   
-  @StateObject var viewModel: OneThoughtViewModel
+  @ObservedObject var viewModel: OneThoughtViewModel
 
   private let fieldInnerPadding: CGFloat = 4.0
   
