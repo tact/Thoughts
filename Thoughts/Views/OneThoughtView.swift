@@ -16,7 +16,7 @@ struct OneThoughtView: View {
   var body: some View {
     VStack {
       Text("Add thought. Received navigation: \(viewModel.kind == .new ? "new" : "existing")")
-      TextField("Title", text: $viewModel.title)
+      TextField("Title (optional)", text: $viewModel.title)
         .padding(fieldInnerPadding)
         .border(.tertiary)
       TextEditor(text: $viewModel.body)
