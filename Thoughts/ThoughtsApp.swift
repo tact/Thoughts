@@ -14,7 +14,7 @@ struct ThoughtsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ThoughtsView()
+      ThoughtsView(viewModel: ThoughtsViewModel(store: store))
     }
   }
 }

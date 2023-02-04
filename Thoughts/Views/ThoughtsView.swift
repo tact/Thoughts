@@ -9,25 +9,30 @@ import SwiftUI
 
 struct ThoughtsView: View {
   
-  @State private var path: [OneThoughtViewKind] = []
+  @StateObject var viewModel: ThoughtsViewModel
   
   var body: some View {
-    NavigationStack(path: $path) {
-      Text("What")
-        .navigationTitle("Thoughts")
-        .toolbar {
-          ToolbarItem {
-            Button(
-              action: {
-                path.append(.new)
-              }, label: {
-                Label("Add", systemImage: "plus")
-              })
-          }
+    NavigationStack(path: $viewModel.path) {
+      
+      List(viewModel.thoughts) { thought in
+        NavigationLink(value: OneThoughtViewKind.existing(thought), label: {
+          Text("one thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
+        })
+      }
+      .navigationTitle("Thoughts")
+      .toolbar {
+        ToolbarItem {
+          Button(
+            action: {
+              viewModel.send(.addThought)
+            }, label: {
+              Label("Add", systemImage: "plus")
+            })
         }
-        .navigationDestination(for: OneThoughtViewKind.self) { kind in
-          OneThoughtView(viewModel: OneThoughtViewModel(kind: kind))
-        }
+      }
+      .navigationDestination(for: OneThoughtViewKind.self) { kind in
+        OneThoughtView(viewModel: viewModel.oneThoughtViewModel(for: kind))
+      }
     }
   }
 }
@@ -35,7 +40,7 @@ struct ThoughtsView: View {
 #if DEBUG
 struct ThoughtsView_Previews: PreviewProvider {
   static var previews: some View {
-    ThoughtsView()
+    ThoughtsView(viewModel: ThoughtsViewModel())
   }
 }
 #endif

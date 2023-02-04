@@ -19,6 +19,7 @@
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA10318E298E6CE8004819F5 /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318D298E6CE8004819F5 /* Thought.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
+		EAA5D553298E8F9F00407205 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = EAA5D552298E8F9F00407205 /* IdentifiedCollections */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAA5D553298E8F9F00407205 /* IdentifiedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,6 +186,9 @@
 			dependencies = (
 			);
 			name = Thoughts;
+			packageProductDependencies = (
+				EAA5D552298E8F9F00407205 /* IdentifiedCollections */,
+			);
 			productName = Thoughts;
 			productReference = EA0B206B298E65CF00462577 /* Thoughts.app */;
 			productType = "com.apple.product-type.application";
@@ -256,6 +261,9 @@
 				Base,
 			);
 			mainGroup = EA0B2062298E65CF00462577;
+			packageReferences = (
+				EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
+			);
 			productRefGroup = EA0B206C298E65CF00462577 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -658,6 +666,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-identified-collections";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EAA5D552298E8F9F00407205 /* IdentifiedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */;
+			productName = IdentifiedCollections;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EA0B2063298E65CF00462577 /* Project object */;
 }
