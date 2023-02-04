@@ -11,9 +11,8 @@ class ThoughtsViewModel: ObservableObject {
   
   private var thoughtsCancellable: AnyCancellable?
   
-  @Published var path: [OneThoughtViewKind] = []
+  @Published var navigationPath: [OneThoughtViewKind] = []
   @Published var thoughts: IdentifiedArrayOf<Thought> = []
-  
   
   init(store: Store? = nil) {
     self.store = store
@@ -40,7 +39,7 @@ class ThoughtsViewModel: ObservableObject {
   func send(_ action: ThoughtsViewAction) {
     switch action {
     case .addThought:
-      path.append(.new)
+      navigationPath.append(.new)
     }
   }
 }

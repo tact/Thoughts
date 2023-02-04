@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ThoughtsApp: App {
   
-  @StateObject var store = Store()
+  let store = Store()
   
   var body: some Scene {
     WindowGroup {
