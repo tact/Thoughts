@@ -9,6 +9,9 @@ import SwiftUI
 
 @main
 struct ThoughtsApp: App {
+  
+  @StateObject var store = Store()
+  
   var body: some Scene {
     WindowGroup {
       ThoughtsView()

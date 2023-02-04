@@ -18,6 +18,7 @@
 		EA103189298E6B45004819F5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA103188298E6B45004819F5 /* Store.swift */; };
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA10318E298E6CE8004819F5 /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318D298E6CE8004819F5 /* Thought.swift */; };
+		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		EA103188298E6B45004819F5 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModel.swift; sourceTree = "<group>"; };
 		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
+		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				EA0B2070298E65CF00462577 /* ThoughtsView.swift */,
+				EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */,
 				EA103185298E679C004819F5 /* OneThoughtView.swift */,
 				EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */,
 			);
@@ -296,6 +299,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
+				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
 				EA10318E298E6CE8004819F5 /* Thought.swift in Sources */,
 				EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */,
 				EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */,
