@@ -10,11 +10,11 @@ import SwiftUI
 @main
 struct ThoughtsApp: App {
   
-  let store = Store()
+  let store = Store(behavior: .live)
   
   var body: some Scene {
     WindowGroup {
-      ThoughtsView(viewModel: ThoughtsViewModel(store: store))
+      ThoughtsView(store: store)
     }
   }
 }

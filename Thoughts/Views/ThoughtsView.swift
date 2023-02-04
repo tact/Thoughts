@@ -9,7 +9,17 @@ import SwiftUI
 
 struct ThoughtsView: View {
   
+  let store: Store?
+  
   @StateObject var viewModel: ThoughtsViewModel
+
+  init(store: Store? = nil) {
+    // Apparently, this is the state of the art of initalizing a StateObject
+    // with parameters in Feb 2023.
+    // https://hachyderm.io/@Alexbbrown/109807454267493715
+    self.store = store
+    self._viewModel = StateObject(wrappedValue: ThoughtsViewModel(store: store))
+  }
   
   var body: some View {
     NavigationStack(path: $viewModel.navigationPath) {
@@ -26,8 +36,8 @@ struct ThoughtsView: View {
             })
         }
       }
-      .navigationDestination(for: OneThoughtViewKind.self) { kind in
-        OneThoughtView(viewModel: viewModel.oneThoughtViewModel(for: kind))
+      .navigationDestination(for: OneThoughtView.Kind.self) { kind in
+        OneThoughtView(store: store, kind: kind)
       }
     }
   }
@@ -38,9 +48,12 @@ struct ThoughtsView: View {
       Text("No thoughts. Tap + to add one.")
     } else {
       List(viewModel.thoughts) { thought in
-        NavigationLink(value: OneThoughtViewKind.existing(thought), label: {
-          Text("one thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
-        })
+        NavigationLink(
+          value: OneThoughtView.Kind.existing(thought),
+          label: {
+            Text("one thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
+          }
+        )
       }
     }
   }
@@ -49,7 +62,12 @@ struct ThoughtsView: View {
 #if DEBUG
 struct ThoughtsView_Previews: PreviewProvider {
   static var previews: some View {
-    ThoughtsView(viewModel: ThoughtsViewModel())
+    ThoughtsView(store: .previewEmpty)
+      .previewDisplayName("Empty")
+    
+    ThoughtsView(store: .previewPopulated)
+      .previewDisplayName("Some thoughts")
+    
   }
 }
 #endif

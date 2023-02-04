@@ -6,12 +6,13 @@ enum ThoughtsViewAction {
   case addThought
 }
 
+@MainActor
 class ThoughtsViewModel: ObservableObject {
   private let store: Store?
   
   private var thoughtsCancellable: AnyCancellable?
   
-  @Published var navigationPath: [OneThoughtViewKind] = []
+  @Published var navigationPath: [OneThoughtView.Kind] = []
   @Published var thoughts: IdentifiedArrayOf<Thought> = []
   
   init(store: Store? = nil) {
@@ -32,10 +33,6 @@ class ThoughtsViewModel: ObservableObject {
     print("Thoughts deinit")
   }
   
-  func oneThoughtViewModel(for kind: OneThoughtViewKind) -> OneThoughtViewModel {
-    OneThoughtViewModel(store: self.store, kind: kind)
-  }
-    
   func send(_ action: ThoughtsViewAction) {
     switch action {
     case .addThought:
