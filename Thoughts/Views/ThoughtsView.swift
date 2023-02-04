@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ThoughtsView: View {
+  
+  @State private var path: [OneThoughtViewKind] = []
+  
   var body: some View {
-    VStack {
-      Image(systemName: "globe")
-        .imageScale(.large)
-        .foregroundColor(.accentColor)
-      Text("Hello, world!")
+    NavigationStack(path: $path) {
+      Text("What")
+        .navigationTitle("Thoughts")
+        .toolbar {
+          ToolbarItem {
+            Button(
+              action: {
+                path.append(.new)
+              }, label: {
+                Label("Add", systemImage: "plus")
+              })
+          }
+        }
+        .navigationDestination(for: OneThoughtViewKind.self) { kind in
+          OneThoughtView(viewModel: OneThoughtViewModel(kind: kind))
+        }
     }
-    .padding()
   }
 }
 

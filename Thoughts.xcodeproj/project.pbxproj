@@ -14,6 +14,10 @@
 		EA0B2081298E65D000462577 /* ThoughtsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B2080298E65D000462577 /* ThoughtsTests.swift */; };
 		EA0B208B298E65D000462577 /* ThoughtsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B208A298E65D000462577 /* ThoughtsUITests.swift */; };
 		EA0B208D298E65D000462577 /* ThoughtsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */; };
+		EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA103185298E679C004819F5 /* OneThoughtView.swift */; };
+		EA103189298E6B45004819F5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA103188298E6B45004819F5 /* Store.swift */; };
+		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
+		EA10318E298E6CE8004819F5 /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318D298E6CE8004819F5 /* Thought.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +49,10 @@
 		EA0B2086298E65D000462577 /* ThoughtsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThoughtsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0B208A298E65D000462577 /* ThoughtsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITests.swift; sourceTree = "<group>"; };
 		EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		EA103185298E679C004819F5 /* OneThoughtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtView.swift; sourceTree = "<group>"; };
+		EA103188298E6B45004819F5 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModel.swift; sourceTree = "<group>"; };
+		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +103,8 @@
 		EA0B206D298E65CF00462577 /* Thoughts */ = {
 			isa = PBXGroup;
 			children = (
+				EA10318C298E6CDD004819F5 /* Model */,
+				EA103187298E6B3C004819F5 /* Store */,
 				EA103184298E6695004819F5 /* Views */,
 				EA0B206E298E65CF00462577 /* ThoughtsApp.swift */,
 				EA0B2072298E65D000462577 /* Assets.xcassets */,
@@ -133,8 +143,26 @@
 			isa = PBXGroup;
 			children = (
 				EA0B2070298E65CF00462577 /* ThoughtsView.swift */,
+				EA103185298E679C004819F5 /* OneThoughtView.swift */,
+				EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		EA103187298E6B3C004819F5 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				EA103188298E6B45004819F5 /* Store.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		EA10318C298E6CDD004819F5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				EA10318D298E6CE8004819F5 /* Thought.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,7 +296,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
+				EA10318E298E6CE8004819F5 /* Thought.swift in Sources */,
+				EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */,
 				EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */,
+				EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */,
+				EA103189298E6B45004819F5 /* Store.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
