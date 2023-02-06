@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct OneThoughtView: View {
 
   @StateObject var viewModel: OneThoughtViewModel
@@ -21,12 +20,10 @@ struct OneThoughtView: View {
     case existing(Thought)
   }
   
-  let store: Store?
   private let fieldInnerPadding: CGFloat = 4.0
   @Environment(\.dismiss) private var dismiss
 
-  init(store: Store? = nil, kind: Kind) {
-    self.store = store
+  init(store: Store, kind: Kind) {
     self._viewModel = StateObject(wrappedValue: OneThoughtViewModel(store: store, kind: kind))
   }
   
@@ -64,11 +61,13 @@ struct OneThoughtView: View {
 struct OneThoughtView_Previews: PreviewProvider {
   static var previews: some View {
     OneThoughtView(
+      store: .previewEmpty,
       kind: .new
     )
     .previewDisplayName("Enter new")
     
     OneThoughtView(
+      store: .previewPopulated,
       kind: .existing(
         Thought(
           id: UUID(),

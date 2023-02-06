@@ -1,7 +1,5 @@
 import Foundation
 
-
-
 enum OneThoughtViewAction {
   case save
 }
@@ -12,10 +10,11 @@ class OneThoughtViewModel: ObservableObject {
   @Published var body = ""
 
   let kind: OneThoughtView.Kind
-  private let store: Store?
+  private let store: Store
   
   // Initializer for live use.
-  init(store: Store?, kind: OneThoughtView.Kind) {
+  // Maybe add another initializer for previews with view state, when we get view state
+  init(store: Store, kind: OneThoughtView.Kind) {
     self.store = store
     self.kind = kind
   }
@@ -24,16 +23,9 @@ class OneThoughtViewModel: ObservableObject {
     print("OneThoughtViewModel deinit")
   }
   
-  // Initializer for previews. Add view state
-  init(kind: OneThoughtView.Kind) {
-    self.kind = kind
-    self.store = nil
-  }
-  
   func send(_ action: OneThoughtViewAction) {
     switch action {
     case .save:
-      guard let store else { return }
       Task {
         await store.send(.saveNewThought(title: title, body: body))
       }

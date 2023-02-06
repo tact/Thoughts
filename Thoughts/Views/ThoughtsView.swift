@@ -9,15 +9,12 @@ import SwiftUI
 
 struct ThoughtsView: View {
   
-  let store: Store?
-  
   @StateObject var viewModel: ThoughtsViewModel
 
-  init(store: Store? = nil) {
+  init(store: Store) {
     // Apparently, this is the state of the art of initalizing a StateObject
     // with parameters in Feb 2023.
     // https://hachyderm.io/@Alexbbrown/109807454267493715
-    self.store = store
     self._viewModel = StateObject(wrappedValue: ThoughtsViewModel(store: store))
   }
   
@@ -37,7 +34,7 @@ struct ThoughtsView: View {
         }
       }
       .navigationDestination(for: OneThoughtView.Kind.self) { kind in
-        OneThoughtView(store: store, kind: kind)
+        OneThoughtView(store: viewModel.store, kind: kind)
       }
     }
   }

@@ -8,24 +8,22 @@ enum ThoughtsViewAction {
 
 @MainActor
 class ThoughtsViewModel: ObservableObject {
-  private let store: Store?
+  public let store: Store
   
   private var thoughtsCancellable: AnyCancellable?
   
   @Published var navigationPath: [OneThoughtView.Kind] = []
-  @Published var thoughts: IdentifiedArrayOf<Thought> = []
+  @Published var thoughts: [Thought] = []
   
-  init(store: Store? = nil) {
+  init(store: Store) {
     self.store = store
-    if let store {
-      Task {
-        thoughtsCancellable = await store.$thoughts
-          .receive(on: DispatchQueue.main)
-          .sink(receiveValue: { thoughts in
-            // can re-sort it here
-            self.thoughts = thoughts
-          })
-      }
+    Task {
+      thoughtsCancellable = await store.$thoughts
+        .receive(on: DispatchQueue.main)
+        .sink(receiveValue: { thoughts in
+          // can re-sort it here
+          self.thoughts = thoughts
+        })
     }
   }
     
