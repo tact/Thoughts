@@ -13,7 +13,9 @@ struct LocalCacheService: LocalCacheServiceType {
   var thoughts: [Thought] {
     do {
       let data = try Data(contentsOf: cacheURL)
-      return try JSONDecoder().decode([Thought].self, from: data)
+      let decoder = JSONDecoder()
+      decoder.dateDecodingStrategy = .iso8601
+      return try decoder.decode([Thought].self, from: data)
     } catch {
       logger.error("Error restoring state from local cache: \(error)")
       return []
@@ -22,7 +24,9 @@ struct LocalCacheService: LocalCacheServiceType {
     
   func storeThoughts(_ thoughts: [Thought]) {
     do {
-      let json = try JSONEncoder().encode(thoughts)
+      let encoder = JSONEncoder()
+      encoder.dateEncodingStrategy = .iso8601
+      let json = try encoder.encode(thoughts)
       try json.write(to: cacheURL, options: .atomic)
     } catch {
       logger.error("Error storing local cache values: \(error)")

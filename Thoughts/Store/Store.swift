@@ -1,5 +1,5 @@
 import Foundation
-import IdentifiedCollections
+import os.log
 
 enum StoreAction {
   case saveNewThought(title: String, body: String)
@@ -19,20 +19,30 @@ actor Store {
   /// Those manipulations are applied to this state and again persisted to local storage.
   @Published var thoughts: [Thought] = []
   
+  private let logger = Logger(subsystem: "Thoughts", category: "Store")
+  
   static let live = Store(
-    localCacheService: LocalCacheService()
+    localCacheService: LocalCacheService(),
+    cloudKitService: CloudKitService.live
   )
   
   private let localCacheService: LocalCacheServiceType
-  // private let cloudKitService: CloudKitServiceType
+  private let cloudKitService: CloudKitServiceType
   
   private init(
-    localCacheService: LocalCacheServiceType
+    localCacheService: LocalCacheServiceType,
+    cloudKitService: CloudKitServiceType
   ) {
     self.localCacheService = localCacheService
-    // Get the initial state of thoughts from storage
+    self.cloudKitService = cloudKitService
     Task {
+      // Get the initial state of thoughts from storage
       await loadInitialThoughts()
+      
+      // Stream the changes from cloud
+      for await change in cloudKitService.changes {
+        await ingestChangeFromCloud(change)
+      }
     }
   }
   
@@ -43,18 +53,38 @@ actor Store {
   func send(_ action: StoreAction) async {
     switch action {
     case .saveNewThought(title: let title, body: let body):
-      print("Save new thought. Title: \(title), body: \(body)")
-      thoughts.append(
-        .init(
-          id: UUID(),
-          title: title,
-          body: body,
-          createdAt: nil,
-          modifiedAt: nil
-        )
+      let thought = Thought(
+        id: UUID(),
+        title: title,
+        body: body
       )
+      thoughts.append(thought)
       localCacheService.storeThoughts(thoughts)
+      let storageThought = await cloudKitService.storeThought(thought)
+      switch storageThought {
+      case .success(let thought):
+        logger.debug("Saved new thought to CloudKit: \(thought)")
+        ingestChangeFromCloud(.modified(thought))
+        // update local thought from it
+      case .failure(let error): logger.error("Could not save thought to CloudKit: \(error)")
+      }
     }
+  }
+  
+  private func ingestChangeFromCloud(_ change: CloudChange) {
+    switch change {
+    case .modified(let thought):
+      if let index = thoughts.firstIndex(where: { $0.id == thought.id }) {
+        thoughts[index] = thought
+      } else {
+        thoughts.append(thought)
+      }
+    case .deleted(let id):
+      if let index = thoughts.firstIndex(where: { $0.id == id }) {
+        thoughts.remove(at: index)
+      }
+    }
+    localCacheService.storeThoughts(thoughts)
   }
 }
 
@@ -63,7 +93,10 @@ extension Store {
   
   /// Empty static store.
   static var previewEmpty: Store {
-    Store(localCacheService: MockLocalCacheService(thoughts: []))
+    Store(
+      localCacheService: MockLocalCacheService(thoughts: []),
+      cloudKitService: MockCloudKitService()
+    )
   }
   
   /// A store populated with some thoughts.
@@ -79,8 +112,16 @@ extension Store {
             modifiedAt: nil
           )
         ]
-      )
+      ),
+      cloudKitService: MockCloudKitService()
     )
-  }  
+  }
+  
+  static func testInitialCloudChanges(changes: [CloudChange]) -> Store {
+    Store(
+      localCacheService: MockLocalCacheService(thoughts: []),
+      cloudKitService: MockCloudKitService(initialChanges: changes)
+    )
+  }
 }
 #endif

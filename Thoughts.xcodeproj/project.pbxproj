@@ -23,7 +23,10 @@
 		EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */; };
 		EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */; };
 		EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */; };
-		EAA5D553298E8F9F00407205 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = EAA5D552298E8F9F00407205 /* IdentifiedCollections */; };
+		EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */; };
+		EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92B29918F7A005DF614 /* CloudKitService.swift */; };
+		EAB6B92E29918FCD005DF614 /* MockCloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */; };
+		EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92F2991A032005DF614 /* StoreTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +67,10 @@
 		EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheServiceType.swift; sourceTree = "<group>"; };
 		EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalCacheService.swift; sourceTree = "<group>"; };
 		EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheService.swift; sourceTree = "<group>"; };
+		EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitServiceType.swift; sourceTree = "<group>"; };
+		EAB6B92B29918F7A005DF614 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
+		EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCloudKitService.swift; sourceTree = "<group>"; };
+		EAB6B92F2991A032005DF614 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +79,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA588CEF29913ED400DBACAA /* Canopy in Frameworks */,
-				EAA5D553298E8F9F00407205 /* IdentifiedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				EA0B2080298E65D000462577 /* ThoughtsTests.swift */,
+				EAB6B92F2991A032005DF614 /* StoreTests.swift */,
 			);
 			path = ThoughtsTests;
 			sourceTree = "<group>";
@@ -168,6 +175,7 @@
 		EA103187298E6B3C004819F5 /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				EAB6B92829918EB7005DF614 /* CloudKitService */,
 				EA7D901929912DF100E1CCE3 /* LocalCacheService */,
 				EA103188298E6B45004819F5 /* Store.swift */,
 			);
@@ -199,6 +207,16 @@
 			path = LocalCacheService;
 			sourceTree = "<group>";
 		};
+		EAB6B92829918EB7005DF614 /* CloudKitService */ = {
+			isa = PBXGroup;
+			children = (
+				EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */,
+				EAB6B92B29918F7A005DF614 /* CloudKitService.swift */,
+				EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */,
+			);
+			path = CloudKitService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -216,7 +234,6 @@
 			);
 			name = Thoughts;
 			packageProductDependencies = (
-				EAA5D552298E8F9F00407205 /* IdentifiedCollections */,
 				EA588CEE29913ED400DBACAA /* Canopy */,
 			);
 			productName = Thoughts;
@@ -292,7 +309,6 @@
 			);
 			mainGroup = EA0B2062298E65CF00462577;
 			packageReferences = (
-				EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
 			);
 			productRefGroup = EA0B206C298E65CF00462577 /* Products */;
 			projectDirPath = "";
@@ -336,8 +352,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */,
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
+				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
 				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
 				EA10318E298E6CE8004819F5 /* Thought.swift in Sources */,
@@ -345,6 +363,7 @@
 				EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */,
 				EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */,
 				EA103189298E6B45004819F5 /* Store.swift in Sources */,
+				EAB6B92E29918FCD005DF614 /* MockCloudKitService.swift in Sources */,
 				EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -354,6 +373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B2081298E65D000462577 /* ThoughtsTests.swift in Sources */,
+				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,26 +720,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-identified-collections";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.6.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		EA588CEE29913ED400DBACAA /* Canopy */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Canopy;
-		};
-		EAA5D552298E8F9F00407205 /* IdentifiedCollections */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */;
-			productName = IdentifiedCollections;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
