@@ -19,6 +19,7 @@
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA10318E298E6CE8004819F5 /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318D298E6CE8004819F5 /* Thought.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
+		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
 		EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */; };
 		EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */; };
 		EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */; };
@@ -59,6 +60,7 @@
 		EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModel.swift; sourceTree = "<group>"; };
 		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
+		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
 		EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheServiceType.swift; sourceTree = "<group>"; };
 		EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalCacheService.swift; sourceTree = "<group>"; };
 		EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheService.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA588CEF29913ED400DBACAA /* Canopy in Frameworks */,
 				EAA5D553298E8F9F00407205 /* IdentifiedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,10 +96,12 @@
 		EA0B2062298E65CF00462577 = {
 			isa = PBXGroup;
 			children = (
+				EA588CEC29913EC000DBACAA /* Library */,
 				EA0B206D298E65CF00462577 /* Thoughts */,
 				EA0B207F298E65D000462577 /* ThoughtsTests */,
 				EA0B2089298E65D000462577 /* ThoughtsUITests */,
 				EA0B206C298E65CF00462577 /* Products */,
+				EA588CED29913ED400DBACAA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -177,6 +182,13 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		EA588CED29913ED400DBACAA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EA7D901929912DF100E1CCE3 /* LocalCacheService */ = {
 			isa = PBXGroup;
 			children = (
@@ -205,6 +217,7 @@
 			name = Thoughts;
 			packageProductDependencies = (
 				EAA5D552298E8F9F00407205 /* IdentifiedCollections */,
+				EA588CEE29913ED400DBACAA /* Canopy */,
 			);
 			productName = Thoughts;
 			productReference = EA0B206B298E65CF00462577 /* Thoughts.app */;
@@ -699,6 +712,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EA588CEE29913ED400DBACAA /* Canopy */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Canopy;
+		};
 		EAA5D552298E8F9F00407205 /* IdentifiedCollections */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EAA5D551298E8F9F00407205 /* XCRemoteSwiftPackageReference "swift-identified-collections" */;
