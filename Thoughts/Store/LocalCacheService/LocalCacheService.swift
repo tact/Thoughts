@@ -4,6 +4,9 @@ import os.log
 /// Live implementation of the cache.
 ///
 /// Persists the thoughts to local disk.
+///
+/// Disk operations can take time. There is no queues defined here, but the code here will work asynchronously.
+/// This is because it’s driven by Store mutating functions, which anyway run asynchronously.
 struct LocalCacheService: LocalCacheServiceType {
   private let logger = Logger(subsystem: "Thoughts", category: "LocalCacheService")
 
@@ -17,7 +20,7 @@ struct LocalCacheService: LocalCacheServiceType {
     }
   }
     
-  func storeThoughts(_ thoughts: [Thought]) async {
+  func storeThoughts(_ thoughts: [Thought]) {
     do {
       let json = try JSONEncoder().encode(thoughts)
       try json.write(to: cacheURL, options: .atomic)
@@ -26,7 +29,7 @@ struct LocalCacheService: LocalCacheServiceType {
     }
   }
   
-  func clear() async {
+  func clear() {
   
   }
   

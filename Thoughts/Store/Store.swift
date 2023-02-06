@@ -26,7 +26,7 @@ actor Store {
   }
   
   func loadInitialThoughts() async {
-    self.thoughts = await localCacheService.thoughts
+    self.thoughts = localCacheService.thoughts
   }
   
   func send(_ action: StoreAction) async {
@@ -42,7 +42,7 @@ actor Store {
           modifiedAt: nil
         )
       )
-      await localCacheService.storeThoughts(thoughts)
+      localCacheService.storeThoughts(thoughts)
     }
   }
 }

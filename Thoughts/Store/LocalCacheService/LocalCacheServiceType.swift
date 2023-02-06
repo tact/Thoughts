@@ -4,14 +4,14 @@
 protocol LocalCacheServiceType {
 
   /// Get the current state of local cache.
-  var thoughts: [Thought] { get async }
+  var thoughts: [Thought] { get }
   
   /// Store  a full new state of local cache.
-  func storeThoughts(_ thoughts: [Thought]) async
+  func storeThoughts(_ thoughts: [Thought])
   
   /// Clear local cache.
   ///
   /// One reason for this could be that you reset the state
   /// and re-sync from CloudKit source of truth.
-  func clear() async
+  func clear()
 }

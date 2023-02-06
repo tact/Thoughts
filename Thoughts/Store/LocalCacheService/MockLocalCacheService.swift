@@ -7,11 +7,11 @@ struct MockLocalCacheService: LocalCacheServiceType {
     self.thoughts = thoughts
   }
   
-  func storeThoughts(_ thoughts: [Thought]) async {
+  func storeThoughts(_ thoughts: [Thought]) {
     // no-op. Mock only works with the state that was passed in init.
   }
   
-  func clear() async {
+  func clear() {
     // no-op.
   }
 }
