@@ -50,10 +50,12 @@ actor Store {
 #if DEBUG
 extension Store {
   
+  /// Empty static store.
   static var previewEmpty: Store {
     Store(localCacheService: MockLocalCacheService(thoughts: []))
   }
   
+  /// A store populated with some thoughts.
   static var previewPopulated: Store {
     Store(
       localCacheService: MockLocalCacheService(
