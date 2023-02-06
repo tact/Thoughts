@@ -5,7 +5,18 @@ enum StoreAction {
   case saveNewThought(title: String, body: String)
 }
 
-actor Store {  
+actor Store {
+  
+  /// Current in-memory source of truth for the state of the model,
+  /// known to the current running instance of the app.
+  ///
+  /// UI sends actions to manipulate this source of truth, which then gets stored
+  /// to local cache and persisted to CloudKit.
+  ///
+  /// This is bootstrapped from local cache when the app starts.
+  ///
+  /// Manipulations can also arrive through CloudKit, modeled as async stream.
+  /// Those manipulations are applied to this state and again persisted to local storage.
   @Published var thoughts: [Thought] = []
   
   static let live = Store(
