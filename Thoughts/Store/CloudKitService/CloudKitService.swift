@@ -11,9 +11,9 @@ actor CloudKitService {
 
   let syncService: SyncService
   private let logger = Logger(subsystem: "Thoughts", category: "CloudKitService")
-  private let cloudChanges: AsyncStream<CloudChange>
+  private let cloudChanges: AsyncStream<[CloudChange]>
   
-  private var cloudChangeContinuation: AsyncStream<CloudChange>.Continuation? = nil
+  private var cloudChangeContinuation: AsyncStream<[CloudChange]>.Continuation? = nil
   
   static var live: CloudKitService {
     CloudKitService(
@@ -32,7 +32,7 @@ actor CloudKitService {
 
     // Idea to capture and store the continuation from here:
     // https://www.donnywals.com/understanding-swift-concurrencys-asyncstream/
-    var capturedContinuation: AsyncStream<CloudChange>.Continuation? = nil
+    var capturedContinuation: AsyncStream<[CloudChange]>.Continuation? = nil
     self.cloudChanges = AsyncStream { continuation in
       capturedContinuation = continuation
     }
@@ -42,10 +42,6 @@ actor CloudKitService {
       await initZone()
       await fetchChangesAtStartup()
     }
-  }
-  
-  private func setContinuation(_ continuation: AsyncStream<CloudChange>.Continuation) async {
-    self.cloudChangeContinuation = continuation
   }
   
   private func initZone() async {
@@ -68,16 +64,18 @@ actor CloudKitService {
     switch changes {
     case .success(let result):
       logger.debug("Fetched Thoughts zone changes: \(String(describing: result))")
+      var changes: [CloudChange] = []
       for changed in result.changedRecords {
-        cloudChangeContinuation?.yield(.modified(.init(from: changed)))
+        changes.append(.modified(.init(from: changed)))
       }
       for deleted in result.deletedRecords {
         if let uuid = UUID(uuidString: deleted.recordID.recordName) {
-          cloudChangeContinuation?.yield(.deleted(uuid))
+          changes.append(.deleted(uuid))
         } else {
           logger.log("Error creating UUID from deleted record ID: \(deleted.recordID)")
         }
       }
+      cloudChangeContinuation?.yield(changes)
     case .failure(let error):
       logger.log("Error fetching Thoughts zone changes: \(error)")
     }
@@ -101,7 +99,7 @@ enum CloudKitServiceError: Error {
 
 extension CloudKitService: CloudKitServiceType {
   
-  nonisolated var changes: AsyncStream<CloudChange> { cloudChanges }
+  nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
   
   func storeThought(_ thought: Thought) async -> Result<Thought, Error> {
     let api = syncService.api(usingDatabaseScope: .private)

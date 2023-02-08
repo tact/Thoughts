@@ -18,5 +18,6 @@ protocol CloudKitServiceType {
   /// adds `createdAt` and updates `modifiedAt` timestamps.
   func storeThought(_ thought: Thought) async -> Result<Thought, Error>
   
-  var changes: AsyncStream<CloudChange> { get }
+  /// Emit a collection of changes received from the cloud.
+  var changes: AsyncStream<[CloudChange]> { get }
 }

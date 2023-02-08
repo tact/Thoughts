@@ -60,28 +60,35 @@ actor Store {
       )
       thoughts.append(thought)
       localCacheService.storeThoughts(thoughts)
-      let storageThought = await cloudKitService.storeThought(thought)
-      switch storageThought {
+      let storedThought = await cloudKitService.storeThought(thought)
+      switch storedThought {
       case .success(let thought):
         logger.debug("Saved new thought to CloudKit: \(thought)")
-        ingestChangeFromCloud(.modified(thought))
+        ingestChangesFromCloud([.modified(thought)])
         // update local thought from it
       case .failure(let error): logger.error("Could not save thought to CloudKit: \(error)")
       }
     }
   }
   
-  private func ingestChangeFromCloud(_ change: CloudChange) {
-    switch change {
-    case .modified(let thought):
-      if let index = thoughts.firstIndex(where: { $0.id == thought.id }) {
-        thoughts[index] = thought
-      } else {
-        thoughts.append(thought)
-      }
-    case .deleted(let id):
-      if let index = thoughts.firstIndex(where: { $0.id == id }) {
-        thoughts.remove(at: index)
+  /// Ingest a collection of changes from the cloud.
+  ///
+  /// In case of fetching changes at startup or after foregrounding the app,
+  /// this may be a collection. In case of ingesting changes after saving a record
+  /// or receiving a notification, there may be just one element in the collection.
+  private func ingestChangesFromCloud(_ changes: [CloudChange]) {
+    for change in changes {
+      switch change {
+      case .modified(let thought):
+        if let index = thoughts.firstIndex(where: { $0.id == thought.id }) {
+          thoughts[index] = thought
+        } else {
+          thoughts.append(thought)
+        }
+      case .deleted(let id):
+        if let index = thoughts.firstIndex(where: { $0.id == id }) {
+          thoughts.remove(at: index)
+        }
       }
     }
     localCacheService.storeThoughts(thoughts)

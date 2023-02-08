@@ -1,13 +1,11 @@
 #if DEBUG
 struct MockCloudKitService: CloudKitServiceType {
 
-  let changes: AsyncStream<CloudChange>
+  let changes: AsyncStream<[CloudChange]>
   
   init(initialChanges: [CloudChange] = []) {
     changes = AsyncStream { continuation in
-      for change in initialChanges {
-        continuation.yield(change)
-      }
+      continuation.yield(initialChanges)
     }
   }
   
