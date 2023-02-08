@@ -101,7 +101,7 @@ extension CloudKitService: CloudKitServiceType {
   
   nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
   
-  func storeThought(_ thought: Thought) async -> Result<Thought, Error> {
+  func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: [ckRecord(for: thought)],

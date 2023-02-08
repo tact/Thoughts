@@ -2,13 +2,16 @@ import Foundation
 import CloudKit
 
 struct Thought: Identifiable, Equatable, Hashable, Codable {
-  let id: UUID
+  
+  typealias ID = UUID
+  
+  let id: ID
   let title: String
   let body: String
   let createdAt: Date?
   let modifiedAt: Date?
   
-  init(id: UUID, title: String, body: String, createdAt: Date? = nil, modifiedAt: Date? = nil) {
+  init(id: ID, title: String, body: String, createdAt: Date? = nil, modifiedAt: Date? = nil) {
     self.id = id
     self.title = title
     self.body = body

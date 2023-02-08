@@ -17,6 +17,8 @@ class ThoughtsViewModel: ObservableObject {
   init(store: Store) {
     self.store = store
     Task {
+      // Receive any changes to the source of truth
+      // and re-publish them for the UI.
       thoughtsCancellable = await store.$thoughts
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { thoughts in
@@ -27,7 +29,7 @@ class ThoughtsViewModel: ObservableObject {
   }
     
   deinit {
-    print("Thoughts deinit")
+    print("ThoughtsViewModel deinit")
   }
   
   func send(_ action: ThoughtsViewAction) {

@@ -7,16 +7,16 @@ enum CloudChange {
   case modified(Thought)
   
   /// Thought was deleted.
-  case deleted(UUID)
+  case deleted(Thought.ID)
 }
 
 protocol CloudKitServiceType {
   
-  /// Store a new or existing thought to CloudKit.
+  /// Save a new or existing thought to CloudKit.
   ///
   /// Returns the thought that has been possibly augmented by CloudKit. E.g CloudKit
   /// adds `createdAt` and updates `modifiedAt` timestamps.
-  func storeThought(_ thought: Thought) async -> Result<Thought, Error>
+  func saveThought(_ thought: Thought) async -> Result<Thought, Error>
   
   /// Emit a collection of changes received from the cloud.
   var changes: AsyncStream<[CloudChange]> { get }

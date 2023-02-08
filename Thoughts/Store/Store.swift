@@ -17,7 +17,7 @@ actor Store {
   ///
   /// Manipulations can also arrive through CloudKit, modeled as async stream.
   /// Those manipulations are applied to this state and again persisted to local storage.
-  @Published var thoughts: [Thought] = []
+  @Published private(set) var thoughts: [Thought] = []
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
@@ -37,16 +37,18 @@ actor Store {
     self.cloudKitService = cloudKitService
     Task {
       // Get the initial state of thoughts from storage
-      await loadInitialThoughts()
+      await loadThoughtsFromLocalCache()
       
-      // Stream the changes from cloud
+      // Stream the changes from cloud.
+      // The stream is never closed and remains running
+      // for the lifetime of the store.
       for await change in cloudKitService.changes {
-        await ingestChangeFromCloud(change)
+        await ingestChangesFromCloud(change)
       }
     }
   }
   
-  func loadInitialThoughts() async {
+  func loadThoughtsFromLocalCache() async {
     self.thoughts = localCacheService.thoughts
   }
   
@@ -60,7 +62,7 @@ actor Store {
       )
       thoughts.append(thought)
       localCacheService.storeThoughts(thoughts)
-      let storedThought = await cloudKitService.storeThought(thought)
+      let storedThought = await cloudKitService.saveThought(thought)
       switch storedThought {
       case .success(let thought):
         logger.debug("Saved new thought to CloudKit: \(thought)")
@@ -76,6 +78,11 @@ actor Store {
   /// In case of fetching changes at startup or after foregrounding the app,
   /// this may be a collection. In case of ingesting changes after saving a record
   /// or receiving a notification, there may be just one element in the collection.
+  ///
+  /// The store mutation might be done better and more cleanly with a helper like
+  /// https://github.com/pointfreeco/swift-identified-collections.
+  /// It’s currently done inline as shown because it was a goal for this first version of the code
+  /// to not have any third-party dependencies.
   private func ingestChangesFromCloud(_ changes: [CloudChange]) {
     for change in changes {
       switch change {

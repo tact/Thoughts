@@ -9,7 +9,7 @@ struct MockCloudKitService: CloudKitServiceType {
     }
   }
   
-  func storeThought(_ thought: Thought) async -> Result<Thought, Error> {
+  func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
     .success(thought)
   }
 }
