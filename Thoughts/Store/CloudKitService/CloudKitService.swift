@@ -41,6 +41,7 @@ actor CloudKitService {
     Task {
       await initZone()
       await fetchChangesAtStartup()
+      await createSubscriptionIfNeeded()
     }
   }
   
@@ -78,6 +79,30 @@ actor CloudKitService {
       cloudChangeContinuation?.yield(changes)
     case .failure(let error):
       logger.log("Error fetching Thoughts zone changes: \(error)")
+    }
+  }
+  
+  private func createSubscriptionIfNeeded() async {
+    
+    #warning("Check that we already have one, before making new one")
+    
+    let api = syncService.api(usingDatabaseScope: .private)
+    
+    let subscription = CKDatabaseSubscription(subscriptionID: "PrivateThoughtsZone")
+    let notificationInfo = CKSubscription.NotificationInfo()
+    notificationInfo.shouldSendContentAvailable = true
+    subscription.notificationInfo = notificationInfo
+    
+    let result = await api.modifySubscriptions(
+      saving: [subscription],
+      deleting: nil,
+      qualityOfService: .utility
+    )
+    switch result {
+    case .success(let subs):
+      print("Got subscriptions: \(subs)")
+    case .failure(let error):
+      print("Error saving subscriptions: \(error)")
     }
   }
   

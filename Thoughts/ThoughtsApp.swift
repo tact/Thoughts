@@ -10,11 +10,19 @@ import SwiftUI
 @main
 struct ThoughtsApp: App {
   
+  #if os(iOS)
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  #endif
+  
+  #if os(macOS)
+  @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+  #endif
+  
   let store = Store.live
   
   var body: some Scene {
     WindowGroup {
-      ThoughtsView(store: store)
+      ThoughtsView(store: appDelegate.store)
     }
   }
 }

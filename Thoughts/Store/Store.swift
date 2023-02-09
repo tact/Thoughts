@@ -21,7 +21,7 @@ actor Store {
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
-  static let live = Store(
+  static var live = Store(
     localCacheService: LocalCacheService(),
     cloudKitService: CloudKitService.live
   )

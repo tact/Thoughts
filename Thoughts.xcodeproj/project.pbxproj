@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123B299521F500AEEE55 /* iOSAppDelegate.swift */; };
+		EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */; };
 		EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B206E298E65CF00462577 /* ThoughtsApp.swift */; };
 		EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B2070298E65CF00462577 /* ThoughtsView.swift */; };
 		EA0B2073298E65D000462577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA0B2072298E65D000462577 /* Assets.xcassets */; };
@@ -47,6 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EA01123B299521F500AEEE55 /* iOSAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppDelegate.swift; sourceTree = "<group>"; };
+		EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSAppDelegate.swift; sourceTree = "<group>"; };
+		EA01123F29952A3600AEEE55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EA0B206B298E65CF00462577 /* Thoughts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thoughts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0B206E298E65CF00462577 /* ThoughtsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsApp.swift; sourceTree = "<group>"; };
 		EA0B2070298E65CF00462577 /* ThoughtsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsView.swift; sourceTree = "<group>"; };
@@ -99,6 +104,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA011239299521E600AEEE55 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		EA01123A299521EB00AEEE55 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				EA01123B299521F500AEEE55 /* iOSAppDelegate.swift */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		EA0B2062298E65CF00462577 = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +145,9 @@
 		EA0B206D298E65CF00462577 /* Thoughts */ = {
 			isa = PBXGroup;
 			children = (
+				EA01123F29952A3600AEEE55 /* Info.plist */,
+				EA01123A299521EB00AEEE55 /* iOS */,
+				EA011239299521E600AEEE55 /* macOS */,
 				EA10318C298E6CDD004819F5 /* Model */,
 				EA103187298E6B3C004819F5 /* Store */,
 				EA103184298E6695004819F5 /* Views */,
@@ -355,7 +379,9 @@
 				EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */,
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
+				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
 				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
+				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
 				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
 				EA10318E298E6CE8004819F5 /* Thought.swift in Sources */,
@@ -524,6 +550,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Thoughts/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -563,6 +590,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Thoughts/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
