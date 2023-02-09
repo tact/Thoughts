@@ -44,13 +44,22 @@ struct ThoughtsView: View {
     if viewModel.thoughts.isEmpty {
       Text("No thoughts. Tap + to add one.")
     } else {
-      List(viewModel.thoughts) { thought in
-        NavigationLink(
-          value: OneThoughtView.Kind.existing(thought),
-          label: {
-            Text("one thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
+      
+      List {
+        ForEach(viewModel.thoughts) { thought in
+          NavigationLink(
+            value: OneThoughtView.Kind.existing(thought),
+            label: {
+              Text("one thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
+            }
+          )
+
+        }
+        .onDelete { indexSet in
+          if let firstIndex = indexSet.first {
+            viewModel.delete(at: firstIndex)
           }
-        )
+        }
       }
     }
   }

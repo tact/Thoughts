@@ -1,5 +1,6 @@
 #if DEBUG
 struct MockCloudKitService: CloudKitServiceType {
+  
 
   let changes: AsyncStream<[CloudChange]>
   
@@ -12,5 +13,10 @@ struct MockCloudKitService: CloudKitServiceType {
   func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
     .success(thought)
   }
+
+  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error> {
+    .success(thought.id)
+  }
+
 }
 #endif

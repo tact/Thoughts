@@ -120,6 +120,7 @@ actor CloudKitService {
 
 enum CloudKitServiceError: Error {
   case couldNotGetModifiedThought
+  case couldNotGetDeletedThoughtID
 }
 
 extension CloudKitService: CloudKitServiceType {
@@ -140,6 +141,28 @@ extension CloudKitService: CloudKitServiceType {
         return .success(Thought(from: modifiedThought))
       } else {
         return .failure(CloudKitServiceError.couldNotGetModifiedThought)
+      }
+    case .failure(let error):
+      return .failure(error)
+    }
+  }
+  
+  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error> {
+    let api = syncService.api(usingDatabaseScope: .private)
+    let result = await api.modifyRecords(
+      saving: nil,
+      deleting: [ckRecord(for: thought).recordID],
+      perRecordProgressBlock: nil,
+      qualityOfService: .userInitiated
+    )
+    switch result {
+    case .success(let modifyRecordsResult):
+      if let deletedThoughtIDResult = modifyRecordsResult.deletedRecordIDs.first,
+         let deletedThoughtID = Thought.ID(uuidString: deletedThoughtIDResult.recordName)
+      {
+        return .success(deletedThoughtID)
+      } else {
+        return .failure(CloudKitServiceError.couldNotGetDeletedThoughtID)
       }
     case .failure(let error):
       return .failure(error)

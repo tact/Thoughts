@@ -1,8 +1,13 @@
 import Foundation
+import IdentifiedCollections
 import os.log
 
 enum StoreAction {
+  /// User indicated to create a new thought with the indicated content.
   case saveNewThought(title: String, body: String)
+  
+  /// User indicated to delete this thought.
+  case delete(Thought)
 }
 
 actor Store {
@@ -17,7 +22,7 @@ actor Store {
   ///
   /// Manipulations can also arrive through CloudKit, modeled as async stream.
   /// Those manipulations are applied to this state and again persisted to local storage.
-  @Published private(set) var thoughts: [Thought] = []
+  @Published private(set) var thoughts: IdentifiedArrayOf<Thought> = []
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
@@ -49,7 +54,7 @@ actor Store {
   }
   
   func loadThoughtsFromLocalCache() async {
-    self.thoughts = localCacheService.thoughts
+    self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
   }
   
   func send(_ action: StoreAction) async {
@@ -61,44 +66,48 @@ actor Store {
         body: body
       )
       thoughts.append(thought)
-      localCacheService.storeThoughts(thoughts)
+      localCacheService.storeThoughts(thoughts.elements)
       let storedThought = await cloudKitService.saveThought(thought)
       switch storedThought {
       case .success(let thought):
         logger.debug("Saved new thought to CloudKit: \(thought)")
         ingestChangesFromCloud([.modified(thought)])
-        // update local thought from it
-      case .failure(let error): logger.error("Could not save thought to CloudKit: \(error)")
+      case .failure(let error):
+        logger.error("Could not save thought to CloudKit: \(error)")
+      }
+      
+    case .delete(let thought):
+      thoughts.remove(id: thought.id)
+      localCacheService.storeThoughts(thoughts.elements)
+      
+      let deleteResult = await cloudKitService.deleteThought(thought)
+      switch deleteResult {
+      case .success(let deletedThoughtID):
+        logger.debug("Deleted thought ID from CloudKit: \(deletedThoughtID)")
+        // Since local store was already modified above, nothing further to do here.
+      case .failure(let error):
+        logger.error("Could not delete thought from CloudKit: \(error)")
       }
     }
   }
   
   /// Ingest a collection of changes from the cloud.
   ///
+  /// - Parameter changes: a sequence of mutations to apply.
+  ///
   /// In case of fetching changes at startup or after foregrounding the app,
   /// this may be a collection. In case of ingesting changes after saving a record
   /// or receiving a notification, there may be just one element in the collection.
-  ///
-  /// The store mutation might be done better and more cleanly with a helper like
-  /// https://github.com/pointfreeco/swift-identified-collections.
-  /// It’s currently done inline as shown because it was a goal for this first version of the code
-  /// to not have any third-party dependencies.
   private func ingestChangesFromCloud(_ changes: [CloudChange]) {
     for change in changes {
       switch change {
       case .modified(let thought):
-        if let index = thoughts.firstIndex(where: { $0.id == thought.id }) {
-          thoughts[index] = thought
-        } else {
-          thoughts.append(thought)
-        }
-      case .deleted(let id):
-        if let index = thoughts.firstIndex(where: { $0.id == id }) {
-          thoughts.remove(at: index)
-        }
+        thoughts[id: thought.id] = thought
+      case .deleted(let thoughtId):
+        thoughts.remove(id: thoughtId)
       }
     }
-    localCacheService.storeThoughts(thoughts)
+    localCacheService.storeThoughts(thoughts.elements)
   }
 }
 

@@ -18,6 +18,11 @@ protocol CloudKitServiceType {
   /// adds `createdAt` and updates `modifiedAt` timestamps.
   func saveThought(_ thought: Thought) async -> Result<Thought, Error>
   
+  /// Delete a thought from CloudKit.
+  ///
+  /// If successful, returns the ID of the deleted thought.
+  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error>
+  
   /// Emit a collection of changes received from the cloud.
   var changes: AsyncStream<[CloudChange]> { get }
 }

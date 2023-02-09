@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123B299521F500AEEE55 /* iOSAppDelegate.swift */; };
 		EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */; };
+		EA0112422995300800AEEE55 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = EA0112412995300800AEEE55 /* IdentifiedCollections */; };
 		EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B206E298E65CF00462577 /* ThoughtsApp.swift */; };
 		EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B2070298E65CF00462577 /* ThoughtsView.swift */; };
 		EA0B2073298E65D000462577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA0B2072298E65D000462577 /* Assets.xcassets */; };
@@ -84,6 +85,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA588CEF29913ED400DBACAA /* Canopy in Frameworks */,
+				EA0112422995300800AEEE55 /* IdentifiedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +261,7 @@
 			name = Thoughts;
 			packageProductDependencies = (
 				EA588CEE29913ED400DBACAA /* Canopy */,
+				EA0112412995300800AEEE55 /* IdentifiedCollections */,
 			);
 			productName = Thoughts;
 			productReference = EA0B206B298E65CF00462577 /* Thoughts.app */;
@@ -333,6 +336,7 @@
 			);
 			mainGroup = EA0B2062298E65CF00462577;
 			packageReferences = (
+				EA0112402995300800AEEE55 /* XCRemoteSwiftPackageReference "swift-identified-collections" */,
 			);
 			productRefGroup = EA0B206C298E65CF00462577 /* Products */;
 			projectDirPath = "";
@@ -748,7 +752,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		EA0112402995300800AEEE55 /* XCRemoteSwiftPackageReference "swift-identified-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-identified-collections";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		EA0112412995300800AEEE55 /* IdentifiedCollections */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA0112402995300800AEEE55 /* XCRemoteSwiftPackageReference "swift-identified-collections" */;
+			productName = IdentifiedCollections;
+		};
 		EA588CEE29913ED400DBACAA /* Canopy */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Canopy;

@@ -1,5 +1,6 @@
 import Combine
 import Foundation
+import IdentifiedCollections
 
 enum ThoughtsViewAction {
   case addThought
@@ -12,7 +13,7 @@ class ThoughtsViewModel: ObservableObject {
   private var thoughtsCancellable: AnyCancellable?
   
   @Published var navigationPath: [OneThoughtView.Kind] = []
-  @Published var thoughts: [Thought] = []
+  @Published var thoughts: IdentifiedArrayOf<Thought> = []
   
   init(store: Store) {
     self.store = store
@@ -36,6 +37,13 @@ class ThoughtsViewModel: ObservableObject {
     switch action {
     case .addThought:
       navigationPath.append(.new)
+    }
+  }
+  
+  func delete(at index: Int) {
+    let thought = thoughts[index]
+    Task {
+      await store.send(.delete(thought))
     }
   }
 }
