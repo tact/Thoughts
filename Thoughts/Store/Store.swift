@@ -57,6 +57,12 @@ actor Store {
     self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
   }
   
+  
+
+  func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult {
+    await cloudKitService.ingestRemoteNotification(withUserInfo: userInfo)
+  }
+  
   func send(_ action: StoreAction) async {
     switch action {
     case .saveNewThought(title: let title, body: let body):
@@ -75,7 +81,7 @@ actor Store {
       case .failure(let error):
         logger.error("Could not save thought to CloudKit: \(error)")
       }
-      
+            
     case .delete(let thought):
       thoughts.remove(id: thought.id)
       localCacheService.storeThoughts(thoughts.elements)

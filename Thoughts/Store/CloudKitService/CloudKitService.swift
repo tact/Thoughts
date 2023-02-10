@@ -40,7 +40,7 @@ actor CloudKitService {
 
     Task {
       await initZone()
-      await fetchChangesAtStartup()
+      _ = await fetchChangesFromCloud()
       await createSubscriptionIfNeeded()
     }
   }
@@ -54,15 +54,24 @@ actor CloudKitService {
     }
   }
 
-  /// Fetch initial set of changes
-  private func fetchChangesAtStartup() async {
+  /// Fetch set of changes
+  private func fetchChangesFromCloud() async -> FetchCloudChangesResult {
     let api = syncService.api(usingDatabaseScope: .private)
-    let changes = await api.fetchZoneChanges(
+    let databaseChanges = await api.fetchDatabaseChanges(qualityOfService: .default)
+    guard let changedRecordZoneIDs = try? databaseChanges.get().changedRecordZoneIDs else {
+      return .failed
+    }
+    
+    guard changedRecordZoneIDs.contains(thoughtsZone.zoneID) else {
+      return .noData
+    }
+    
+    let zoneChanges = await api.fetchZoneChanges(
       recordZoneIDs: [thoughtsZone.zoneID],
       fetchMethod: .changeTokenAndAllData,
       qualityOfService: .default
     )
-    switch changes {
+    switch zoneChanges {
     case .success(let result):
       logger.debug("Fetched Thoughts zone changes: \(String(describing: result))")
       var changes: [CloudChange] = []
@@ -77,9 +86,20 @@ actor CloudKitService {
         }
       }
       cloudChangeContinuation?.yield(changes)
+      return changes.isEmpty ? .noData : .newData
     case .failure(let error):
       logger.log("Error fetching Thoughts zone changes: \(error)")
+      return .failed
     }
+  }
+  
+  func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable : Any]) async -> FetchCloudChangesResult {
+    guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo),
+          let databaseNotification = notification as? CKDatabaseNotification,
+          databaseNotification.databaseScope == .private else {
+      return .noData
+    }
+    return await fetchChangesFromCloud()
   }
   
   private func createSubscriptionIfNeeded() async {

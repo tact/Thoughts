@@ -17,6 +17,10 @@ struct MockCloudKitService: CloudKitServiceType {
   func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error> {
     .success(thought.id)
   }
+  
+  func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable : Any]) async -> FetchCloudChangesResult {
+    .noData
+  }
 
 }
 #endif

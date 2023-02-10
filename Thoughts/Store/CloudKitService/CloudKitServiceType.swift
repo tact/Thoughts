@@ -1,4 +1,23 @@
 import Foundation
+#if os(iOS)
+import UIKit
+#endif
+
+enum FetchCloudChangesResult {
+  case newData
+  case noData
+  case failed
+  
+  #if os(iOS)
+  var backgroundFetchResult: UIBackgroundFetchResult {
+    switch self {
+    case .newData: return .newData
+    case .noData: return .noData
+    case .failed: return .failed
+    }
+  }
+  #endif
+}
 
 /// One change made in CloudKit.
 enum CloudChange {
@@ -25,4 +44,6 @@ protocol CloudKitServiceType {
   
   /// Emit a collection of changes received from the cloud.
   var changes: AsyncStream<[CloudChange]> { get }
+  
+  func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult
 }

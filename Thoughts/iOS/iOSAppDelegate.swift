@@ -17,9 +17,11 @@ extension AppDelegate: UIApplicationDelegate {
   func application(
     _ application: UIApplication,
     didReceiveRemoteNotification userInfo: [AnyHashable : Any],
-    fetchCompletionHandler completionHandler: (UIBackgroundFetchResult)->()
+    fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult)->()
   ) {
-    completionHandler(.newData)
+    Task {
+      completionHandler(await store.ingestRemoteNotification(withUserInfo: userInfo).backgroundFetchResult)
+    }
   }
 }
 

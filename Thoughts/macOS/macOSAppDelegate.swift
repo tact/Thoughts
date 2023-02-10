@@ -11,7 +11,9 @@ extension AppDelegate: NSApplicationDelegate {
   }
   
   func application(_: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
-    print("Did receive notification: \(userInfo)")
+    Task {
+      let _ = await store.ingestRemoteNotification(withUserInfo: userInfo)
+    }
   }
 }
 #endif

@@ -25,6 +25,7 @@ class ThoughtsViewModel: ObservableObject {
         .sink(receiveValue: { thoughts in
           // can re-sort it here
           self.thoughts = thoughts
+          self.updateNavigationPathFromThoughts()
         })
     }
   }
@@ -32,6 +33,22 @@ class ThoughtsViewModel: ObservableObject {
   deinit {
     print("ThoughtsViewModel deinit")
   }
+  
+  /// Make any updates to navigation path if the source of truth changed.
+  ///
+  /// For example, if a thought was deleted and we are currently looking at it
+  /// or editing it, drop it from the path.
+  private func updateNavigationPathFromThoughts() {
+    if let lastPath = navigationPath.last,
+       case OneThoughtView.Kind.existing(let visibleThought) = lastPath,
+       !thoughts.contains(visibleThought) {
+      // We are looking at a thought which is no longer present in the store.
+      // It was likely deleted on this or another device.
+      // So we unconditionally drop it from the navigation path.
+      navigationPath.removeLast()
+    }
+  }
+  
   
   func send(_ action: ThoughtsViewAction) {
     switch action {
