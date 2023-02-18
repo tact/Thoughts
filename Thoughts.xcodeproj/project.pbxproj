@@ -157,17 +157,14 @@
 		EA0B206D298E65CF00462577 /* Thoughts */ = {
 			isa = PBXGroup;
 			children = (
-				EA01123F29952A3600AEEE55 /* Info.plist */,
-				EA01123A299521EB00AEEE55 /* iOS */,
-				EA011239299521E600AEEE55 /* macOS */,
+				EA768BC929A1779A00C65A00 /* App */,
 				EA10318C298E6CDD004819F5 /* Model */,
 				EA103187298E6B3C004819F5 /* Store */,
 				EA103184298E6695004819F5 /* Views */,
-				EA0B206E298E65CF00462577 /* ThoughtsApp.swift */,
+				EA01123F29952A3600AEEE55 /* Info.plist */,
 				EA0B2072298E65D000462577 /* Assets.xcassets */,
 				EA0B2074298E65D000462577 /* Thoughts.entitlements */,
 				EA0B2075298E65D000462577 /* Preview Content */,
-				EA768BC129A1658600C65A00 /* TestSupport.swift */,
 			);
 			path = Thoughts;
 			sourceTree = "<group>";
@@ -225,7 +222,6 @@
 			isa = PBXGroup;
 			children = (
 				EA10318D298E6CE8004819F5 /* Thought.swift */,
-				EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -244,6 +240,18 @@
 				EA768BC429A16E9B00C65A00 /* mock1.json */,
 			);
 			path = Fixtures;
+			sourceTree = "<group>";
+		};
+		EA768BC929A1779A00C65A00 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				EA0B206E298E65CF00462577 /* ThoughtsApp.swift */,
+				EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */,
+				EA768BC129A1658600C65A00 /* TestSupport.swift */,
+				EA01123A299521EB00AEEE55 /* iOS */,
+				EA011239299521E600AEEE55 /* macOS */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		EA7D901929912DF100E1CCE3 /* LocalCacheService */ = {
