@@ -1,5 +1,6 @@
 import Foundation
 
+/// Functionality shared between iOS and macOS app delegates.
 struct SharedAppDelegate {
   let store: Store
   
