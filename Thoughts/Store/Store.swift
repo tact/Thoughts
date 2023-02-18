@@ -34,7 +34,7 @@ actor Store {
   private let localCacheService: LocalCacheServiceType
   private let cloudKitService: CloudKitServiceType
   
-  private init(
+  init(
     localCacheService: LocalCacheServiceType,
     cloudKitService: CloudKitServiceType
   ) {
@@ -57,8 +57,6 @@ actor Store {
     self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
   }
   
-  
-
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult {
     await cloudKitService.ingestRemoteNotification(withUserInfo: userInfo)
   }
@@ -142,15 +140,19 @@ extension Store {
           )
         ]
       ),
-      cloudKitService: MockCloudKitService()
+      cloudKitService: MockCloudKitService(
+        initialChanges:
+          [
+            .modified(
+              .init(
+                id: UUID(),
+                title: "Thought from cloud",
+                body: "Thought body from cloud"
+              )
+            )
+          ]
+      )
     )
-  }
-  
-  static func testInitialCloudChanges(changes: [CloudChange]) -> Store {
-    Store(
-      localCacheService: MockLocalCacheService(thoughts: []),
-      cloudKitService: MockCloudKitService(initialChanges: changes)
-    )
-  }
+  }  
 }
 #endif
