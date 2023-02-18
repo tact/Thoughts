@@ -2,7 +2,7 @@
 import AppKit
 
 class AppDelegate: NSObject {
-  let store = Store.live
+  let sharedAppDelegate = SharedAppDelegate()
 }
 
 extension AppDelegate: NSApplicationDelegate {

@@ -46,6 +46,7 @@ actor CloudKitService {
   }
   
   private func initZone() async {
+    #warning("Don’t initialize a zone if we already have one")
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyZones(saving: [thoughtsZone], deleting: nil, qualityOfService: .default)
     switch result {
@@ -104,7 +105,7 @@ actor CloudKitService {
   
   private func createSubscriptionIfNeeded() async {
     
-    #warning("Check that we already have one, before making new one")
+    #warning("Check that we already have a subscription, before making new one")
     
     let api = syncService.api(usingDatabaseScope: .private)
     

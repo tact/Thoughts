@@ -23,6 +23,11 @@
 		EA10318E298E6CE8004819F5 /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318D298E6CE8004819F5 /* Thought.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
+		EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */; };
+		EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBF29A164CC00C65A00 /* Store+Mock.swift */; };
+		EA768BC229A1658600C65A00 /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BC129A1658600C65A00 /* TestSupport.swift */; };
+		EA768BC529A16E9B00C65A00 /* mock1.json in Resources */ = {isa = PBXBuildFile; fileRef = EA768BC429A16E9B00C65A00 /* mock1.json */; };
+		EA768BC729A16FF100C65A00 /* blank.json in Resources */ = {isa = PBXBuildFile; fileRef = EA768BC629A16FF100C65A00 /* blank.json */; };
 		EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */; };
 		EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */; };
 		EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */; };
@@ -70,6 +75,11 @@
 		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
 		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
+		EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAppDelegate.swift; sourceTree = "<group>"; };
+		EA768BBF29A164CC00C65A00 /* Store+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Mock.swift"; sourceTree = "<group>"; };
+		EA768BC129A1658600C65A00 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
+		EA768BC429A16E9B00C65A00 /* mock1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock1.json; sourceTree = "<group>"; };
+		EA768BC629A16FF100C65A00 /* blank.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = blank.json; sourceTree = "<group>"; };
 		EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheServiceType.swift; sourceTree = "<group>"; };
 		EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalCacheService.swift; sourceTree = "<group>"; };
 		EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheService.swift; sourceTree = "<group>"; };
@@ -157,6 +167,7 @@
 				EA0B2072298E65D000462577 /* Assets.xcassets */,
 				EA0B2074298E65D000462577 /* Thoughts.entitlements */,
 				EA0B2075298E65D000462577 /* Preview Content */,
+				EA768BC129A1658600C65A00 /* TestSupport.swift */,
 			);
 			path = Thoughts;
 			sourceTree = "<group>";
@@ -181,6 +192,7 @@
 		EA0B2089298E65D000462577 /* ThoughtsUITests */ = {
 			isa = PBXGroup;
 			children = (
+				EA768BC329A16E6000C65A00 /* Fixtures */,
 				EA0B208A298E65D000462577 /* ThoughtsUITests.swift */,
 				EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */,
 			);
@@ -204,6 +216,7 @@
 				EAB6B92829918EB7005DF614 /* CloudKitService */,
 				EA7D901929912DF100E1CCE3 /* LocalCacheService */,
 				EA103188298E6B45004819F5 /* Store.swift */,
+				EA768BBF29A164CC00C65A00 /* Store+Mock.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -212,6 +225,7 @@
 			isa = PBXGroup;
 			children = (
 				EA10318D298E6CE8004819F5 /* Thought.swift */,
+				EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -221,6 +235,15 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EA768BC329A16E6000C65A00 /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				EA768BC629A16FF100C65A00 /* blank.json */,
+				EA768BC429A16E9B00C65A00 /* mock1.json */,
+			);
+			path = Fixtures;
 			sourceTree = "<group>";
 		};
 		EA7D901929912DF100E1CCE3 /* LocalCacheService */ = {
@@ -370,6 +393,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA768BC729A16FF100C65A00 /* blank.json in Resources */,
+				EA768BC529A16E9B00C65A00 /* mock1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,8 +410,11 @@
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
 				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
+				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,
 				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
+				EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */,
+				EA768BC229A1658600C65A00 /* TestSupport.swift in Sources */,
 				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
 				EA10318E298E6CE8004819F5 /* Thought.swift in Sources */,
 				EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */,

@@ -22,7 +22,7 @@ struct ThoughtsApp: App {
   
   var body: some Scene {
     WindowGroup {
-      ThoughtsView(store: appDelegate.store)
+      ThoughtsView(store: appDelegate.sharedAppDelegate.store)
     }
   }
 }

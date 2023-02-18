@@ -121,7 +121,7 @@ extension Store {
   /// Empty static store.
   static var previewEmpty: Store {
     Store(
-      localCacheService: MockLocalCacheService(thoughts: []),
+      localCacheService: MockLocalCacheService(),
       cloudKitService: MockCloudKitService()
     )
   }

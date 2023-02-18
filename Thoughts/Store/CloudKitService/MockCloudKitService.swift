@@ -1,7 +1,5 @@
 #if DEBUG
 struct MockCloudKitService: CloudKitServiceType {
-  
-
   let changes: AsyncStream<[CloudChange]>
   
   init(initialChanges: [CloudChange] = []) {
@@ -21,6 +19,5 @@ struct MockCloudKitService: CloudKitServiceType {
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable : Any]) async -> FetchCloudChangesResult {
     .noData
   }
-
 }
 #endif

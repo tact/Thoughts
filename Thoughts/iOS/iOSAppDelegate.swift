@@ -2,16 +2,17 @@
 import UIKit
 
 class AppDelegate: NSObject {
-  let store = Store.live
-  
-
+  let sharedAppDelegate = SharedAppDelegate()
 }
 
 extension AppDelegate: UIApplicationDelegate {
   
-  func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-      application.registerForRemoteNotifications()
-      return true
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+  ) -> Bool {
+    application.registerForRemoteNotifications()
+    return true
   }
   
   func application(
@@ -20,7 +21,7 @@ extension AppDelegate: UIApplicationDelegate {
     fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult)->()
   ) {
     Task {
-      completionHandler(await store.ingestRemoteNotification(withUserInfo: userInfo).backgroundFetchResult)
+      completionHandler(await sharedAppDelegate.store.ingestRemoteNotification(withUserInfo: userInfo).backgroundFetchResult)
     }
   }
 }

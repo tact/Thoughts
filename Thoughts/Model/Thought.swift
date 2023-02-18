@@ -1,17 +1,17 @@
 import Foundation
 import CloudKit
 
-struct Thought: Identifiable, Equatable, Hashable, Codable {
+public struct Thought: Identifiable, Equatable, Hashable, Codable {
   
-  typealias ID = UUID
+  public typealias ID = UUID
   
-  let id: ID
-  let title: String
-  let body: String
-  let createdAt: Date?
-  let modifiedAt: Date?
+  public let id: ID
+  public let title: String
+  public let body: String
+  public let createdAt: Date?
+  public let modifiedAt: Date?
   
-  init(id: ID, title: String, body: String, createdAt: Date? = nil, modifiedAt: Date? = nil) {
+  public init(id: ID, title: String, body: String, createdAt: Date? = nil, modifiedAt: Date? = nil) {
     self.id = id
     self.title = title
     self.body = body
@@ -37,7 +37,7 @@ struct Thought: Identifiable, Equatable, Hashable, Codable {
 }
 
 extension Thought: CustomStringConvertible {
-  var description: String {
+  public var description: String {
     "Thought(id: \(id), title: “\(title)”, body: “\(body)”, createdAt: \(String(describing: createdAt)), modifiedAt: \(String(describing: modifiedAt)))"
   }
 }

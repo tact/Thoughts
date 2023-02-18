@@ -3,7 +3,7 @@ struct MockLocalCacheService: LocalCacheServiceType {
   
   private(set) var thoughts: [Thought]
   
-  init(thoughts: [Thought]) {
+  init(thoughts: [Thought] = []) {
     self.thoughts = thoughts
   }
   
