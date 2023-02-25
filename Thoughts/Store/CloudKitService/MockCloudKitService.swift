@@ -1,11 +1,13 @@
 #if DEBUG
 struct MockCloudKitService: CloudKitServiceType {
   let changes: AsyncStream<[CloudChange]>
+  let accountState: CloudKitAccountState
   
-  init(initialChanges: [CloudChange] = []) {
+  init(initialChanges: [CloudChange] = [], initialAccountState: CloudKitAccountState = .unknown) {
     changes = AsyncStream { continuation in
       continuation.yield(initialChanges)
     }
+    accountState = initialAccountState
   }
   
   func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
@@ -18,6 +20,10 @@ struct MockCloudKitService: CloudKitServiceType {
   
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable : Any]) async -> FetchCloudChangesResult {
     .noData
+  }
+  
+  func accountStateStream() -> CloudKitAccountStateSequence {
+    CloudKitAccountStateSequence(kind: .mock(accountState))
   }
 }
 #endif

@@ -24,12 +24,18 @@ actor Store {
   /// Those manipulations are applied to this state and again persisted to local storage.
   @Published private(set) var thoughts: IdentifiedArrayOf<Thought> = []
   
+  
+  @Published private(set) var cloudKitAccountState: CloudKitAccountState = .provisionalAvailable
+  
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
-  static var live = Store(
-    localCacheService: LocalCacheService(),
-    cloudKitService: CloudKitService.live
-  )
+  static var live: Store {
+    print("static var live: Store")
+    return Store(
+      localCacheService: LocalCacheService(),
+      cloudKitService: CloudKitService.live
+    )
+  }
   
   private let localCacheService: LocalCacheServiceType
   private let cloudKitService: CloudKitServiceType
@@ -41,9 +47,18 @@ actor Store {
     self.localCacheService = localCacheService
     self.cloudKitService = cloudKitService
     Task {
+      // Task to observe CloudKit account state.
+      for await newState in await cloudKitService.accountStateStream() {
+        await ingestAccountState(newState)
+      }
+    }
+    
+    Task {
+      // Task to load initial state and then apply changes from cloud.
+      
       // Get the initial state of thoughts from storage
       await loadThoughtsFromLocalCache()
-      
+
       // Stream the changes from cloud.
       // The stream is never closed and remains running
       // for the lifetime of the store.
@@ -113,6 +128,11 @@ actor Store {
     }
     localCacheService.storeThoughts(thoughts.elements)
   }
+  
+  private func ingestAccountState(_ state: CloudKitAccountState) {
+    print("Ingesting account state: \(state)")
+    cloudKitAccountState = state
+  }
 }
 
 #if DEBUG
@@ -122,7 +142,7 @@ extension Store {
   static var previewEmpty: Store {
     Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService()
+      cloudKitService: MockCloudKitService(initialAccountState: .available)
     )
   }
   
@@ -141,18 +161,27 @@ extension Store {
         ]
       ),
       cloudKitService: MockCloudKitService(
-        initialChanges:
-          [
-            .modified(
-              .init(
-                id: UUID(),
-                title: "Thought from cloud",
-                body: "Thought body from cloud"
-              )
+        initialChanges: [
+          .modified(
+            .init(
+              id: UUID(),
+              title: "Thought from cloud",
+              body: "Thought body from cloud"
             )
-          ]
+          )
+        ],
+        initialAccountState: .available
       )
     )
-  }  
+  }
+  
+  static var noAccountState: Store {
+    Store(localCacheService: MockLocalCacheService(), cloudKitService: MockCloudKitService(initialAccountState: .noAccount))
+  }
+  
+  static var unknownAccountState: Store {
+    Store(localCacheService: MockLocalCacheService(), cloudKitService: MockCloudKitService(initialAccountState: .unknown))
+  }
+
 }
 #endif

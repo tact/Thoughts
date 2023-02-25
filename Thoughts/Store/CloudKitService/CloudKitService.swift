@@ -37,15 +37,18 @@ actor CloudKitService {
       capturedContinuation = continuation
     }
     self.cloudChangeContinuation = capturedContinuation
-
     Task {
-      await initZone()
+      await createZoneIfNeeded()
+
+      // Not sure why code from here on is run with Xcode 14.3.0 previews??? But above is not?
+      // Thread.callStackSymbols.forEach{print($0)}
+      
       _ = await fetchChangesFromCloud()
       await createSubscriptionIfNeeded()
     }
   }
   
-  private func initZone() async {
+  private func createZoneIfNeeded() async {
     #warning("Don’t initialize a zone if we already have one")
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyZones(saving: [thoughtsZone], deleting: nil, qualityOfService: .default)
@@ -144,6 +147,8 @@ enum CloudKitServiceError: Error {
   case couldNotGetDeletedThoughtID
 }
 
+
+
 extension CloudKitService: CloudKitServiceType {
   
   nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
@@ -188,5 +193,13 @@ extension CloudKitService: CloudKitServiceType {
     case .failure(let error):
       return .failure(error)
     }
+  }
+  
+  func accountStateStream() async -> CloudKitAccountStateSequence {
+    let containerAPI = syncService.containerAPI()
+    // Don’t handle the unlikely case where getting the account stream is an error - crash in that case
+    let stream = try! await containerAPI.accountStatusStream.get()
+    
+    return CloudKitAccountStateSequence(kind: .live(stream))
   }
 }

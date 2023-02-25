@@ -11,9 +11,11 @@ class ThoughtsViewModel: ObservableObject {
   public let store: Store
   
   private var thoughtsCancellable: AnyCancellable?
+  private var accountStateCancellable: AnyCancellable?
   
   @Published var navigationPath: [OneThoughtView.Kind] = []
   @Published var thoughts: IdentifiedArrayOf<Thought> = []
+  @Published var accountState: CloudKitAccountState = .provisionalAvailable
   
   init(store: Store) {
     self.store = store
@@ -26,6 +28,13 @@ class ThoughtsViewModel: ObservableObject {
           // can re-sort it here
           self.thoughts = thoughts
           self.updateNavigationPathFromThoughts()
+        })
+      
+      // Observe the account state.
+      accountStateCancellable = await store.$cloudKitAccountState
+        .receive(on: DispatchQueue.main)
+        .sink(receiveValue: { newState in
+          self.accountState = newState
         })
     }
   }

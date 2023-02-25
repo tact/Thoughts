@@ -12,7 +12,7 @@ extension AppDelegate: NSApplicationDelegate {
   
   func application(_: NSApplication, didReceiveRemoteNotification userInfo: [String: Any]) {
     Task {
-      let _ = await store.ingestRemoteNotification(withUserInfo: userInfo)
+      let _ = await sharedAppDelegate.store.ingestRemoteNotification(withUserInfo: userInfo)
     }
   }
 }

@@ -1,7 +1,28 @@
+import CloudKit
 import Foundation
+
 #if os(iOS)
 import UIKit
 #endif
+
+enum CloudKitAccountState {
+  /// CloudKit account is operational and available.
+  case available
+  
+  /// We haven’t yet checked the state, but optimistically assume it is available.
+  ///
+  /// This is to avoid UI flickering in the case of “happy path”, where the account indeed
+  /// is available but there can be a slight delay at the start of the app while it is checked.
+  case provisionalAvailable
+  
+  /// No or restricted account.
+  ///
+  /// In a real app, you would distinguish more between the various CloudKit statuses.
+  case noAccount
+  
+  /// Undetermined account state.
+  case unknown
+}
 
 enum FetchCloudChangesResult {
   case newData
@@ -29,6 +50,53 @@ enum CloudChange {
   case deleted(Thought.ID)
 }
 
+struct CloudKitAccountStateSequence: AsyncSequence {
+
+  enum Kind {
+    case mock(CloudKitAccountState)
+    case live(AsyncStream<CKAccountStatus>)
+  }
+  
+  let kind: Kind
+  
+  init(kind: Kind) {
+    self.kind = kind
+  }
+
+  func makeAsyncIterator() -> AsyncIterator {
+    AsyncIterator(kind: kind)
+  }
+  
+  typealias Element = CloudKitAccountState
+  
+  public struct AsyncIterator: AsyncIteratorProtocol {
+    let kind: Kind
+    
+    /// Make sure that the mock emitter emits only one value.
+    var mockEmitted = false
+    
+    init(kind: Kind) {
+      self.kind = kind
+    }
+    
+    public mutating func next() async -> Element? {
+      switch kind {
+      case .mock(let state):
+        guard !mockEmitted else { return nil }
+        mockEmitted = true
+        return state
+      case .live(let stream):
+        let nextStatus = await stream.first(where: { _ in true })
+        switch nextStatus {
+        case .available: return .available
+        case .couldNotDetermine: return .unknown
+        default: return .noAccount
+        }
+      }
+    }
+  }
+}
+
 protocol CloudKitServiceType {
   
   /// Save a new or existing thought to CloudKit.
@@ -44,6 +112,8 @@ protocol CloudKitServiceType {
   
   /// Emit a collection of changes received from the cloud.
   var changes: AsyncStream<[CloudChange]> { get }
+  
+  func accountStateStream() async -> CloudKitAccountStateSequence
   
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult
 }
