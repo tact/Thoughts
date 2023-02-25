@@ -1,3 +1,5 @@
+import ThoughtsTypes
+
 #if DEBUG
 struct MockLocalCacheService: LocalCacheServiceType {
   

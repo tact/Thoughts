@@ -1,6 +1,7 @@
 import Foundation
 import IdentifiedCollections
 import os.log
+import ThoughtsTypes
 
 enum StoreAction {
   /// User indicated to create a new thought with the indicated content.

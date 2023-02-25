@@ -1,6 +1,7 @@
 import Canopy
 import CloudKit
 import os.log
+import ThoughtsTypes
 
 struct ThoughtsSyncSettings: SyncSettings {
   var developerCausePostingToFail: Bool { false }

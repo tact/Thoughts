@@ -1,4 +1,5 @@
 import Foundation
+import ThoughtsTypes
 
 /// Functionality shared between iOS and macOS app delegates.
 struct SharedAppDelegate {

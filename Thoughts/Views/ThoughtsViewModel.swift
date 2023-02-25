@@ -1,6 +1,7 @@
 import Combine
 import Foundation
 import IdentifiedCollections
+import ThoughtsTypes
 
 enum ThoughtsViewAction {
   case addThought

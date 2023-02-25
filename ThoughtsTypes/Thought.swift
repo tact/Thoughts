@@ -19,7 +19,7 @@ public struct Thought: Identifiable, Equatable, Hashable, Codable {
     self.modifiedAt = modifiedAt
   }
   
-  init(from record: CKRecord) {
+  public init(from record: CKRecord) {
     self.id = UUID(uuidString: record.recordID.recordName)!
     if let title = record.encryptedValues["title"] as? String {
       self.title = title

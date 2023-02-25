@@ -1,11 +1,5 @@
-//
-//  ContentView.swift
-//  Thoughts
-//
-//  Created by Jaanus Kase on 04.02.2023.
-//
-
 import SwiftUI
+import ThoughtsTypes
 
 struct ThoughtsView: View {
   

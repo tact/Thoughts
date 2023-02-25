@@ -1,5 +1,5 @@
 {
-  "mockLocalStoreContent": {
+  "mockLocalCacheServiceContent": {
     "thoughts": [
       {
         "id": "BF69292D-27CE-49C0-84C6-80F93D28A74D",
@@ -7,5 +7,8 @@
         "body": "Body from UI Test"
       }
     ]
+  },
+  "mockCloudKitServiceContent": {
+    "accountState": { "available": {} }
   }
 }

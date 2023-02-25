@@ -1,3 +1,5 @@
+import ThoughtsTypes
+
 /// Storage to device.
 ///
 /// It’s called a “Cache” because it’s not source of truth: CloudKit holds the source of truth.

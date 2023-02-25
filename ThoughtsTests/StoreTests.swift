@@ -1,4 +1,5 @@
 @testable import Thoughts
+import ThoughtsTypes
 import XCTest
 
 final class StoreTests: XCTestCase {
