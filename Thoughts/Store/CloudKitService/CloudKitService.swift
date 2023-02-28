@@ -32,7 +32,7 @@ actor CloudKitService {
   }
   
   #if DEBUG
-  static func testService(
+  static func test(
     containerOperationResults: [MockCKContainer.OperationResult],
     privateDatabaseOperationResults: [MockDatabase.OperationResult]
   ) -> CloudKitService {

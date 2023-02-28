@@ -1,4 +1,6 @@
 #if DEBUG
+import CanopyTestTools
+
 public enum TestSupport {
   public static var StoreEnvironmentKey = "store"
   
@@ -10,10 +12,12 @@ public enum TestSupport {
   }
   
   public struct MockCloudKitServiceContent: Codable {
-    public let accountState: CloudKitAccountState
+    public let containerOperationResults: [MockCKContainer.OperationResult]
     
-    public init(accountState: CloudKitAccountState) {
-      self.accountState = accountState
+    public init(
+      containerOperationResults: [MockCKContainer.OperationResult]
+    ) {
+      self.containerOperationResults = containerOperationResults
     }
   }
   

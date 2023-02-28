@@ -18,8 +18,6 @@ struct ThoughtsApp: App {
   @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #endif
   
-  let store = Store.live
-  
   var body: some Scene {
     WindowGroup {
       ThoughtsView(store: appDelegate.sharedAppDelegate.store)

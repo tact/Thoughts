@@ -53,7 +53,7 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
   func test_store_initial_blank_state_from_cloud() async {
     let store = Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: CloudKitService.testService(
+      cloudKitService: CloudKitService.test(
         containerOperationResults: initialContainerOperationResults,
         privateDatabaseOperationResults: initialPrivateDatabaseOperationResults
       )
@@ -70,7 +70,7 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
     
     let store = Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: CloudKitService.testService(
+      cloudKitService: CloudKitService.test(
         containerOperationResults: initialContainerOperationResults,
         privateDatabaseOperationResults: initialPrivateDatabaseOperationResults +
           [

@@ -22,6 +22,8 @@
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
+		EA6E1CB729AE639A009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CB629AE639A009195C6 /* CanopyTestTools */; };
+		EA6E1CBB29AE63B2009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */; };
 		EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */; };
 		EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBF29A164CC00C65A00 /* Store+Mock.swift */; };
 		EA768BC529A16E9B00C65A00 /* mock1.json in Resources */ = {isa = PBXBuildFile; fileRef = EA768BC429A16E9B00C65A00 /* mock1.json */; };
@@ -143,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA6E1CBB29AE63B2009195C6 /* CanopyTestTools in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA6E1CB729AE639A009195C6 /* CanopyTestTools in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,9 +400,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				EA6E1CB929AE63AE009195C6 /* PBXTargetDependency */,
 				EA0B2088298E65D000462577 /* PBXTargetDependency */,
 			);
 			name = ThoughtsUITests;
+			packageProductDependencies = (
+				EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */,
+			);
 			productName = ThoughtsUITests;
 			productReference = EA0B2086298E65D000462577 /* ThoughtsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -415,8 +423,12 @@
 			buildRules = (
 			);
 			dependencies = (
+				EA6E1CB529AE6385009195C6 /* PBXTargetDependency */,
 			);
 			name = ThoughtsTypes;
+			packageProductDependencies = (
+				EA6E1CB629AE639A009195C6 /* CanopyTestTools */,
+			);
 			productName = ThoughtsTypes;
 			productReference = EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */;
 			productType = "com.apple.product-type.framework";
@@ -570,6 +582,14 @@
 			isa = PBXTargetDependency;
 			target = EA0B206A298E65CF00462577 /* Thoughts */;
 			targetProxy = EA0B2087298E65D000462577 /* PBXContainerItemProxy */;
+		};
+		EA6E1CB529AE6385009195C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = EA6E1CB429AE6385009195C6 /* CanopyTestTools */;
+		};
+		EA6E1CB929AE63AE009195C6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = EA6E1CB829AE63AE009195C6 /* CanopyTestTools */;
 		};
 		EA8B781429AE45370057E87D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1008,6 +1028,22 @@
 		EA588CEE29913ED400DBACAA /* Canopy */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Canopy;
+		};
+		EA6E1CB429AE6385009195C6 /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
+		};
+		EA6E1CB629AE639A009195C6 /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
+		};
+		EA6E1CB829AE63AE009195C6 /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
+		};
+		EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
 		};
 		EA8B781129AE45290057E87D /* CanopyTestTools */ = {
 			isa = XCSwiftPackageProductDependency;
