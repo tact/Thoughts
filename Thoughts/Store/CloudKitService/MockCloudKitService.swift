@@ -27,5 +27,10 @@ struct MockCloudKitService: CloudKitServiceType {
   func accountStateStream() -> CloudKitAccountStateSequence {
     CloudKitAccountStateSequence(kind: .mock(accountState))
   }
+  
+  func fetchChangesFromCloud() async -> FetchCloudChangesResult {
+    .noData
+  }
+  
 }
 #endif

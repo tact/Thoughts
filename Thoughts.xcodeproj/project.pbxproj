@@ -28,10 +28,13 @@
 		EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */; };
 		EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */; };
 		EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */; };
+		EA8B781229AE45290057E87D /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA8B781129AE45290057E87D /* CanopyTestTools */; };
+		EA8B781629AE453E0057E87D /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA8B781529AE453E0057E87D /* CanopyTestTools */; };
+		EA8B781829AE4FAA0057E87D /* StoreTestsWithMockCKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B781729AE4FAA0057E87D /* StoreTestsWithMockCKService.swift */; };
 		EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */; };
 		EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92B29918F7A005DF614 /* CloudKitService.swift */; };
 		EAB6B92E29918FCD005DF614 /* MockCloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */; };
-		EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92F2991A032005DF614 /* StoreTests.swift */; };
+		EAB6B9302991A032005DF614 /* StoreTestsWithReplayingCKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92F2991A032005DF614 /* StoreTestsWithReplayingCKService.swift */; };
 		EAF87FD729AA3E86004133CF /* ThoughtsTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = EAF87FD629AA3E86004133CF /* ThoughtsTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAF87FDA29AA3E86004133CF /* ThoughtsTypes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */; };
 		EAF87FDB29AA3E86004133CF /* ThoughtsTypes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -106,10 +109,11 @@
 		EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheServiceType.swift; sourceTree = "<group>"; };
 		EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalCacheService.swift; sourceTree = "<group>"; };
 		EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheService.swift; sourceTree = "<group>"; };
+		EA8B781729AE4FAA0057E87D /* StoreTestsWithMockCKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTestsWithMockCKService.swift; sourceTree = "<group>"; };
 		EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitServiceType.swift; sourceTree = "<group>"; };
 		EAB6B92B29918F7A005DF614 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
 		EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCloudKitService.swift; sourceTree = "<group>"; };
-		EAB6B92F2991A032005DF614 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
+		EAB6B92F2991A032005DF614 /* StoreTestsWithReplayingCKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTestsWithReplayingCKService.swift; sourceTree = "<group>"; };
 		EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThoughtsTypes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF87FD629AA3E86004133CF /* ThoughtsTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThoughtsTypes.h; sourceTree = "<group>"; };
 		EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitAccountState.swift; sourceTree = "<group>"; };
@@ -122,6 +126,7 @@
 			files = (
 				EA588CEF29913ED400DBACAA /* Canopy in Frameworks */,
 				EAF87FDA29AA3E86004133CF /* ThoughtsTypes.framework in Frameworks */,
+				EA8B781229AE45290057E87D /* CanopyTestTools in Frameworks */,
 				EA0112422995300800AEEE55 /* IdentifiedCollections in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -130,6 +135,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA8B781629AE453E0057E87D /* CanopyTestTools in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,7 +223,8 @@
 			isa = PBXGroup;
 			children = (
 				EA0B2080298E65D000462577 /* ThoughtsTests.swift */,
-				EAB6B92F2991A032005DF614 /* StoreTests.swift */,
+				EAB6B92F2991A032005DF614 /* StoreTestsWithReplayingCKService.swift */,
+				EA8B781729AE4FAA0057E87D /* StoreTestsWithMockCKService.swift */,
 			);
 			path = ThoughtsTests;
 			sourceTree = "<group>";
@@ -350,6 +357,7 @@
 			packageProductDependencies = (
 				EA588CEE29913ED400DBACAA /* Canopy */,
 				EA0112412995300800AEEE55 /* IdentifiedCollections */,
+				EA8B781129AE45290057E87D /* CanopyTestTools */,
 			);
 			productName = Thoughts;
 			productReference = EA0B206B298E65CF00462577 /* Thoughts.app */;
@@ -366,9 +374,13 @@
 			buildRules = (
 			);
 			dependencies = (
+				EA8B781429AE45370057E87D /* PBXTargetDependency */,
 				EA0B207E298E65D000462577 /* PBXTargetDependency */,
 			);
 			name = ThoughtsTests;
+			packageProductDependencies = (
+				EA8B781529AE453E0057E87D /* CanopyTestTools */,
+			);
 			productName = ThoughtsTests;
 			productReference = EA0B207C298E65D000462577 /* ThoughtsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -522,7 +534,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B2081298E65D000462577 /* ThoughtsTests.swift in Sources */,
-				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
+				EA8B781829AE4FAA0057E87D /* StoreTestsWithMockCKService.swift in Sources */,
+				EAB6B9302991A032005DF614 /* StoreTestsWithReplayingCKService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,6 +570,10 @@
 			isa = PBXTargetDependency;
 			target = EA0B206A298E65CF00462577 /* Thoughts */;
 			targetProxy = EA0B2087298E65D000462577 /* PBXContainerItemProxy */;
+		};
+		EA8B781429AE45370057E87D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = EA8B781329AE45370057E87D /* CanopyTestTools */;
 		};
 		EAF87FD929AA3E86004133CF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -991,6 +1008,18 @@
 		EA588CEE29913ED400DBACAA /* Canopy */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Canopy;
+		};
+		EA8B781129AE45290057E87D /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
+		};
+		EA8B781329AE45370057E87D /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
+		};
+		EA8B781529AE453E0057E87D /* CanopyTestTools */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CanopyTestTools;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

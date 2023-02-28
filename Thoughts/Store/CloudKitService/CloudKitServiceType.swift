@@ -6,8 +6,6 @@ import ThoughtsTypes
 import UIKit
 #endif
 
-
-
 enum FetchCloudChangesResult {
   case newData
   case noData
@@ -100,4 +98,6 @@ protocol CloudKitServiceType {
   func accountStateStream() async -> CloudKitAccountStateSequence
   
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult
+  
+  func fetchChangesFromCloud() async -> FetchCloudChangesResult
 }

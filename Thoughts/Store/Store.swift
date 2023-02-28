@@ -77,6 +77,10 @@ actor Store {
     await cloudKitService.ingestRemoteNotification(withUserInfo: userInfo)
   }
   
+  func fetchChangesFromCloud() async -> FetchCloudChangesResult {
+    await cloudKitService.fetchChangesFromCloud()
+  }
+  
   func send(_ action: StoreAction) async {
     switch action {
     case .saveNewThought(title: let title, body: let body):

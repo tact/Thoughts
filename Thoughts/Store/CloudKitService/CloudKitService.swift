@@ -3,6 +3,10 @@ import CloudKit
 import os.log
 import ThoughtsTypes
 
+#if DEBUG
+import CanopyTestTools
+#endif
+
 struct ThoughtsSyncSettings: SyncSettings {
   var developerCausePostingToFail: Bool { false }
   var developerAddFailureResponseDelay: Double { 0.0 }
@@ -11,6 +15,7 @@ struct ThoughtsSyncSettings: SyncSettings {
 actor CloudKitService {
 
   let syncService: SyncService
+  
   private let logger = Logger(subsystem: "Thoughts", category: "CloudKitService")
   private let cloudChanges: AsyncStream<[CloudChange]>
   
@@ -25,6 +30,25 @@ actor CloudKitService {
       )
     )
   }
+  
+  #if DEBUG
+  static func testService(
+    containerOperationResults: [MockCKContainer.OperationResult],
+    privateDatabaseOperationResults: [MockDatabase.OperationResult]
+  ) -> CloudKitService {
+    CloudKitService(
+      syncService: MockSyncService(
+        mockPrivateDatabase: MockDatabase(
+          operationResults: privateDatabaseOperationResults,
+          scope: .private
+        ),
+        mockContainer: MockCKContainer(
+          operationResults: containerOperationResults
+        )
+      )
+    )
+  }
+  #endif
   
   private init(
     syncService: SyncService
@@ -43,61 +67,23 @@ actor CloudKitService {
 
       // Not sure why code from here on is run with Xcode 14.3.0 previews??? But above is not?
       // Thread.callStackSymbols.forEach{print($0)}
+
+      await createSubscriptionIfNeeded()
       
       _ = await fetchChangesFromCloud()
-      await createSubscriptionIfNeeded()
     }
   }
   
   private func createZoneIfNeeded() async {
     #warning("Don’t initialize a zone if we already have one")
     let api = syncService.api(usingDatabaseScope: .private)
-    let result = await api.modifyZones(saving: [thoughtsZone], deleting: nil, qualityOfService: .default)
+    let result = await api.modifyZones(saving: [Self.thoughtsZone], deleting: nil, qualityOfService: .default)
     switch result {
     case .success: logger.debug("Stored CKRecordZone for thoughts.")
     case .failure(let error): logger.error("Error storing CKRecordZone for thoughts: \(error)")
     }
   }
 
-  /// Fetch set of changes
-  private func fetchChangesFromCloud() async -> FetchCloudChangesResult {
-    let api = syncService.api(usingDatabaseScope: .private)
-    let databaseChanges = await api.fetchDatabaseChanges(qualityOfService: .default)
-    guard let changedRecordZoneIDs = try? databaseChanges.get().changedRecordZoneIDs else {
-      return .failed
-    }
-    
-    guard changedRecordZoneIDs.contains(thoughtsZone.zoneID) else {
-      return .noData
-    }
-    
-    let zoneChanges = await api.fetchZoneChanges(
-      recordZoneIDs: [thoughtsZone.zoneID],
-      fetchMethod: .changeTokenAndAllData,
-      qualityOfService: .default
-    )
-    switch zoneChanges {
-    case .success(let result):
-      logger.debug("Fetched Thoughts zone changes: \(String(describing: result))")
-      var changes: [CloudChange] = []
-      for changed in result.changedRecords {
-        changes.append(.modified(.init(from: changed)))
-      }
-      for deleted in result.deletedRecords {
-        if let uuid = UUID(uuidString: deleted.recordID.recordName) {
-          changes.append(.deleted(uuid))
-        } else {
-          logger.log("Error creating UUID from deleted record ID: \(deleted.recordID)")
-        }
-      }
-      cloudChangeContinuation?.yield(changes)
-      return changes.isEmpty ? .noData : .newData
-    case .failure(let error):
-      logger.log("Error fetching Thoughts zone changes: \(error)")
-      return .failed
-    }
-  }
-  
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable : Any]) async -> FetchCloudChangesResult {
     guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo),
           let databaseNotification = notification as? CKDatabaseNotification,
@@ -131,11 +117,11 @@ actor CloudKitService {
     }
   }
   
-  private var thoughtsZone: CKRecordZone {
+  private static var thoughtsZone: CKRecordZone {
     CKRecordZone(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName))
   }
   
-  private func ckRecord(for thought: Thought) -> CKRecord {
+  public static func ckRecord(for thought: Thought) -> CKRecord {
     let record = CKRecord(recordType: "Thought", recordID: .init(recordName: thought.id.uuidString, zoneID: thoughtsZone.zoneID))
     record.encryptedValues["title"] = thought.title
     record.encryptedValues["body"] = thought.body
@@ -157,7 +143,7 @@ extension CloudKitService: CloudKitServiceType {
   func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
-      saving: [ckRecord(for: thought)],
+      saving: [Self.ckRecord(for: thought)],
       deleting: nil,
       perRecordProgressBlock: nil,
       qualityOfService: .userInitiated
@@ -178,7 +164,7 @@ extension CloudKitService: CloudKitServiceType {
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: nil,
-      deleting: [ckRecord(for: thought).recordID],
+      deleting: [Self.ckRecord(for: thought).recordID],
       perRecordProgressBlock: nil,
       qualityOfService: .userInitiated
     )
@@ -202,5 +188,44 @@ extension CloudKitService: CloudKitServiceType {
     let stream = try! await containerAPI.accountStatusStream.get()
     
     return CloudKitAccountStateSequence(kind: .live(stream))
+  }
+  
+  /// Fetch set of changes
+  func fetchChangesFromCloud() async -> FetchCloudChangesResult {
+    let api = syncService.api(usingDatabaseScope: .private)
+    let databaseChanges = await api.fetchDatabaseChanges(qualityOfService: .default)
+    guard let changedRecordZoneIDs = try? databaseChanges.get().changedRecordZoneIDs else {
+      return .failed
+    }
+    
+    guard changedRecordZoneIDs.contains(Self.thoughtsZone.zoneID) else {
+      return .noData
+    }
+    
+    let zoneChanges = await api.fetchZoneChanges(
+      recordZoneIDs: [Self.thoughtsZone.zoneID],
+      fetchMethod: .changeTokenAndAllData,
+      qualityOfService: .default
+    )
+    switch zoneChanges {
+    case .success(let result):
+      logger.debug("Fetched Thoughts zone changes: \(String(describing: result))")
+      var changes: [CloudChange] = []
+      for changed in result.changedRecords {
+        changes.append(.modified(.init(from: changed)))
+      }
+      for deleted in result.deletedRecords {
+        if let uuid = UUID(uuidString: deleted.recordID.recordName) {
+          changes.append(.deleted(uuid))
+        } else {
+          logger.log("Error creating UUID from deleted record ID: \(deleted.recordID)")
+        }
+      }
+      cloudChangeContinuation?.yield(changes)
+      return changes.isEmpty ? .noData : .newData
+    case .failure(let error):
+      logger.log("Error fetching Thoughts zone changes: \(error)")
+      return .failed
+    }
   }
 }

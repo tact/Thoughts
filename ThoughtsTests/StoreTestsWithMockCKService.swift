@@ -2,7 +2,7 @@
 import ThoughtsTypes
 import XCTest
 
-final class StoreTests: XCTestCase {
+final class StoreTestsWithMockCKService: XCTestCase {
   func test_store_streams_cloud_changes() async {
     
     let id1 = UUID()
