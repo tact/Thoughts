@@ -13,11 +13,14 @@ public enum TestSupport {
   
   public struct MockCloudKitServiceContent: Codable {
     public let containerOperationResults: [MockCKContainer.OperationResult]
+    public let privateDatabaseOperationResults: [MockDatabase.OperationResult]
     
     public init(
-      containerOperationResults: [MockCKContainer.OperationResult]
+      containerOperationResults: [MockCKContainer.OperationResult],
+      privateDatabaseOperationResults: [MockDatabase.OperationResult]
     ) {
       self.containerOperationResults = containerOperationResults
+      self.privateDatabaseOperationResults = privateDatabaseOperationResults
     }
   }
   

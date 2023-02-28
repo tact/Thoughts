@@ -7,8 +7,8 @@ extension Store {
       localCacheService: MockLocalCacheService(thoughts: mockStore.mockLocalCacheServiceContent.thoughts),
       cloudKitService: CloudKitService.test(
         containerOperationResults: mockStore.mockCloudKitServiceContent.containerOperationResults,
-        privateDatabaseOperationResults: [
-        ])
+        privateDatabaseOperationResults: mockStore.mockCloudKitServiceContent.privateDatabaseOperationResults
+      )
     )
   }
 }

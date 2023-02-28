@@ -1,3 +1,4 @@
+import CloudKit
 import XCTest
 import ThoughtsTypes
 
@@ -43,7 +44,41 @@ final class ThoughtsUITests: XCTestCase {
       mockLocalCacheServiceContent: .init(thoughts: []),
       mockCloudKitServiceContent: .init(
         containerOperationResults: [
+          .accountStatus(.init(status: .available, error: nil)),
           .accountStatus(.init(status: .available, error: nil))
+        ],
+        privateDatabaseOperationResults: [
+          .modifyZones(
+            .init(
+              savedZoneResults: [
+                .init(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName), result: .success(.init(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName))))
+              ],
+              deletedZoneIDResults: [],
+              modifyZonesResult: .init(
+                result: .success(())
+              )
+            )
+          ),
+          .modifySubscriptions(
+            .init(
+              savedSubscriptionResults: [
+                .init(
+                  subscriptionID: "Thoughts",
+                  result: .success(CKDatabaseSubscription(subscriptionID: "Thoughts"))
+                )
+              ],
+              deletedSubscriptionIDResults: [],
+              modifySubscriptionsResult: .init(result: .success(()))
+            )
+          ),
+          .fetchDatabaseChanges(
+            .init(
+              changedRecordZoneIDs: [],
+              deletedRecordZoneIDs: [],
+              purgedRecordZoneIDs: [],
+              fetchDatabaseChangesResult: .success
+            )
+          )
         ]
       )
     )
