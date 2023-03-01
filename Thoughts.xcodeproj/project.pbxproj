@@ -43,6 +43,7 @@
 		EAF87FE029AA3EA8004133CF /* Thought.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318D298E6CE8004819F5 /* Thought.swift */; };
 		EAF87FE129AA3EB4004133CF /* TestSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BC129A1658600C65A00 /* TestSupport.swift */; };
 		EAF87FE329AA4245004133CF /* CloudKitAccountState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */; };
+		EAFD595629AF7AFB007B1E25 /* PreferencesServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFD595529AF7AFB007B1E25 /* PreferencesServiceType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +120,7 @@
 		EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThoughtsTypes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF87FD629AA3E86004133CF /* ThoughtsTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThoughtsTypes.h; sourceTree = "<group>"; };
 		EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitAccountState.swift; sourceTree = "<group>"; };
+		EAFD595529AF7AFB007B1E25 /* PreferencesServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesServiceType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +258,7 @@
 		EA103187298E6B3C004819F5 /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				EAFD595429AF7A93007B1E25 /* PreferencesService */,
 				EAB6B92829918EB7005DF614 /* CloudKitService */,
 				EA7D901929912DF100E1CCE3 /* LocalCacheService */,
 				EA103188298E6B45004819F5 /* Store.swift */,
@@ -319,6 +322,14 @@
 				EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */,
 			);
 			path = ThoughtsTypes;
+			sourceTree = "<group>";
+		};
+		EAFD595429AF7A93007B1E25 /* PreferencesService */ = {
+			isa = PBXGroup;
+			children = (
+				EAFD595529AF7AFB007B1E25 /* PreferencesServiceType.swift */,
+			);
+			path = PreferencesService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -515,6 +526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */,
+				EAFD595629AF7AFB007B1E25 /* PreferencesServiceType.swift in Sources */,
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
