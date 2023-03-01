@@ -204,7 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				EA768BC929A1779A00C65A00 /* App */,
-				EA10318C298E6CDD004819F5 /* Model */,
 				EA103187298E6B3C004819F5 /* Store */,
 				EA103184298E6695004819F5 /* Views */,
 				EA01123F29952A3600AEEE55 /* Info.plist */,
@@ -263,13 +262,6 @@
 				EA768BBF29A164CC00C65A00 /* Store+Mock.swift */,
 			);
 			path = Store;
-			sourceTree = "<group>";
-		};
-		EA10318C298E6CDD004819F5 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		EA588CED29913ED400DBACAA /* Frameworks */ = {
