@@ -4,7 +4,8 @@ import ThoughtsTypes
 struct ThoughtsView: View {
   
   @StateObject var viewModel: ThoughtsViewModel
-
+  @State private var showSettingsSheet = false
+  
   init(store: Store) {
     // Apparently, this is the state of the art of initalizing a StateObject
     // with parameters in Feb 2023.
@@ -36,9 +37,22 @@ struct ThoughtsView: View {
                   .help("Add a thought")
               })
           }
+          #if os(iOS)
+          ToolbarItem(placement: .navigationBarLeading) {
+            Button(action: {
+              showSettingsSheet = true
+            }, label: {
+              Label("Settings", systemImage: "gear")
+                .help("Settings")
+            })
+          }
+          #endif
         }
         .navigationDestination(for: OneThoughtView.Kind.self) { kind in
           OneThoughtView(store: viewModel.store, kind: kind)
+        }
+        .sheet(isPresented: $showSettingsSheet) {
+          SettingsView()
         }
     }
   }

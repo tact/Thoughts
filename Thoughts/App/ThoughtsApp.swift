@@ -22,5 +22,10 @@ struct ThoughtsApp: App {
     WindowGroup {
       ThoughtsView(store: appDelegate.sharedAppDelegate.store)
     }
+    #if os(macOS)
+    Settings {
+      SettingsView()
+    }
+    #endif
   }
 }
