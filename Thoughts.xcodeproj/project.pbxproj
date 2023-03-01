@@ -45,6 +45,7 @@
 		EAF87FE329AA4245004133CF /* CloudKitAccountState.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */; };
 		EAFD595629AF7AFB007B1E25 /* PreferencesServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFD595529AF7AFB007B1E25 /* PreferencesServiceType.swift */; };
 		EAFD595829AF7B7B007B1E25 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFD595729AF7B7B007B1E25 /* SettingsView.swift */; };
+		EAFD595A29AF7F79007B1E25 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFD595929AF7F79007B1E25 /* SettingsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +124,7 @@
 		EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitAccountState.swift; sourceTree = "<group>"; };
 		EAFD595529AF7AFB007B1E25 /* PreferencesServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesServiceType.swift; sourceTree = "<group>"; };
 		EAFD595729AF7B7B007B1E25 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		EAFD595929AF7F79007B1E25 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -254,6 +256,7 @@
 				EA103185298E679C004819F5 /* OneThoughtView.swift */,
 				EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */,
 				EAFD595729AF7B7B007B1E25 /* SettingsView.swift */,
+				EAFD595929AF7F79007B1E25 /* SettingsViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
+				EAFD595A29AF7F79007B1E25 /* SettingsViewModel.swift in Sources */,
 				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
 				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,
 				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
