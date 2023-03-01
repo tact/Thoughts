@@ -52,7 +52,7 @@ struct ThoughtsView: View {
           OneThoughtView(store: viewModel.store, kind: kind)
         }
         .sheet(isPresented: $showSettingsSheet) {
-          SettingsView()
+          SettingsView(store: viewModel.store)
         }
     }
   }

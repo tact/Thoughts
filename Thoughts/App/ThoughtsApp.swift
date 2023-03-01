@@ -24,7 +24,7 @@ struct ThoughtsApp: App {
     }
     #if os(macOS)
     Settings {
-      SettingsView()
+      SettingsView(store: appDelegate.sharedAppDelegate.store)
     }
     #endif
   }
