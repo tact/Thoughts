@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
   
-  @StateObject var viewModel: SettingsViewModel
+  @StateObject private var viewModel: SettingsViewModel
   
   init(store: Store, state: SettingsViewModel.State = .regular) {
     self._viewModel = StateObject(wrappedValue: SettingsViewModel(store: store, state: state))

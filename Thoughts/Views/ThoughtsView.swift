@@ -3,13 +3,14 @@ import ThoughtsTypes
 
 struct ThoughtsView: View {
   
-  @StateObject var viewModel: ThoughtsViewModel
-  @State private var showSettingsSheet = false
+  @StateObject private var viewModel: ThoughtsViewModel
   
   init(store: Store) {
     // Apparently, this is the state of the art of initalizing a StateObject
     // with parameters in Feb 2023.
     // https://hachyderm.io/@Alexbbrown/109807454267493715
+    // https://mastodon.social/@lucabernardi/109948882720031817
+    //
     self._viewModel = StateObject(wrappedValue: ThoughtsViewModel(store: store))
   }
   
@@ -40,7 +41,7 @@ struct ThoughtsView: View {
           #if os(iOS)
           ToolbarItem(placement: .navigationBarLeading) {
             Button(action: {
-              showSettingsSheet = true
+              viewModel.showSettingsSheet = true
             }, label: {
               Label("Settings", systemImage: "gear")
                 .help("Settings")
@@ -51,7 +52,7 @@ struct ThoughtsView: View {
         .navigationDestination(for: OneThoughtView.Kind.self) { kind in
           OneThoughtView(store: viewModel.store, kind: kind)
         }
-        .sheet(isPresented: $showSettingsSheet) {
+        .sheet(isPresented: $viewModel.showSettingsSheet) {
           SettingsView(store: viewModel.store)
         }
     }

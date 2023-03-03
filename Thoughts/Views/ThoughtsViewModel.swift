@@ -17,6 +17,7 @@ class ThoughtsViewModel: ObservableObject {
   @Published var navigationPath: [OneThoughtView.Kind] = []
   @Published var thoughts: IdentifiedArrayOf<Thought> = []
   @Published var accountState: CloudKitAccountState = .provisionalAvailable
+  @Published var showSettingsSheet = false
   
   init(store: Store) {
     self.store = store

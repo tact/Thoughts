@@ -3,7 +3,7 @@ import ThoughtsTypes
 
 struct OneThoughtView: View {
 
-  @StateObject var viewModel: OneThoughtViewModel
+  @StateObject private var viewModel: OneThoughtViewModel
 
   enum Kind: Equatable, Hashable {
 
