@@ -15,6 +15,7 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
     ]
   }
   
+  /// The operations performed from a blank state of the app.
   private var initialPrivateDatabaseOperationResults: [MockDatabase.OperationResult] {
     let zoneID = CKRecordZone.ID(zoneName: "Thoughts")
     let zone = CKRecordZone(zoneID: zoneID)
@@ -49,14 +50,53 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
       )
     ]
   }
+  
+  /// Initial operations performed by the store when the CloudKit setup is done and we have a subscription.
+  private var initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone: [MockDatabase.OperationResult] {
+    [
+      .fetchDatabaseChanges(
+        .init(
+          changedRecordZoneIDs: [],
+          deletedRecordZoneIDs: [],
+          purgedRecordZoneIDs: [],
+          fetchDatabaseChangesResult: .success
+        )
+      )
+    ]
+  }
 
   func test_store_initial_blank_state_from_cloud() async {
+    let preferencesService = TestPreferencesService(
+      cloudKitSetupDone: false,
+      cloudKitUserRecordName: nil
+    )
     let store = Store(
       localCacheService: MockLocalCacheService(),
       cloudKitService: CloudKitService.test(
         containerOperationResults: initialContainerOperationResults,
-        privateDatabaseOperationResults: initialPrivateDatabaseOperationResults
-      )
+        privateDatabaseOperationResults: initialPrivateDatabaseOperationResults,
+        preferencesService: preferencesService
+      ),
+      preferencesService: preferencesService
+    )
+    try! await Task.sleep(for: .seconds(0.01))
+    let thoughts = await store.thoughts
+    XCTAssertEqual(thoughts.count, 0)
+  }
+  
+  func test_store_blank_state_when_cloudkit_setup_is_done() async {
+    let preferencesService = TestPreferencesService(
+      cloudKitSetupDone: true,
+      cloudKitUserRecordName: nil
+    )
+    let store = Store(
+      localCacheService: MockLocalCacheService(),
+      cloudKitService: CloudKitService.test(
+        containerOperationResults: initialContainerOperationResults,
+        privateDatabaseOperationResults: initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone,
+        preferencesService: preferencesService
+      ),
+      preferencesService: preferencesService
     )
     try! await Task.sleep(for: .seconds(0.01))
     let thoughts = await store.thoughts
@@ -67,12 +107,16 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
     let zoneID = CKRecordZone.ID(zoneName: "Thoughts")
     let thought = Thought(id: .init(), title: "thought title", body: "body")
     let thoughtRecord = CloudKitService.ckRecord(for: thought)
+    let preferencesService = TestPreferencesService(
+      cloudKitSetupDone: true,
+      cloudKitUserRecordName: nil
+    )
     
     let store = Store(
       localCacheService: MockLocalCacheService(),
       cloudKitService: CloudKitService.test(
         containerOperationResults: initialContainerOperationResults,
-        privateDatabaseOperationResults: initialPrivateDatabaseOperationResults +
+        privateDatabaseOperationResults: initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone +
           [
             .fetchDatabaseChanges(
               .init(
@@ -92,8 +136,10 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
                 fetchZoneChangesResult: .init(result: .success(()))
               )
             )
-          ]
-      )
+          ],
+        preferencesService: preferencesService
+      ),
+      preferencesService: preferencesService
     )
 
     // let the initial operations complete

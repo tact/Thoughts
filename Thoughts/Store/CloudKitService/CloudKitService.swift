@@ -15,26 +15,30 @@ struct ThoughtsSyncSettings: SyncSettings {
 actor CloudKitService {
 
   let syncService: SyncService
+  var preferencesService: PreferencesServiceType
   
   private let logger = Logger(subsystem: "Thoughts", category: "CloudKitService")
   private let cloudChanges: AsyncStream<[CloudChange]>
+  private static let thoughtsCloudKitZoneName = "Thoughts"
   
   private var cloudChangeContinuation: AsyncStream<[CloudChange]>.Continuation? = nil
   
-  static var live: CloudKitService {
+  static func live(withPreferencesService preferencesService: PreferencesServiceType) -> CloudKitService {
     CloudKitService(
       syncService: CloudKitSyncService(
         ThoughtsSyncSettings(),
         cloudKitContainerIdentifier: "iCloud.com.justtact.Thoughts",
         tokenStore: UserDefaultsTokenStore()
-      )
+      ),
+      preferencesService: preferencesService
     )
   }
   
   #if DEBUG
   static func test(
     containerOperationResults: [MockCKContainer.OperationResult],
-    privateDatabaseOperationResults: [MockDatabase.OperationResult]
+    privateDatabaseOperationResults: [MockDatabase.OperationResult],
+    preferencesService: PreferencesServiceType
   ) -> CloudKitService {
     CloudKitService(
       syncService: MockSyncService(
@@ -45,15 +49,18 @@ actor CloudKitService {
         mockContainer: MockCKContainer(
           operationResults: containerOperationResults
         )
-      )
+      ),
+      preferencesService: preferencesService
     )
   }
   #endif
   
   private init(
-    syncService: SyncService
+    syncService: SyncService,
+    preferencesService: PreferencesServiceType
   ) {
     self.syncService = syncService
+    self.preferencesService = preferencesService
 
     // Idea to capture and store the continuation from here:
     // https://www.donnywals.com/understanding-swift-concurrencys-asyncstream/
@@ -63,24 +70,62 @@ actor CloudKitService {
     }
     self.cloudChangeContinuation = capturedContinuation
     Task {
-      await createZoneIfNeeded()
+      await createZoneAndSubscriptionIfNeeded()
 
       // Not sure why code from here on is run with Xcode 14.3.0 previews??? But above is not?
       // Thread.callStackSymbols.forEach{print($0)}
-
-      await createSubscriptionIfNeeded()
       
+      // Fetch initial set of changes from cloud when starting up.
       _ = await fetchChangesFromCloud()
     }
   }
   
-  private func createZoneIfNeeded() async {
-    #warning("Don’t initialize a zone if we already have one")
+  private func createZoneAndSubscriptionIfNeeded() async {
+    guard !preferencesService.cloudKitSetupDone else {
+      logger.debug("Previously already created zone and subscription. Not doing again.")
+      return
+    }
+    
+    // Create CloudKit zone.
+    
+    let zoneCreatedSuccessfully: Bool
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyZones(saving: [Self.thoughtsZone], deleting: nil, qualityOfService: .default)
     switch result {
-    case .success: logger.debug("Stored CKRecordZone for thoughts.")
-    case .failure(let error): logger.error("Error storing CKRecordZone for thoughts: \(error)")
+    case .success:
+      logger.debug("Stored CKRecordZone for thoughts.")
+      zoneCreatedSuccessfully = true
+    case .failure(let error):
+      logger.error("Error storing CKRecordZone for thoughts: \(error)")
+      zoneCreatedSuccessfully = false
+    }
+    
+    // Create CloudKit subscription.
+    
+    let subscriptionCreatedSuccessfully: Bool
+    let subscription = CKDatabaseSubscription(subscriptionID: "PrivateThoughtsZone")
+    let notificationInfo = CKSubscription.NotificationInfo()
+    notificationInfo.shouldSendContentAvailable = true
+    subscription.notificationInfo = notificationInfo
+    
+    let subscriptionResult = await api.modifySubscriptions(
+      saving: [subscription],
+      deleting: nil,
+      qualityOfService: .utility
+    )
+    switch subscriptionResult {
+    case .success(let subs):
+      subscriptionCreatedSuccessfully = true
+      print("Got subscriptions: \(subs)")
+    case .failure(let error):
+      subscriptionCreatedSuccessfully = false
+      print("Error saving subscriptions: \(error)")
+    }
+
+    // We are done with initial setup and successfully created zone and subscription,
+    // no need to run it in the future until the state is cleared for some reason.
+    if zoneCreatedSuccessfully && subscriptionCreatedSuccessfully {
+      preferencesService.cloudKitSetupDone = true
     }
   }
 
@@ -93,32 +138,8 @@ actor CloudKitService {
     return await fetchChangesFromCloud()
   }
   
-  private func createSubscriptionIfNeeded() async {
-    
-    #warning("Check that we already have a subscription, before making new one")
-    
-    let api = syncService.api(usingDatabaseScope: .private)
-    
-    let subscription = CKDatabaseSubscription(subscriptionID: "PrivateThoughtsZone")
-    let notificationInfo = CKSubscription.NotificationInfo()
-    notificationInfo.shouldSendContentAvailable = true
-    subscription.notificationInfo = notificationInfo
-    
-    let result = await api.modifySubscriptions(
-      saving: [subscription],
-      deleting: nil,
-      qualityOfService: .utility
-    )
-    switch result {
-    case .success(let subs):
-      print("Got subscriptions: \(subs)")
-    case .failure(let error):
-      print("Error saving subscriptions: \(error)")
-    }
-  }
-  
   private static var thoughtsZone: CKRecordZone {
-    CKRecordZone(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName))
+    CKRecordZone(zoneID: .init(zoneName: thoughtsCloudKitZoneName, ownerName: CKCurrentUserDefaultName))
   }
   
   public static func ckRecord(for thought: Thought) -> CKRecord {

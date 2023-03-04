@@ -6,7 +6,7 @@ protocol PreferencesServiceType {
   /// User has ran the app previously on this device.
   ///
   /// CloudKit zone and subscription have been set up, no need to set them up again.
-  var initialCloudKitSetupDone: Bool { get set }
+  var cloudKitSetupDone: Bool { get set }
   
   /// User record name on CloudKit.
   ///
@@ -15,5 +15,14 @@ protocol PreferencesServiceType {
   /// and more importantly, to detect any changes and react to that. If the user signs out
   /// with one user on their device, and signs in with another, we should remove all local state,
   /// so one user wouldn’t see the data of another.
-  var cloudKitUserRecordName: String { get set }
+  var cloudKitUserRecordName: String? { get set }
+  
+  /// Clear the preferences and start from fresh state.
+  func clear()
+}
+
+struct TestPreferencesService: PreferencesServiceType {
+  var cloudKitSetupDone: Bool = false
+  var cloudKitUserRecordName: String? = nil
+  func clear() {}
 }

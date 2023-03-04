@@ -24,15 +24,28 @@ public enum TestSupport {
     }
   }
   
+  public struct MockPreferencesServiceContent: Codable {
+    public let cloudKitSetupDone: Bool
+    public let cloudKitUserRecordName: String?
+    
+    public init(cloudKitSetupDone: Bool, cloudKitUserRecordName: String?) {
+      self.cloudKitSetupDone = cloudKitSetupDone
+      self.cloudKitUserRecordName = cloudKitUserRecordName
+    }
+  }
+  
   public struct MockStore: Codable {
     public let mockLocalCacheServiceContent: MockLocalCacheServiceContent
     public let mockCloudKitServiceContent: MockCloudKitServiceContent
+    public let mockPreferencesServiceContent: MockPreferencesServiceContent
     public init(
       mockLocalCacheServiceContent: MockLocalCacheServiceContent,
-      mockCloudKitServiceContent: MockCloudKitServiceContent
+      mockCloudKitServiceContent: MockCloudKitServiceContent,
+      mockPreferencesServiceContent: MockPreferencesServiceContent
     ) {
       self.mockLocalCacheServiceContent = mockLocalCacheServiceContent
       self.mockCloudKitServiceContent = mockCloudKitServiceContent
+      self.mockPreferencesServiceContent = mockPreferencesServiceContent
     }
   }
 }

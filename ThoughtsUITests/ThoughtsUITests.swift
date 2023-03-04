@@ -80,7 +80,8 @@ final class ThoughtsUITests: XCTestCase {
             )
           )
         ]
-      )
+      ),
+      mockPreferencesServiceContent: .init(cloudKitSetupDone: false, cloudKitUserRecordName: nil)
     )
     
     let app = launchAppWithMockStore(mockStore)

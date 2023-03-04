@@ -25,28 +25,32 @@ actor Store {
   /// Those manipulations are applied to this state and again persisted to local storage.
   @Published private(set) var thoughts: IdentifiedArrayOf<Thought> = []
   
-  
   @Published private(set) var cloudKitAccountState: CloudKitAccountState = .provisionalAvailable
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
   static var live: Store {
     print("static var live: Store")
+    let preferencesService = UserDefaultsPreferencesService()
     return Store(
       localCacheService: LocalCacheService(),
-      cloudKitService: CloudKitService.live
+      cloudKitService: CloudKitService.live(withPreferencesService: preferencesService),
+      preferencesService: preferencesService
     )
   }
   
   private let localCacheService: LocalCacheServiceType
   private let cloudKitService: CloudKitServiceType
+  private let preferencesService: PreferencesServiceType
   
   init(
     localCacheService: LocalCacheServiceType,
-    cloudKitService: CloudKitServiceType
+    cloudKitService: CloudKitServiceType,
+    preferencesService: PreferencesServiceType
   ) {
     self.localCacheService = localCacheService
     self.cloudKitService = cloudKitService
+    self.preferencesService = preferencesService
     Task {
       // Task to observe CloudKit account state.
       for await newState in await cloudKitService.accountStateStream() {
@@ -147,7 +151,8 @@ extension Store {
   static var previewEmpty: Store {
     Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .available)
+      cloudKitService: MockCloudKitService(initialAccountState: .available),
+      preferencesService: TestPreferencesService(cloudKitSetupDone: true)
     )
   }
   
@@ -176,17 +181,25 @@ extension Store {
           )
         ],
         initialAccountState: .available
-      )
+      ),
+      preferencesService: TestPreferencesService(cloudKitSetupDone: true)
     )
   }
   
   static var noAccountState: Store {
-    Store(localCacheService: MockLocalCacheService(), cloudKitService: MockCloudKitService(initialAccountState: .noAccount))
+    Store(
+      localCacheService: MockLocalCacheService(),
+      cloudKitService: MockCloudKitService(initialAccountState: .noAccount),
+      preferencesService: TestPreferencesService(cloudKitSetupDone: false)
+    )
   }
   
   static var unknownAccountState: Store {
-    Store(localCacheService: MockLocalCacheService(), cloudKitService: MockCloudKitService(initialAccountState: .unknown))
+    Store(
+      localCacheService: MockLocalCacheService(),
+      cloudKitService: MockCloudKitService(initialAccountState: .unknown),
+      preferencesService: TestPreferencesService(cloudKitSetupDone: false)
+    )
   }
-
 }
 #endif

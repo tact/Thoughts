@@ -22,6 +22,7 @@
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
+		EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */; };
 		EA6E1CB729AE639A009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CB629AE639A009195C6 /* CanopyTestTools */; };
 		EA6E1CBB29AE63B2009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */; };
 		EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */; };
@@ -107,6 +108,7 @@
 		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
 		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
+		EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesService.swift; sourceTree = "<group>"; };
 		EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAppDelegate.swift; sourceTree = "<group>"; };
 		EA768BBF29A164CC00C65A00 /* Store+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Mock.swift"; sourceTree = "<group>"; };
 		EA768BC129A1658600C65A00 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
@@ -334,6 +336,7 @@
 			isa = PBXGroup;
 			children = (
 				EAFD595529AF7AFB007B1E25 /* PreferencesServiceType.swift */,
+				EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */,
 			);
 			path = PreferencesService;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				EAFD595829AF7B7B007B1E25 /* SettingsView.swift in Sources */,
 				EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */,
 				EA103189298E6B45004819F5 /* Store.swift in Sources */,
+				EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */,
 				EAB6B92E29918FCD005DF614 /* MockCloudKitService.swift in Sources */,
 				EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */,
 			);

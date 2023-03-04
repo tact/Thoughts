@@ -35,7 +35,8 @@ final class StoreTestsWithMockCKService: XCTestCase {
             )
           )
         ]
-      )
+      ),
+      preferencesService: TestPreferencesService(cloudKitSetupDone: true, cloudKitUserRecordName: nil)
     )
     
     try! await Task.sleep(for: .seconds(0.01))
