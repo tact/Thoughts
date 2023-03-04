@@ -37,7 +37,7 @@ final class StoreTestsWithMockCKService: XCTestCase {
           )
         ]
       ),
-      preferencesService: TestPreferencesService(cloudKitSetupDone: true, cloudKitUserRecordName: nil),
+      preferencesService: TestPreferencesService(cloudKitSetupDone: true, cloudKitUserRecordName: "mockUserRecordID"),
       tokenStore: TestTokenStore()
     )
     

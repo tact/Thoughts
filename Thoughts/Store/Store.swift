@@ -20,6 +20,14 @@ enum StoreAction {
 }
 
 actor Store {
+
+  enum Behavior {
+    /// The store should not run any logic.
+    case blank
+    
+    /// Regular behavior.
+    case regular
+  }
   
   /// Current in-memory source of truth for the state of the model,
   /// known to the current running instance of the app.
@@ -46,7 +54,8 @@ actor Store {
       localCacheService: MockLocalCacheService(),
       cloudKitService: MockCloudKitService(),
       preferencesService: TestPreferencesService(),
-      tokenStore: TestTokenStore()
+      tokenStore: TestTokenStore(),
+      behavior: .blank
     )
   }
   #endif
@@ -69,17 +78,23 @@ actor Store {
   private let cloudKitService: CloudKitServiceType
   private let preferencesService: PreferencesServiceType
   private let tokenStore: TokenStore
+  private let behavior: Behavior
   
   init(
     localCacheService: LocalCacheServiceType,
     cloudKitService: CloudKitServiceType,
     preferencesService: PreferencesServiceType,
-    tokenStore: TokenStore
+    tokenStore: TokenStore,
+    behavior: Behavior = .regular
   ) {
     self.localCacheService = localCacheService
     self.cloudKitService = cloudKitService
     self.preferencesService = preferencesService
     self.tokenStore = tokenStore
+    self.behavior = behavior
+    
+    guard behavior == .regular else { return }
+    
     Task {
       // Task to observe CloudKit account state.
       for await newState in await cloudKitService.accountStateStream() {
