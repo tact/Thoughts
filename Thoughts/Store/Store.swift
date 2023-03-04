@@ -1,3 +1,4 @@
+import Canopy
 import Foundation
 import IdentifiedCollections
 import os.log
@@ -9,6 +10,13 @@ enum StoreAction {
   
   /// User indicated to delete this thought.
   case delete(Thought)
+  
+  /// Clear local state and re-download everything.
+  ///
+  /// This may happen in two cases: user can manually request this in Settings,
+  /// or a CloudKit record name mismatch is detected (meaning that another iCloud
+  /// user logged in, who shouldn’t see previous user’s content.)
+  case clearLocalState
 }
 
 actor Store {
@@ -32,25 +40,33 @@ actor Store {
   static var live: Store {
     print("static var live: Store")
     let preferencesService = UserDefaultsPreferencesService()
+    let tokenStore = UserDefaultsTokenStore()
     return Store(
       localCacheService: LocalCacheService(),
-      cloudKitService: CloudKitService.live(withPreferencesService: preferencesService),
-      preferencesService: preferencesService
+      cloudKitService: CloudKitService.live(
+        withPreferencesService: preferencesService,
+        tokenStore: tokenStore
+      ),
+      preferencesService: preferencesService,
+      tokenStore: tokenStore
     )
   }
   
   private let localCacheService: LocalCacheServiceType
   private let cloudKitService: CloudKitServiceType
   private let preferencesService: PreferencesServiceType
+  private let tokenStore: TokenStore
   
   init(
     localCacheService: LocalCacheServiceType,
     cloudKitService: CloudKitServiceType,
-    preferencesService: PreferencesServiceType
+    preferencesService: PreferencesServiceType,
+    tokenStore: TokenStore
   ) {
     self.localCacheService = localCacheService
     self.cloudKitService = cloudKitService
     self.preferencesService = preferencesService
+    self.tokenStore = tokenStore
     Task {
       // Task to observe CloudKit account state.
       for await newState in await cloudKitService.accountStateStream() {
@@ -64,6 +80,8 @@ actor Store {
       // Get the initial state of thoughts from storage
       await loadThoughtsFromLocalCache()
 
+      await verifyCloudKitUser()
+      
       // Stream the changes from cloud.
       // The stream is never closed and remains running
       // for the lifetime of the store.
@@ -72,6 +90,7 @@ actor Store {
       }
     }
   }
+  
   
   func loadThoughtsFromLocalCache() async {
     self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
@@ -84,7 +103,7 @@ actor Store {
   func fetchChangesFromCloud() async -> FetchCloudChangesResult {
     await cloudKitService.fetchChangesFromCloud()
   }
-  
+    
   func send(_ action: StoreAction) async {
     switch action {
     case .saveNewThought(title: let title, body: let body):
@@ -116,6 +135,12 @@ actor Store {
       case .failure(let error):
         logger.error("Could not delete thought from CloudKit: \(error)")
       }
+      
+    case .clearLocalState:
+      thoughts = []
+      localCacheService.clear()
+      await tokenStore.clear()
+      _ = await cloudKitService.fetchChangesFromCloud()
     }
   }
   
@@ -142,64 +167,28 @@ actor Store {
     print("Ingesting account state: \(state)")
     cloudKitAccountState = state
   }
+  
+  /// Verify that we are running with the correct CloudKit user.
+  ///
+  /// If the ID has changed, clear the state and start over, so that one user
+  /// would not see content from another user.
+  ///
+  /// This may happen if the iCloud user changes on this device.
+  private func verifyCloudKitUser() async {
+    let recordName = try? await cloudKitService.cloudKitUserRecordName().get()
+    guard let recordName else { return }
+    let previousRecordName = await preferencesService.cloudKitUserRecordName
+    if previousRecordName == nil {
+      await preferencesService.setCloudKitUserRecordName(recordName)
+      logger.debug("verifyCloudKitUser: no previous record name found, storing new one.")
+    } else if previousRecordName == recordName {
+      logger.debug("verifyCloudKitUser: record name matches known name.")
+    } else {
+      logger.error("verifyCloudKitUser: record name does not match known name. Clearing local state and starting over.")
+      await preferencesService.setCloudKitUserRecordName(recordName)
+      await send(.clearLocalState)
+    }
+  }
 }
 
-#if DEBUG
-extension Store {
-  
-  /// Empty static store.
-  static var previewEmpty: Store {
-    Store(
-      localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .available),
-      preferencesService: TestPreferencesService(cloudKitSetupDone: true)
-    )
-  }
-  
-  /// A store populated with some thoughts.
-  static var previewPopulated: Store {
-    Store(
-      localCacheService: MockLocalCacheService(
-        thoughts: [
-          .init(
-            id: UUID(),
-            title: "Thought 1",
-            body: "Body 1",
-            createdAt: nil,
-            modifiedAt: nil
-          )
-        ]
-      ),
-      cloudKitService: MockCloudKitService(
-        initialChanges: [
-          .modified(
-            .init(
-              id: UUID(),
-              title: "Thought from cloud",
-              body: "Thought body from cloud"
-            )
-          )
-        ],
-        initialAccountState: .available
-      ),
-      preferencesService: TestPreferencesService(cloudKitSetupDone: true)
-    )
-  }
-  
-  static var noAccountState: Store {
-    Store(
-      localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .noAccount),
-      preferencesService: TestPreferencesService(cloudKitSetupDone: false)
-    )
-  }
-  
-  static var unknownAccountState: Store {
-    Store(
-      localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .unknown),
-      preferencesService: TestPreferencesService(cloudKitSetupDone: false)
-    )
-  }
-}
-#endif
+

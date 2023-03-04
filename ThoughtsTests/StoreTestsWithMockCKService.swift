@@ -1,3 +1,4 @@
+import Canopy
 @testable import Thoughts
 import ThoughtsTypes
 import XCTest
@@ -36,7 +37,8 @@ final class StoreTestsWithMockCKService: XCTestCase {
           )
         ]
       ),
-      preferencesService: TestPreferencesService(cloudKitSetupDone: true, cloudKitUserRecordName: nil)
+      preferencesService: TestPreferencesService(cloudKitSetupDone: true, cloudKitUserRecordName: nil),
+      tokenStore: TestTokenStore()
     )
     
     try! await Task.sleep(for: .seconds(0.01))

@@ -15,7 +15,7 @@ struct ThoughtsSyncSettings: SyncSettings {
 actor CloudKitService {
 
   let syncService: SyncService
-  var preferencesService: PreferencesServiceType
+  let preferencesService: PreferencesServiceType
   
   private let logger = Logger(subsystem: "Thoughts", category: "CloudKitService")
   private let cloudChanges: AsyncStream<[CloudChange]>
@@ -23,12 +23,15 @@ actor CloudKitService {
   
   private var cloudChangeContinuation: AsyncStream<[CloudChange]>.Continuation? = nil
   
-  static func live(withPreferencesService preferencesService: PreferencesServiceType) -> CloudKitService {
+  static func live(
+    withPreferencesService preferencesService: PreferencesServiceType,
+    tokenStore: TokenStore
+  ) -> CloudKitService {
     CloudKitService(
       syncService: CloudKitSyncService(
         ThoughtsSyncSettings(),
         cloudKitContainerIdentifier: "iCloud.com.justtact.Thoughts",
-        tokenStore: UserDefaultsTokenStore()
+        tokenStore: tokenStore
       ),
       preferencesService: preferencesService
     )
@@ -81,7 +84,7 @@ actor CloudKitService {
   }
   
   private func createZoneAndSubscriptionIfNeeded() async {
-    guard !preferencesService.cloudKitSetupDone else {
+    guard await !preferencesService.cloudKitSetupDone else {
       logger.debug("Previously already created zone and subscription. Not doing again.")
       return
     }
@@ -125,7 +128,7 @@ actor CloudKitService {
     // We are done with initial setup and successfully created zone and subscription,
     // no need to run it in the future until the state is cleared for some reason.
     if zoneCreatedSuccessfully && subscriptionCreatedSuccessfully {
-      preferencesService.cloudKitSetupDone = true
+      await preferencesService.setCloudKitSetupDone(true)
     }
   }
 
@@ -153,6 +156,7 @@ actor CloudKitService {
 enum CloudKitServiceError: Error {
   case couldNotGetModifiedThought
   case couldNotGetDeletedThoughtID
+  case couldNotGetUserRecordID
 }
 
 
@@ -230,7 +234,7 @@ extension CloudKitService: CloudKitServiceType {
     )
     switch zoneChanges {
     case .success(let result):
-      logger.debug("Fetched Thoughts zone changes: \(String(describing: result))")
+      logger.debug("Fetched Thoughts zone changes: \(result.changedRecords.count) changed, \(result.deletedRecords.count) deleted records.")
       var changes: [CloudChange] = []
       for changed in result.changedRecords {
         changes.append(.modified(.init(from: changed)))
@@ -247,6 +251,20 @@ extension CloudKitService: CloudKitServiceType {
     case .failure(let error):
       logger.log("Error fetching Thoughts zone changes: \(error)")
       return .failed
+    }
+  }
+  
+  /// Fetch current user’s CloudKit record name.
+  func cloudKitUserRecordName() async -> Result<String, Error> {
+    let result = await syncService.containerAPI().userRecordID
+    switch result {
+    case .failure(let error): return .failure(error)
+    case .success(let recordID):
+      if let recordID {
+        return .success(recordID.recordName)
+      } else {
+        return .failure(CloudKitServiceError.couldNotGetUserRecordID)
+      }
     }
   }
 }

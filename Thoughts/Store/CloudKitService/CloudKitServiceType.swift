@@ -100,4 +100,6 @@ protocol CloudKitServiceType {
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult
   
   func fetchChangesFromCloud() async -> FetchCloudChangesResult
+  
+  func cloudKitUserRecordName() async -> Result<String, Error>
 }

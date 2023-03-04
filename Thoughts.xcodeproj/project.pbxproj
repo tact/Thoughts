@@ -10,6 +10,7 @@
 		EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123B299521F500AEEE55 /* iOSAppDelegate.swift */; };
 		EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */; };
 		EA0112422995300800AEEE55 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = EA0112412995300800AEEE55 /* IdentifiedCollections */; };
+		EA0250D229B37CBE006B1465 /* Store+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0250D129B37CBE006B1465 /* Store+Preview.swift */; };
 		EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B206E298E65CF00462577 /* ThoughtsApp.swift */; };
 		EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B2070298E65CF00462577 /* ThoughtsView.swift */; };
 		EA0B2073298E65D000462577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA0B2072298E65D000462577 /* Assets.xcassets */; };
@@ -91,6 +92,7 @@
 		EA01123B299521F500AEEE55 /* iOSAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSAppDelegate.swift; sourceTree = "<group>"; };
 		EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSAppDelegate.swift; sourceTree = "<group>"; };
 		EA01123F29952A3600AEEE55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EA0250D129B37CBE006B1465 /* Store+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Preview.swift"; sourceTree = "<group>"; };
 		EA0B206B298E65CF00462577 /* Thoughts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thoughts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0B206E298E65CF00462577 /* ThoughtsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsApp.swift; sourceTree = "<group>"; };
 		EA0B2070298E65CF00462577 /* ThoughtsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsView.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 				EA7D901929912DF100E1CCE3 /* LocalCacheService */,
 				EA103188298E6B45004819F5 /* Store.swift */,
 				EA768BBF29A164CC00C65A00 /* Store+Mock.swift */,
+				EA0250D129B37CBE006B1465 /* Store+Preview.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -539,6 +542,7 @@
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
+				EA0250D229B37CBE006B1465 /* Store+Preview.swift in Sources */,
 				EAFD595A29AF7F79007B1E25 /* SettingsViewModel.swift in Sources */,
 				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
 				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,

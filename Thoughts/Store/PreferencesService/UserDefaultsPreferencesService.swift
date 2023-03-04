@@ -5,22 +5,18 @@ struct UserDefaultsPreferencesService: PreferencesServiceType {
   private let cloudKitSetupDoneKey = "cloudKitSetupDone"
   private let cloudKitUserRecordNameKey = "cloudKitUserRecordName"
   
-  var cloudKitSetupDone: Bool {
-    get {
-      UserDefaults.standard.bool(forKey: cloudKitSetupDoneKey)
-    }
-    set {
-      UserDefaults.standard.set(newValue, forKey: cloudKitSetupDoneKey)
-    }
+  var cloudKitSetupDone: Bool { UserDefaults.standard.bool(forKey: cloudKitSetupDoneKey) }
+  
+  func setCloudKitSetupDone(_ done: Bool) {
+    UserDefaults.standard.set(done, forKey: cloudKitSetupDoneKey)
   }
   
   var cloudKitUserRecordName: String? {
-    get {
-      UserDefaults.standard.object(forKey: cloudKitUserRecordNameKey) as? String ?? nil
-    }
-    set {
-      UserDefaults.standard.set(newValue, forKey: cloudKitUserRecordNameKey)
-    }
+    UserDefaults.standard.object(forKey: cloudKitUserRecordNameKey) as? String ?? nil
+  }
+  
+  func setCloudKitUserRecordName(_ recordName: String?) {
+    UserDefaults.standard.set(recordName, forKey: cloudKitUserRecordNameKey)
   }
   
   func clear() {

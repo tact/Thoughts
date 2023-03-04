@@ -1,8 +1,11 @@
 import Foundation
+import os.log
 
 @MainActor
 class SettingsViewModel: ObservableObject {
   private let store: Store
+  
+  private let logger = Logger(subsystem: "Thoughts", category: "SettingsViewModel")
   
   enum State {
     case regular
@@ -16,5 +19,16 @@ class SettingsViewModel: ObservableObject {
   init(store: Store, state: State = .regular) {
     self.store = store
     self.state = state
+  }
+  
+  func resetLocalCache() {
+    logger.debug("User requested to reset local cache.")
+    state = .clearing
+    Task {
+      await store.send(.clearLocalState)
+      await MainActor.run {
+        state = .regular
+      }
+    }
   }
 }

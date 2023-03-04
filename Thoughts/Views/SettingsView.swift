@@ -20,7 +20,9 @@ struct SettingsView: View {
       Spacer()
       switch viewModel.state {
       case .regular:
-        Button(action: {}, label: {
+        Button(action: {
+          viewModel.resetLocalCache()
+        }, label: {
           Text("Reset local cache")
         })
       case .clearing:

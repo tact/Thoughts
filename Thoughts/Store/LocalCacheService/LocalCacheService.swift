@@ -35,7 +35,12 @@ struct LocalCacheService: LocalCacheServiceType {
   }
   
   func clear() {
-  
+    do {
+      try FileManager.default.removeItem(at: cacheURL)
+      logger.info("Cleared local cache.")
+    } catch {
+      logger.error("Error clearing local cache: \(error)")
+    }
   }
   
   private var cacheURL: URL {

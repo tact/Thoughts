@@ -32,5 +32,9 @@ struct MockCloudKitService: CloudKitServiceType {
     .noData
   }
   
+  func cloudKitUserRecordName() async -> Result<String, Error> {
+    .success("mockUserRecordID")
+  }
+  
 }
 #endif

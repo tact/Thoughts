@@ -11,7 +11,9 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
   private var initialContainerOperationResults: [MockCKContainer.OperationResult] {
     [
       .accountStatus(.init(status: .available, error: nil)),
-      .accountStatus(.init(status: .available, error: nil))
+      .accountStatus(.init(status: .available, error: nil)),
+      .accountStatus(.init(status: .available, error: nil)),
+      .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordID")))
     ]
   }
   
@@ -77,7 +79,8 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
         privateDatabaseOperationResults: initialPrivateDatabaseOperationResults,
         preferencesService: preferencesService
       ),
-      preferencesService: preferencesService
+      preferencesService: preferencesService,
+      tokenStore: TestTokenStore()
     )
     try! await Task.sleep(for: .seconds(0.01))
     let thoughts = await store.thoughts
@@ -96,7 +99,8 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
         privateDatabaseOperationResults: initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone,
         preferencesService: preferencesService
       ),
-      preferencesService: preferencesService
+      preferencesService: preferencesService,
+      tokenStore: TestTokenStore()
     )
     try! await Task.sleep(for: .seconds(0.01))
     let thoughts = await store.thoughts
@@ -139,7 +143,8 @@ final class StoreTestsWithReplayingCKService: XCTestCase {
           ],
         preferencesService: preferencesService
       ),
-      preferencesService: preferencesService
+      preferencesService: preferencesService,
+      tokenStore: TestTokenStore()
     )
 
     // let the initial operations complete
