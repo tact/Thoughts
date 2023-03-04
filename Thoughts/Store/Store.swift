@@ -60,20 +60,6 @@ actor Store {
   }
   #endif
   
-  static var live: Store {
-    let preferencesService = UserDefaultsPreferencesService()
-    let tokenStore = UserDefaultsTokenStore()
-    return Store(
-      localCacheService: LocalCacheService(),
-      cloudKitService: CloudKitService.live(
-        withPreferencesService: preferencesService,
-        tokenStore: tokenStore
-      ),
-      preferencesService: preferencesService,
-      tokenStore: tokenStore
-    )
-  }
-  
   private let localCacheService: LocalCacheServiceType
   private let cloudKitService: CloudKitServiceType
   private let preferencesService: PreferencesServiceType

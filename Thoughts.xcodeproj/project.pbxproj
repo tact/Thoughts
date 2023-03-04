@@ -22,6 +22,7 @@
 		EA103189298E6B45004819F5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA103188298E6B45004819F5 /* Store.swift */; };
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
+		EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4279F329B3947E00BAE0CE /* Store+Live.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
 		EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */; };
 		EA6E1CB729AE639A009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CB629AE639A009195C6 /* CanopyTestTools */; };
@@ -109,6 +110,7 @@
 		EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModel.swift; sourceTree = "<group>"; };
 		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
+		EA4279F329B3947E00BAE0CE /* Store+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Live.swift"; sourceTree = "<group>"; };
 		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
 		EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesService.swift; sourceTree = "<group>"; };
 		EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAppDelegate.swift; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				EA103188298E6B45004819F5 /* Store.swift */,
 				EA768BBF29A164CC00C65A00 /* Store+Mock.swift */,
 				EA0250D129B37CBE006B1465 /* Store+Preview.swift */,
+				EA4279F329B3947E00BAE0CE /* Store+Live.swift */,
 			);
 			path = Store;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
 				EA0250D229B37CBE006B1465 /* Store+Preview.swift in Sources */,
 				EAFD595A29AF7F79007B1E25 /* SettingsViewModel.swift in Sources */,
+				EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */,
 				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
 				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,
 				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
