@@ -38,6 +38,7 @@ actor Store {
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
   static var live: Store {
+    #warning("Unit tests end up running this one too")
     print("static var live: Store")
     let preferencesService = UserDefaultsPreferencesService()
     let tokenStore = UserDefaultsTokenStore()
