@@ -37,9 +37,21 @@ actor Store {
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
+  #if DEBUG
+  /// Return a blank store that doesn’t talk to anything.
+  ///
+  /// This is mainly to be used in unit tests where the tests start the app but the app itself shouldn’t talk to any real services.
+  static var blank: Store {
+    Store(
+      localCacheService: MockLocalCacheService(),
+      cloudKitService: MockCloudKitService(),
+      preferencesService: TestPreferencesService(),
+      tokenStore: TestTokenStore()
+    )
+  }
+  #endif
+  
   static var live: Store {
-    #warning("Unit tests end up running this one too")
-    print("static var live: Store")
     let preferencesService = UserDefaultsPreferencesService()
     let tokenStore = UserDefaultsTokenStore()
     return Store(
