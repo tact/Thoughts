@@ -43,6 +43,7 @@ struct SharedAppDelegate {
     #endif
   }
   
+  #warning("move above mock data extraction also here. Have .mockStore case.")
   static var appBehavior: AppBehavior {
     if let behavior = ProcessInfo.processInfo.environment["APP_BEHAVIOR"], behavior == "unitTesting" {
       return .unitTesting
