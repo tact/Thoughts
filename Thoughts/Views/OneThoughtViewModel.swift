@@ -1,5 +1,7 @@
+import Combine
 import Foundation
 import ThoughtsTypes
+import os.log
 
 enum OneThoughtViewAction {
   /// Save a thought.
@@ -13,18 +15,17 @@ enum OneThoughtViewAction {
 
 @MainActor
 class OneThoughtViewModel: ObservableObject {
+  private let store: Store
+  let kind: OneThoughtView.Kind
+  @Published private(set) var state: OneThoughtView.State
+
+  @Published private(set) var thought: Thought?
   @Published var title = ""
   @Published var body = ""
 
-  /// Thought represented by the current state.
-  var thought: Thought?
+  private var thoughtCancellable: AnyCancellable?
+  private let logger = Logger(subsystem: "Thoughts", category: "OneThoughtViewModel")
   
-  let kind: OneThoughtView.Kind
-  @Published private(set) var state: OneThoughtView.State
-  private let store: Store
-  
-  // Initializer for live use.
-  // Maybe add another initializer for previews with view state, when we get view state
   init(store: Store, kind: OneThoughtView.Kind, state: OneThoughtView.State) {
     self.store = store
     self.kind = kind
@@ -33,6 +34,18 @@ class OneThoughtViewModel: ObservableObject {
     switch kind {
     case .existing(let thought):
       self.thought = thought
+      Task {
+        // Watch for changes in the source of truth, and update the local UI with the updated thought.
+        self.thoughtCancellable = await store.$thoughts
+          .receive(on: DispatchQueue.main)
+          .sink(receiveValue: { [weak self] updatedThoughts in
+            // [weak self] is important here. Otherwise there’s a retain cycle
+            // and OneThoughtViewModel is never released.
+            if let updatedThought = updatedThoughts[id: thought.id] {
+              self?.thought = updatedThought
+            }
+          })
+      }
     default: break
     }
     
@@ -47,7 +60,11 @@ class OneThoughtViewModel: ObservableObject {
   }
   
   deinit {
-    print("OneThoughtViewModel deinit")
+    // Visually inspect in the console that the view model
+    // is correctly released when you navigate away from it.
+    // Try removing [weak self] in the above cancellable sink
+    // and see that OneThoughtViewModel then never gets released.
+    logger.debug("deinit")
   }
   
   func send(_ action: OneThoughtViewAction) {
@@ -66,7 +83,7 @@ class OneThoughtViewModel: ObservableObject {
             modifiedAt: thought.modifiedAt
           )
           await MainActor.run {
-            // Update the thought shown in the UI.
+            // Immediately update the thought shown in the UI.
             // This will likely be updated from the server side after the thought is saved.
             self.thought = updatedLocalThought
             self.state = .viewing
@@ -79,7 +96,8 @@ class OneThoughtViewModel: ObservableObject {
       switch kind {
       case .existing:
         state = .viewing
-      default: break // should not get to this case.
+      default:
+        logger.error("cancelEditExisting with kind \(self.kind). Should not get to this state.")
       }
     case .editExisting(let thought):
       title = thought.title

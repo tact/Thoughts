@@ -8,12 +8,19 @@ struct OneThoughtView: View {
   /// View kind.
   ///
   /// This does not change through the view lifetime. View is represented in navigation path by this.
-  enum Kind: Equatable, Hashable {
+  enum Kind: Equatable, Hashable, CustomStringConvertible {
     /// Adding a new thought.
     case new
 
     /// Viewing or editing an existing thought.
     case existing(Thought)
+    
+    var description: String {
+      switch self {
+      case .new: return "new"
+      case .existing(let thought): return "existing(\(thought))"
+      }
+    }
   }
   
   /// View state.
