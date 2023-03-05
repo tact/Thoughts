@@ -50,7 +50,7 @@ struct ThoughtsView: View {
           #endif
         }
         .navigationDestination(for: OneThoughtView.Kind.self) { kind in
-          OneThoughtView(store: viewModel.store, kind: kind)
+          OneThoughtView(store: viewModel.store, kind: kind, state: .viewing)
         }
         .sheet(isPresented: $viewModel.showSettingsSheet) {
           SettingsView(store: viewModel.store)

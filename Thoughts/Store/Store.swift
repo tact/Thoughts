@@ -8,6 +8,9 @@ enum StoreAction {
   /// User indicated to create a new thought with the indicated content.
   case saveNewThought(title: String, body: String)
   
+  /// User indicated to update an existing thought with the indicated content.
+  case modifyExistingThought(thought: Thought, title: String, body: String)
+  
   /// User indicated to delete this thought.
   case delete(Thought)
   
@@ -136,7 +139,25 @@ actor Store {
       case .failure(let error):
         logger.error("Could not save thought to CloudKit: \(error)")
       }
-            
+    case .modifyExistingThought(thought: let thought, title: let title, body: let body):
+      let updatedThought = Thought(
+        id: thought.id,
+        title: title,
+        body: body,
+        createdAt: thought.createdAt,
+        modifiedAt: thought.modifiedAt
+      )
+      thoughts[id: thought.id] = updatedThought
+      localCacheService.storeThoughts(thoughts.elements)
+      let storedThought = await cloudKitService.saveThought(updatedThought)
+      switch storedThought {
+      case .success(let thought):
+        logger.debug("Saved modified thought to CloudKit: \(thought)")
+        ingestChangesFromCloud([.modified(thought)])
+      case .failure(let error):
+        logger.error("Could not save modified thought to CloudKit: \(error)")
+      }
+      
     case .delete(let thought):
       thoughts.remove(id: thought.id)
       localCacheService.storeThoughts(thoughts.elements)
