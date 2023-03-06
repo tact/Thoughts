@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import IdentifiedCollections
 import ThoughtsTypes
+import os.log
 
 enum ThoughtsViewAction {
   case addThought
@@ -19,6 +20,8 @@ class ThoughtsViewModel: ObservableObject {
   @Published var accountState: CloudKitAccountState = .provisionalAvailable
   @Published var showSettingsSheet = false
   
+  private let logger = Logger(subsystem: "Thoughts", category: "ThoughtsViewModel")
+  
   init(store: Store) {
     self.store = store
     Task {
@@ -26,23 +29,23 @@ class ThoughtsViewModel: ObservableObject {
       // and re-publish them for the UI.
       thoughtsCancellable = await store.$thoughts
         .receive(on: DispatchQueue.main)
-        .sink(receiveValue: { thoughts in
+        .sink(receiveValue: { [weak self] thoughts in
           // can re-sort it here
-          self.thoughts = thoughts
-          self.updateNavigationPathFromThoughts()
+          self?.thoughts = thoughts
+          self?.updateNavigationPathFromThoughts()
         })
       
       // Observe the account state.
       accountStateCancellable = await store.$cloudKitAccountState
         .receive(on: DispatchQueue.main)
-        .sink(receiveValue: { newState in
-          self.accountState = newState
+        .sink(receiveValue: { [weak self] newState in
+          self?.accountState = newState
         })
     }
   }
     
   deinit {
-    print("ThoughtsViewModel deinit")
+    logger.debug("deinit")
   }
   
   /// Make any updates to navigation path if the source of truth changed.
