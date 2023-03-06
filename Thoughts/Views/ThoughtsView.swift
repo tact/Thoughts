@@ -81,6 +81,7 @@ struct ThoughtsView: View {
           }
         }
       }
+      .animation(.default, value: viewModel.thoughts)
     }
   }
 }

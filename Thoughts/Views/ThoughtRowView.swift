@@ -15,8 +15,10 @@ struct ThoughtRowView: View {
         Text("Modified \(modifiedAt.formatted(date: .abbreviated, time: .shortened))")
           .font(.caption)
       }
-      Text(thought.body)
-        .lineLimit(1)
+      if !thought.body.isEmpty {
+        Text(thought.body)
+          .lineLimit(1)
+      }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
 
