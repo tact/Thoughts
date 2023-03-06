@@ -30,8 +30,14 @@ class ThoughtsViewModel: ObservableObject {
       thoughtsCancellable = await store.$thoughts
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { [weak self] thoughts in
-          // can re-sort it here
-          self?.thoughts = thoughts
+          // Sort by modification time, newest, first.
+          self?.thoughts = IdentifiedArray(
+            uniqueElements: thoughts.elements.sorted(
+              by: { lhs, rhs in
+                lhs.modifiedAt ?? Date.distantPast > rhs.modifiedAt ?? Date.distantPast
+              }
+            )
+          )
           self?.updateNavigationPathFromThoughts()
         })
       

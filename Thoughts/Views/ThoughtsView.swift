@@ -68,10 +68,12 @@ struct ThoughtsView: View {
           NavigationLink(
             value: OneThoughtView.Kind.existing(thought),
             label: {
-              Text("one thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
+              ThoughtRowView(thought: thought)
+              #if os(macOS)
+                .padding(.bottom, 16)
+              #endif
             }
           )
-
         }
         .onDelete { indexSet in
           if let firstIndex = indexSet.first {
