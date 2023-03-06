@@ -32,7 +32,7 @@ class ThoughtsViewModel: ObservableObject {
         .sink(receiveValue: { [weak self] thoughts in
           // Sort by modification time, newest, first.
           self?.thoughts = IdentifiedArray(
-            uniqueElements: thoughts.elements.sorted(
+            uniqueElements: thoughts.sorted(
               by: { lhs, rhs in
                 lhs.modifiedAt ?? Date.distantPast > rhs.modifiedAt ?? Date.distantPast
               }
