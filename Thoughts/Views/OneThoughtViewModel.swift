@@ -46,7 +46,8 @@ class OneThoughtViewModel: ObservableObject {
             }
           })
       }
-    default: break
+    case .new:
+      self.state = .editing
     }
     
     switch state {
