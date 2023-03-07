@@ -49,13 +49,13 @@ struct OneThoughtView: View {
   
   
   var body: some View {
-    VStack(alignment: .leading) {
+    VStack {
       switch viewModel.state {
       case .viewing:
         if let thought = viewModel.thought {
           Text("Existing thought. id: \(thought.id), title: \(thought.title)")
           Text(LocalizedStringKey(thought.body))
-            .frame(width: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
           Button("Edit") {
             viewModel.send(.editExisting(thought))
           }
