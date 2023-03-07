@@ -2,6 +2,7 @@ import Combine
 import Foundation
 import ThoughtsTypes
 import os.log
+import SwiftUI
 
 enum OneThoughtViewAction {
   /// Save a thought.
@@ -59,7 +60,7 @@ class OneThoughtViewModel: ObservableObject {
     default: break
     }
   }
-  
+    
   deinit {
     // Visually inspect in the console that the view model
     // is correctly released when you navigate away from it.

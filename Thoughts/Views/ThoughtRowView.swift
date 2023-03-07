@@ -12,11 +12,11 @@ struct ThoughtRowView: View {
           .bold()
       }
       if let modifiedAt = thought.modifiedAt {
-        Text("Modified \(modifiedAt.formatted(date: .abbreviated, time: .shortened))")
+        Text("\(modifiedAt.formatted(.relative(presentation: .named)))")
           .font(.caption)
       }
       if !thought.body.isEmpty {
-        Text(thought.body)
+        Text(LocalizedStringKey(thought.body))
           .lineLimit(1)
       }
     }
@@ -46,6 +46,27 @@ struct ThoughtRowView_Previews: PreviewProvider {
       )
     )
     .previewDisplayName("Without dates")
+    
+    ThoughtRowView(
+      thought: .init(
+        id: .init(),
+        title: "",
+        body: "Thought body",
+        modifiedAt: Date()
+      )
+    )
+    .previewDisplayName("No title")
+    
+    ThoughtRowView(
+      thought: .init(
+        id: .init(),
+        title: "Thought title",
+        body: "Thought body. I am a fox. This is a https://apple.com **very long body that should span multipe** lines.",
+        createdAt: Date(),
+        modifiedAt: Date()
+      )
+    )
+    .previewDisplayName("Truncated Markdown")
 
   }
 }

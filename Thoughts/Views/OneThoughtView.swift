@@ -49,11 +49,13 @@ struct OneThoughtView: View {
   
   
   var body: some View {
-    VStack {
+    VStack(alignment: .leading) {
       switch viewModel.state {
       case .viewing:
         if let thought = viewModel.thought {
-          Text("Existing thought. id: \(thought.id), title: \(thought.title), body: \(thought.body)")
+          Text("Existing thought. id: \(thought.id), title: \(thought.title)")
+          Text(LocalizedStringKey(thought.body))
+            .frame(width: .infinity, alignment: .leading)
           Button("Edit") {
             viewModel.send(.editExisting(thought))
           }
@@ -98,7 +100,7 @@ struct OneThoughtView_Previews: PreviewProvider {
     let thought = Thought(
       id: UUID(),
       title: "A thought",
-      body: "The thought body.\n\nAnother paragraph.",
+      body: "The thought body.\n\nAnother paragraph.\n\nHow about a **bold text** and link: https://apple.com/",
       createdAt: nil,
       modifiedAt: nil
     )
