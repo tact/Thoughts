@@ -114,4 +114,11 @@ class OneThoughtViewModel: ObservableObject {
     default: return false
     }
   }
+  
+  var navigationTitle: String {
+    switch kind {
+    case .new: return "Add thought"
+    case .existing(let thought): return thought.title
+    }
+  }
 }

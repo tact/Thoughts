@@ -53,11 +53,35 @@ struct OneThoughtView: View {
       switch viewModel.state {
       case .viewing:
         if let thought = viewModel.thought {
-          Text("Existing thought. id: \(thought.id), title: \(thought.title)")
-          Text(LocalizedStringKey(thought.body))
-            .frame(maxWidth: .infinity, alignment: .leading)
-          Button("Edit") {
-            viewModel.send(.editExisting(thought))
+          ScrollView(.vertical) {
+            VStack(spacing: 4) {
+              Text(thought.title)
+                .font(.title)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
+              VStack {
+                if let createdAt = thought.createdAt {
+                  Text("Created \(createdAt.formatted(date: .abbreviated, time: .shortened))")
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if let modifiedAt = thought.modifiedAt {
+                  Text("Modified \(modifiedAt.formatted(date: .abbreviated, time: .shortened))")
+                    .font(.caption)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+              }
+              .padding(.bottom, 4)
+              Divider()
+                .padding(.bottom, 16)
+              
+              Text(LocalizedStringKey(thought.body))
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            Button("Edit") {
+              viewModel.send(.editExisting(thought))
+            }
           }
         }
         
@@ -90,6 +114,10 @@ struct OneThoughtView: View {
       }
     }
     .padding()
+    #if os(iOS)
+    .navigationBarTitleDisplayMode(.inline)
+    #endif
+    .navigationTitle(viewModel.navigationTitle)
   }
 }
 
@@ -101,8 +129,8 @@ struct OneThoughtView_Previews: PreviewProvider {
       id: UUID(),
       title: "A thought",
       body: "The thought body.\n\nAnother paragraph.\n\nHow about a **bold text** and link: https://apple.com/",
-      createdAt: nil,
-      modifiedAt: nil
+      createdAt: Date(),
+      modifiedAt: Date()
     )
     
     OneThoughtView(
