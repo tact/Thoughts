@@ -41,7 +41,7 @@ struct SettingsView_Previews: PreviewProvider {
   static var previews: some View {
     SettingsView(store: .previewPopulated)
       .previewDisplayName("Regular")
-    
+
     SettingsView(store: .previewPopulated, state: .clearing)
       .previewDisplayName("Clearing")
   }

@@ -58,7 +58,7 @@ actor CloudKitService {
   }
   #endif
   
-  private init(
+  init(
     syncService: SyncService,
     preferencesService: PreferencesServiceType
   ) {

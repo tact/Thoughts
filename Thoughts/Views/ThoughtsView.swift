@@ -98,6 +98,9 @@ struct ThoughtsView_Previews: PreviewProvider {
 
     ThoughtsView(store: .noAccountState)
       .previewDisplayName("No CloudKit account")
+
+    ThoughtsView(store: .unknownAccountState)
+      .previewDisplayName("Unknown account state")
   }
 }
 #endif

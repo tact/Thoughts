@@ -168,7 +168,6 @@ struct OneThoughtView_Previews: PreviewProvider {
       state: .editing
     )
     .previewDisplayName("Edit existing thought")
-
   }
 }
 #endif

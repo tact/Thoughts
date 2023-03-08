@@ -8,7 +8,7 @@ extension Store {
   static var previewEmpty: Store {
     Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .available),
+      cloudKitService: CloudKitService.accountAvailable,
       preferencesService: TestPreferencesService(cloudKitSetupDone: true),
       tokenStore: TestTokenStore()
     )
@@ -28,27 +28,16 @@ extension Store {
           )
         ]
       ),
-      cloudKitService: MockCloudKitService(
-        initialChanges: [
-          .modified(
-            .init(
-              id: UUID(),
-              title: "Thought from cloud",
-              body: "Thought body from cloud"
-            )
-          )
-        ],
-        initialAccountState: .available
-      ),
+      cloudKitService: CloudKitService.populatedWithOneThought,
       preferencesService: TestPreferencesService(cloudKitSetupDone: true),
       tokenStore: TestTokenStore()
     )
   }
-  
+     
   static var noAccountState: Store {
     Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .noAccount),
+      cloudKitService: CloudKitService.noAccountState,
       preferencesService: TestPreferencesService(cloudKitSetupDone: false),
       tokenStore: TestTokenStore()
     )
@@ -57,7 +46,7 @@ extension Store {
   static var unknownAccountState: Store {
     Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(initialAccountState: .unknown),
+      cloudKitService: CloudKitService.unknownAccountState,
       preferencesService: TestPreferencesService(cloudKitSetupDone: false),
       tokenStore: TestTokenStore()
     )

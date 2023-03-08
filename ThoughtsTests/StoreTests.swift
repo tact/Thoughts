@@ -5,7 +5,7 @@ import CanopyTestTools
 import CloudKit
 import XCTest
 
-final class StoreTestsWithReplayingCKService: XCTestCase {
+final class StoreTests: XCTestCase {
 
   /// Initial mock operations to run at store startup.
   private var initialContainerOperationResults: [MockCKContainer.OperationResult] {

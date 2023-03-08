@@ -35,12 +35,13 @@
 		EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */; };
 		EA8B781229AE45290057E87D /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA8B781129AE45290057E87D /* CanopyTestTools */; };
 		EA8B781629AE453E0057E87D /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA8B781529AE453E0057E87D /* CanopyTestTools */; };
-		EA8B781829AE4FAA0057E87D /* StoreTestsWithMockCKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8B781729AE4FAA0057E87D /* StoreTestsWithMockCKService.swift */; };
 		EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */; };
 		EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92B29918F7A005DF614 /* CloudKitService.swift */; };
-		EAB6B92E29918FCD005DF614 /* MockCloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */; };
-		EAB6B9302991A032005DF614 /* StoreTestsWithReplayingCKService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92F2991A032005DF614 /* StoreTestsWithReplayingCKService.swift */; };
+		EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92F2991A032005DF614 /* StoreTests.swift */; };
 		EACA3F5829B6311B00390A91 /* ThoughtRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA3F5729B6311B00390A91 /* ThoughtRowView.swift */; };
+		EAD69EAE29B9124600B53673 /* CloudKitService+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD69EAD29B9124600B53673 /* CloudKitService+Preview.swift */; };
+		EAD69EB029B9134200B53673 /* CloudKitService+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD69EAF29B9134200B53673 /* CloudKitService+Test.swift */; };
+		EAD69EB229B918D600B53673 /* CloudKitAccountStateSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD69EB129B918D600B53673 /* CloudKitAccountStateSequence.swift */; };
 		EAF87FD729AA3E86004133CF /* ThoughtsTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = EAF87FD629AA3E86004133CF /* ThoughtsTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EAF87FDA29AA3E86004133CF /* ThoughtsTypes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */; };
 		EAF87FDB29AA3E86004133CF /* ThoughtsTypes.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -121,12 +122,13 @@
 		EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheServiceType.swift; sourceTree = "<group>"; };
 		EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalCacheService.swift; sourceTree = "<group>"; };
 		EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheService.swift; sourceTree = "<group>"; };
-		EA8B781729AE4FAA0057E87D /* StoreTestsWithMockCKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTestsWithMockCKService.swift; sourceTree = "<group>"; };
 		EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitServiceType.swift; sourceTree = "<group>"; };
 		EAB6B92B29918F7A005DF614 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
-		EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCloudKitService.swift; sourceTree = "<group>"; };
-		EAB6B92F2991A032005DF614 /* StoreTestsWithReplayingCKService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTestsWithReplayingCKService.swift; sourceTree = "<group>"; };
+		EAB6B92F2991A032005DF614 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		EACA3F5729B6311B00390A91 /* ThoughtRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtRowView.swift; sourceTree = "<group>"; };
+		EAD69EAD29B9124600B53673 /* CloudKitService+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CloudKitService+Preview.swift"; sourceTree = "<group>"; };
+		EAD69EAF29B9134200B53673 /* CloudKitService+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CloudKitService+Test.swift"; sourceTree = "<group>"; };
+		EAD69EB129B918D600B53673 /* CloudKitAccountStateSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitAccountStateSequence.swift; sourceTree = "<group>"; };
 		EAF87FD429AA3E86004133CF /* ThoughtsTypes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ThoughtsTypes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF87FD629AA3E86004133CF /* ThoughtsTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThoughtsTypes.h; sourceTree = "<group>"; };
 		EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitAccountState.swift; sourceTree = "<group>"; };
@@ -240,8 +242,7 @@
 			isa = PBXGroup;
 			children = (
 				EA0B2080298E65D000462577 /* ThoughtsTests.swift */,
-				EAB6B92F2991A032005DF614 /* StoreTestsWithReplayingCKService.swift */,
-				EA8B781729AE4FAA0057E87D /* StoreTestsWithMockCKService.swift */,
+				EAB6B92F2991A032005DF614 /* StoreTests.swift */,
 			);
 			path = ThoughtsTests;
 			sourceTree = "<group>";
@@ -325,7 +326,9 @@
 			children = (
 				EAB6B92929918EE0005DF614 /* CloudKitServiceType.swift */,
 				EAB6B92B29918F7A005DF614 /* CloudKitService.swift */,
-				EAB6B92D29918FCD005DF614 /* MockCloudKitService.swift */,
+				EAD69EAD29B9124600B53673 /* CloudKitService+Preview.swift */,
+				EAD69EAF29B9134200B53673 /* CloudKitService+Test.swift */,
+				EAD69EB129B918D600B53673 /* CloudKitAccountStateSequence.swift */,
 			);
 			path = CloudKitService;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
+				EAD69EB029B9134200B53673 /* CloudKitService+Test.swift in Sources */,
 				EA0250D229B37CBE006B1465 /* Store+Preview.swift in Sources */,
 				EAFD595A29AF7F79007B1E25 /* SettingsViewModel.swift in Sources */,
 				EACA3F5829B6311B00390A91 /* ThoughtRowView.swift in Sources */,
@@ -556,6 +560,7 @@
 				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,
 				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
+				EAD69EAE29B9124600B53673 /* CloudKitService+Preview.swift in Sources */,
 				EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */,
 				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
 				EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */,
@@ -564,8 +569,8 @@
 				EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */,
 				EA103189298E6B45004819F5 /* Store.swift in Sources */,
 				EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */,
-				EAB6B92E29918FCD005DF614 /* MockCloudKitService.swift in Sources */,
 				EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */,
+				EAD69EB229B918D600B53673 /* CloudKitAccountStateSequence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,8 +579,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B2081298E65D000462577 /* ThoughtsTests.swift in Sources */,
-				EA8B781829AE4FAA0057E87D /* StoreTestsWithMockCKService.swift in Sources */,
-				EAB6B9302991A032005DF614 /* StoreTestsWithReplayingCKService.swift in Sources */,
+				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

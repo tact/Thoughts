@@ -55,7 +55,7 @@ actor Store {
   static var blank: Store {
     Store(
       localCacheService: MockLocalCacheService(),
-      cloudKitService: MockCloudKitService(),
+      cloudKitService: CloudKitService.blank,
       preferencesService: TestPreferencesService(),
       tokenStore: TestTokenStore(),
       behavior: .blank
