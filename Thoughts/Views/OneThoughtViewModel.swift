@@ -77,21 +77,15 @@ class OneThoughtViewModel: ObservableObject {
         case .new:
           await store.send(.saveNewThought(title: title, body: body))
         case .existing(let thought):
-          let updatedLocalThought = Thought(
-            id: thought.id,
-            title: title,
-            body: body,
-            createdAt: thought.createdAt,
-            modifiedAt: thought.modifiedAt
-          )
           await MainActor.run {
-            // Immediately update the thought shown in the UI.
-            // This will likely be updated from the server side after the thought is saved.
-            self.thought = updatedLocalThought
             self.state = .viewing
           }
-          // Optimistically updated the UI before the save is completed.
           await store.send(.modifyExistingThought(thought: thought, title: title, body: body))
+          // We did not update the local UI after saving. There will be two store updates:
+          // 1) immediately on modification, Store saves the modified thought to local store,
+          // and this gets reflected back to this view model with the thoughtCancellable.
+          // 2) after a successful CloudKit save, there will be another update where the
+          // modifiedAt is updated, and this gets reflected back through the same cancellable.
         }
       }
     case .cancelEditExisting:
