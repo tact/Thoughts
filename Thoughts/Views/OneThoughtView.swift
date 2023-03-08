@@ -55,10 +55,13 @@ struct OneThoughtView: View {
         if let thought = viewModel.thought {
           ScrollView(.vertical) {
             VStack(spacing: 4) {
+              #if os(macOS)
               Text(thought.title)
                 .font(.title)
                 .bold()
+                .padding(.vertical)
                 .frame(maxWidth: .infinity, alignment: .leading)
+              #endif
               VStack {
                 if let createdAt = thought.createdAt {
                   Text("Created \(createdAt.formatted(date: .abbreviated, time: .shortened))")
@@ -81,6 +84,17 @@ struct OneThoughtView: View {
                   viewModel.send(.editExisting(thought))
                 }
             }
+            .toolbar {
+              ToolbarItem {
+                Button(action: {
+                  viewModel.send(.editExisting(thought))
+                }, label: {
+                  Label("Edit", systemImage: "pencil")
+                    .help("Edit")
+                    .labelStyle(.titleAndIcon)
+                })
+              }
+            }
             
             Button("Edit") {
               viewModel.send(.editExisting(thought))
@@ -97,6 +111,7 @@ struct OneThoughtView: View {
           .border(.tertiary)
         HStack {
 
+          #warning("escape shortcut")
           if viewModel.shouldShowCancelEditButton {
             Button("Cancel") {
               viewModel.send(.cancelEditExisting)
@@ -116,10 +131,7 @@ struct OneThoughtView: View {
         }
       }
     }
-    .padding()
-    #if os(iOS)
-    .navigationBarTitleDisplayMode(.inline)
-    #endif
+    .padding(.horizontal)
     .navigationTitle(viewModel.navigationTitle)
   }
 }
