@@ -77,6 +77,9 @@ struct OneThoughtView: View {
               
               Text(LocalizedStringKey(thought.body))
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .onTapGesture {
+                  viewModel.send(.editExisting(thought))
+                }
             }
             
             Button("Edit") {
