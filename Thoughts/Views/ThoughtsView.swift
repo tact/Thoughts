@@ -62,6 +62,7 @@ struct ThoughtsView: View {
   var accountAvailableContent: some View {
     if viewModel.thoughts.isEmpty {
       Text("No thoughts. Tap + to add one.")
+      #warning("big add button here")
     } else {
       List {
         ForEach(viewModel.thoughts) { thought in
