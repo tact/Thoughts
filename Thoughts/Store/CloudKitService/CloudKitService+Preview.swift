@@ -124,9 +124,11 @@ extension CloudKitService {
   }
   
   private static var mockThoughtRecord: CKRecord {
-    let record = CKRecord(recordType: "Thought", recordID: .init(recordName: UUID().uuidString))
+    let record = MockCKRecord(recordType: "Thought", recordID: .init(recordName: UUID().uuidString))
     record.encryptedValues["title"] = "Thought from cloud"
     record.encryptedValues["body"] = "Thought body from cloud"
+    record[MockCKRecord.testingCreatedAtKey] = ISO8601DateFormatter().date(from: "2023-03-08T10:25:00Z00:00")
+    record[MockCKRecord.testingModifiedAtKey] = ISO8601DateFormatter().date(from: "2023-03-08T10:26:00Z00:00")
     return record
   }
 }

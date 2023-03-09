@@ -11,11 +11,11 @@
 		EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */; };
 		EA0112422995300800AEEE55 /* IdentifiedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = EA0112412995300800AEEE55 /* IdentifiedCollections */; };
 		EA0250D229B37CBE006B1465 /* Store+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0250D129B37CBE006B1465 /* Store+Preview.swift */; };
+		EA048C4729B9C65800FAF487 /* ThoughtsUITestsFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA048C4629B9C65800FAF487 /* ThoughtsUITestsFixtures.swift */; };
 		EA0B206F298E65CF00462577 /* ThoughtsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B206E298E65CF00462577 /* ThoughtsApp.swift */; };
 		EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B2070298E65CF00462577 /* ThoughtsView.swift */; };
 		EA0B2073298E65D000462577 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA0B2072298E65D000462577 /* Assets.xcassets */; };
 		EA0B2077298E65D000462577 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA0B2076298E65D000462577 /* Preview Assets.xcassets */; };
-		EA0B2081298E65D000462577 /* ThoughtsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B2080298E65D000462577 /* ThoughtsTests.swift */; };
 		EA0B208B298E65D000462577 /* ThoughtsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B208A298E65D000462577 /* ThoughtsUITests.swift */; };
 		EA0B208D298E65D000462577 /* ThoughtsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */; };
 		EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA103185298E679C004819F5 /* OneThoughtView.swift */; };
@@ -29,7 +29,6 @@
 		EA6E1CBB29AE63B2009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */; };
 		EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */; };
 		EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA768BBF29A164CC00C65A00 /* Store+Mock.swift */; };
-		EA768BC529A16E9B00C65A00 /* mock1.json in Resources */ = {isa = PBXBuildFile; fileRef = EA768BC429A16E9B00C65A00 /* mock1.json */; };
 		EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */; };
 		EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */; };
 		EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */; };
@@ -96,6 +95,7 @@
 		EA01123D2995220100AEEE55 /* macOSAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSAppDelegate.swift; sourceTree = "<group>"; };
 		EA01123F29952A3600AEEE55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EA0250D129B37CBE006B1465 /* Store+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Preview.swift"; sourceTree = "<group>"; };
+		EA048C4629B9C65800FAF487 /* ThoughtsUITestsFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITestsFixtures.swift; sourceTree = "<group>"; };
 		EA0B206B298E65CF00462577 /* Thoughts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thoughts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0B206E298E65CF00462577 /* ThoughtsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsApp.swift; sourceTree = "<group>"; };
 		EA0B2070298E65CF00462577 /* ThoughtsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsView.swift; sourceTree = "<group>"; };
@@ -103,7 +103,6 @@
 		EA0B2074298E65D000462577 /* Thoughts.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Thoughts.entitlements; sourceTree = "<group>"; };
 		EA0B2076298E65D000462577 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		EA0B207C298E65D000462577 /* ThoughtsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThoughtsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		EA0B2080298E65D000462577 /* ThoughtsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsTests.swift; sourceTree = "<group>"; };
 		EA0B2086298E65D000462577 /* ThoughtsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThoughtsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0B208A298E65D000462577 /* ThoughtsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITests.swift; sourceTree = "<group>"; };
 		EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 		EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAppDelegate.swift; sourceTree = "<group>"; };
 		EA768BBF29A164CC00C65A00 /* Store+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Mock.swift"; sourceTree = "<group>"; };
 		EA768BC129A1658600C65A00 /* TestSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSupport.swift; sourceTree = "<group>"; };
-		EA768BC429A16E9B00C65A00 /* mock1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mock1.json; sourceTree = "<group>"; };
 		EA7D901A29912E0600E1CCE3 /* LocalCacheServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheServiceType.swift; sourceTree = "<group>"; };
 		EA7D901C29912F0A00E1CCE3 /* MockLocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalCacheService.swift; sourceTree = "<group>"; };
 		EA7D901E2991303F00E1CCE3 /* LocalCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCacheService.swift; sourceTree = "<group>"; };
@@ -241,7 +239,6 @@
 		EA0B207F298E65D000462577 /* ThoughtsTests */ = {
 			isa = PBXGroup;
 			children = (
-				EA0B2080298E65D000462577 /* ThoughtsTests.swift */,
 				EAB6B92F2991A032005DF614 /* StoreTests.swift */,
 			);
 			path = ThoughtsTests;
@@ -295,7 +292,7 @@
 		EA768BC329A16E6000C65A00 /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
-				EA768BC429A16E9B00C65A00 /* mock1.json */,
+				EA048C4629B9C65800FAF487 /* ThoughtsUITestsFixtures.swift */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -528,7 +525,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA768BC529A16E9B00C65A00 /* mock1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +574,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA0B2081298E65D000462577 /* ThoughtsTests.swift in Sources */,
 				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -588,6 +583,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B208D298E65D000462577 /* ThoughtsUITestsLaunchTests.swift in Sources */,
+				EA048C4729B9C65800FAF487 /* ThoughtsUITestsFixtures.swift in Sources */,
 				EA0B208B298E65D000462577 /* ThoughtsUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

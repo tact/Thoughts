@@ -17,18 +17,6 @@ final class ThoughtsUITests: XCTestCase {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
   }
   
-  private func launchAppWithMockStoreFixture(_ fixtureName: String) -> XCUIApplication {
-    let app = XCUIApplication()
-    let testBundle = Bundle(for: type(of: self))
-    let jsonURL = testBundle.url(forResource: fixtureName, withExtension: "json")!
-    let jsonData = try! Data(contentsOf: jsonURL)
-    let jsonString = String(data: jsonData, encoding: .utf8)!
-    
-    app.launchEnvironment = [TestSupport.StoreEnvironmentKey: jsonString]
-    app.launch()
-    return app
-  }
-  
   private func launchAppWithMockStore(_ mockStore: TestSupport.MockStore) -> XCUIApplication {
     let encoded = try! JSONEncoder().encode(mockStore)
     let encodedString = String(data: encoded, encoding: .utf8)!
@@ -40,71 +28,30 @@ final class ThoughtsUITests: XCTestCase {
   }
   
   func test_blank_app() throws {
-    let mockStore = TestSupport.MockStore(
-      mockLocalCacheServiceContent: .init(thoughts: []),
-      mockCloudKitServiceContent: .init(
-        containerOperationResults: [
-          .accountStatus(.init(status: .available, error: nil)),
-          .accountStatus(.init(status: .available, error: nil))
-        ],
-        privateDatabaseOperationResults: [
-          .modifyZones(
-            .init(
-              savedZoneResults: [
-                .init(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName), result: .success(.init(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName))))
-              ],
-              deletedZoneIDResults: [],
-              modifyZonesResult: .init(
-                result: .success(())
-              )
-            )
-          ),
-          .modifySubscriptions(
-            .init(
-              savedSubscriptionResults: [
-                .init(
-                  subscriptionID: "Thoughts",
-                  result: .success(CKDatabaseSubscription(subscriptionID: "Thoughts"))
-                )
-              ],
-              deletedSubscriptionIDResults: [],
-              modifySubscriptionsResult: .init(result: .success(()))
-            )
-          ),
-          .fetchDatabaseChanges(
-            .init(
-              changedRecordZoneIDs: [],
-              deletedRecordZoneIDs: [],
-              purgedRecordZoneIDs: [],
-              fetchDatabaseChangesResult: .success
-            )
-          )
-        ]
-      ),
-      mockPreferencesServiceContent: .init(cloudKitSetupDone: false, cloudKitUserRecordName: nil)
-    )
-    
-    let app = launchAppWithMockStore(mockStore)
+    let app = launchAppWithMockStore(ThoughtsUITests.blankAppMockStore)
     XCTAssertTrue(app.staticTexts["No thoughts. Tap + to add one."].exists)
   }
   
-  /*
-  func test_with_some_thoughts() throws {
-    let app = launchAppWithMockStoreFixture("mock1")
-    
-    app.collectionViews.buttons["one thought. id: BF69292D-27CE-49C0-84C6-80F93D28A74D, title: Title from UI Test, body: Body from UI Test"].tap()
-    app.navigationBars["_TtGC7SwiftUI32NavigationStackHosting"].buttons["Thoughts"].tap()
-    
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+  func test_with_some_local_thoughts() throws {
+    let app = launchAppWithMockStore(ThoughtsUITests.withSomeLocalThoughtsMockStore)
+    let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'Title from UI test'")
+    app.collectionViews.buttons.element(matching: buttonPredicate).tap()
+    app.navigationBars["Title from UI test"].buttons["Thoughts"].tap()
   }
-  */
   
-//  func testLaunchPerformance() throws {
-//    if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-//      // This measures how long it takes to launch your application.
-//      measure(metrics: [XCTApplicationLaunchMetric()]) {
-//        XCUIApplication().launch()
-//      }
-//    }
-//  }
+  func test_with_some_local_and_cloud_thoughts() throws {
+    let app = launchAppWithMockStore(ThoughtsUITests.withSomeLocalAndCloudThoughtsMockStore)
+    let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'Title from cloud'")
+    app.collectionViews.buttons.element(matching: buttonPredicate).tap()
+    app.navigationBars["Title from cloud"].buttons["Thoughts"].tap()
+  }
+  
+  func testLaunchPerformance() throws {
+    if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
+      // This measures how long it takes to launch your application.
+      measure(metrics: [XCTApplicationLaunchMetric()]) {
+        let _ = launchAppWithMockStore(ThoughtsUITests.withSomeLocalThoughtsMockStore)
+      }
+    }
+  }
 }
