@@ -47,7 +47,6 @@ struct OneThoughtView: View {
     )
   }
   
-  
   var body: some View {
     VStack {
       switch viewModel.state {
@@ -104,11 +103,16 @@ struct OneThoughtView: View {
         
       case .editing:
         TextField("Title (optional)", text: $viewModel.title)
-          .padding(fieldInnerPadding)
-          .border(.tertiary)
+          .font(.title)
+          .bold()
+        
+        #if os(iOS)
+        Divider()
+        #endif
+        
         TextEditor(text: $viewModel.body)
-          .padding(fieldInnerPadding)
-          .border(.tertiary)
+          .font(.body)
+
         HStack {
 
           #warning("escape shortcut")
@@ -137,8 +141,21 @@ struct OneThoughtView: View {
 }
 
 #if DEBUG
+struct PreviewWrapper: ViewModifier {
+  func body(content: Content) -> some View {
+    #if os(macOS)
+    content
+    #else
+    NavigationView {
+      content
+    }
+    #endif
+  }
+}
+
 struct OneThoughtView_Previews: PreviewProvider {
   static var previews: some View {
+    
     
     let thought = Thought(
       id: UUID(),
@@ -153,6 +170,7 @@ struct OneThoughtView_Previews: PreviewProvider {
       kind: .new,
       state: .editing
     )
+    .modifier(PreviewWrapper())
     .previewDisplayName("Enter new")
     
     OneThoughtView(
@@ -160,6 +178,7 @@ struct OneThoughtView_Previews: PreviewProvider {
       kind: .existing(thought),
       state: .viewing
     )
+    .modifier(PreviewWrapper())
     .previewDisplayName("View existing thought")
 
     OneThoughtView(
@@ -167,6 +186,7 @@ struct OneThoughtView_Previews: PreviewProvider {
       kind: .existing(thought),
       state: .editing
     )
+    .modifier(PreviewWrapper())
     .previewDisplayName("Edit existing thought")
   }
 }
