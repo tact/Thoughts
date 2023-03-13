@@ -80,6 +80,7 @@ class OneThoughtViewModel: ObservableObject {
           await MainActor.run {
             self.state = .viewing
           }
+          #warning("Only save the edit if there was a change")
           await store.send(.modifyExistingThought(thought: thought, title: title, body: body))
           // We did not update the local UI after saving. There will be two store updates:
           // 1) immediately on modification, Store saves the modified thought to local store,

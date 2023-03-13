@@ -122,6 +122,7 @@ struct OneThoughtView: View {
             }
           }
           
+          #warning("Use standard Done toolbar button a la notes")
           Button(action: {
             viewModel.send(.save)
             // Dismiss in case of when a new thought was added
