@@ -133,6 +133,7 @@ struct OneThoughtView: View {
           })
           .disabled(viewModel.title.isEmpty && viewModel.body.isEmpty)
         }
+        .buttonStyle(ThoughtsButton())
       }
     }
     .padding(.horizontal)
