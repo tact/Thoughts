@@ -18,7 +18,7 @@ struct ThoughtsButtonStyle_Previews: PreviewProvider {
     Button(
       action: {},
       label: {
-        Text("What")
+        Label("What", systemImage: "figure.bowling")
       }
     )
     .buttonStyle(ThoughtsButton())
