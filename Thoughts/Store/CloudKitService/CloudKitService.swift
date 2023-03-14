@@ -79,6 +79,7 @@ actor CloudKitService {
       // Thread.callStackSymbols.forEach{print($0)}
       
       // Fetch initial set of changes from cloud when starting up.
+      #warning("Move this to Store.")
       _ = await fetchChangesFromCloud()
     }
   }
