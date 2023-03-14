@@ -5,17 +5,23 @@ import os.log
 import SwiftUI
 
 enum OneThoughtViewAction {
-  /// Save a thought.
-  case save
+  /// Done editing a thought.
+  ///
+  /// Save if there were any changes to the content.
+  case done
   
   /// User was looking at an existing thought and tapped edit button
   case editExisting(Thought)
-  
-  case cancelEditExisting
 }
 
 @MainActor
 class OneThoughtViewModel: ObservableObject {
+  
+  enum Field: Hashable, Equatable {
+    case title
+    case body
+  }
+  
   private let store: Store
   let kind: OneThoughtView.Kind
   @Published private(set) var state: OneThoughtView.State
@@ -23,7 +29,8 @@ class OneThoughtViewModel: ObservableObject {
   @Published private(set) var thought: Thought?
   @Published var title = ""
   @Published var body = ""
-
+  @Published var focusedField: Field?
+  
   private var thoughtCancellable: AnyCancellable?
   private let logger = Logger(subsystem: "Thoughts", category: "OneThoughtViewModel")
   
@@ -71,7 +78,7 @@ class OneThoughtViewModel: ObservableObject {
   
   func send(_ action: OneThoughtViewAction) {
     switch action {
-    case .save:
+    case .done:
       Task {
         switch kind {
         case .new:
@@ -80,26 +87,26 @@ class OneThoughtViewModel: ObservableObject {
           await MainActor.run {
             self.state = .viewing
           }
-          #warning("Only save the edit if there was a change")
-          await store.send(.modifyExistingThought(thought: thought, title: title, body: body))
-          // We did not update the local UI after saving. There will be two store updates:
-          // 1) immediately on modification, Store saves the modified thought to local store,
-          // and this gets reflected back to this view model with the thoughtCancellable.
-          // 2) after a successful CloudKit save, there will be another update where the
-          // modifiedAt is updated, and this gets reflected back through the same cancellable.
+          if title != thought.title || body != thought.body {
+            logger.debug("Saving changes to the thought.")
+            await store.send(.modifyExistingThought(thought: thought, title: title, body: body))
+            
+            // We did not update the local UI after saving. There will be two store updates:
+            // 1) immediately on modification, Store saves the modified thought to local store,
+            // and this gets reflected back to this view model with the thoughtCancellable.
+            // 2) after a successful CloudKit save, there will be another update where the
+            // modifiedAt is updated, and this gets reflected back through the same cancellable.
+            
+          } else {
+            logger.debug("No edits. Just reverting back to view state.")
+          }
         }
-      }
-    case .cancelEditExisting:
-      switch kind {
-      case .existing:
-        state = .viewing
-      default:
-        logger.error("cancelEditExisting with kind \(self.kind). Should not get to this state.")
       }
     case .editExisting(let thought):
       title = thought.title
       body = thought.body
       state = .editing
+      focusedField = .body
     }
   }
   
@@ -113,7 +120,18 @@ class OneThoughtViewModel: ObservableObject {
   var navigationTitle: String {
     switch kind {
     case .new: return "Add thought"
-    case .existing(let thought): return thought.title
+    case .existing(let thought):
+      return state == .editing ? "" : thought.title
     }
   }
+  
+  var shouldDismissOnDone: Bool {
+    kind == .new
+  }
+  
+  #if os(iOS)
+  var navigationBarTitleDisplayMode: NavigationBarItem.TitleDisplayMode {
+    state == .editing ? .inline : .automatic
+  }
+  #endif
 }

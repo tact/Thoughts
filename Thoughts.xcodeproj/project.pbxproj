@@ -24,7 +24,6 @@
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
 		EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4279F329B3947E00BAE0CE /* Store+Live.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
-		EA5923FE29BF61A1004188D0 /* ThoughtsButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5923FD29BF61A1004188D0 /* ThoughtsButtonStyle.swift */; };
 		EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */; };
 		EA6E1CB729AE639A009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CB629AE639A009195C6 /* CanopyTestTools */; };
 		EA6E1CBB29AE63B2009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */; };
@@ -114,7 +113,6 @@
 		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
 		EA4279F329B3947E00BAE0CE /* Store+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Live.swift"; sourceTree = "<group>"; };
 		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
-		EA5923FD29BF61A1004188D0 /* ThoughtsButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsButtonStyle.swift; sourceTree = "<group>"; };
 		EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesService.swift; sourceTree = "<group>"; };
 		EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAppDelegate.swift; sourceTree = "<group>"; };
 		EA768BBF29A164CC00C65A00 /* Store+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Mock.swift"; sourceTree = "<group>"; };
@@ -295,7 +293,6 @@
 		EA5923FC29BF6174004188D0 /* Styling */ = {
 			isa = PBXGroup;
 			children = (
-				EA5923FD29BF61A1004188D0 /* ThoughtsButtonStyle.swift */,
 			);
 			path = Styling;
 			sourceTree = "<group>";
@@ -564,7 +561,6 @@
 				EACA3F5829B6311B00390A91 /* ThoughtRowView.swift in Sources */,
 				EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */,
 				EAB6B92A29918EE0005DF614 /* CloudKitServiceType.swift in Sources */,
-				EA5923FE29BF61A1004188D0 /* ThoughtsButtonStyle.swift in Sources */,
 				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,
 				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
