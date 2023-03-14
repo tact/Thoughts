@@ -17,7 +17,10 @@ struct ThoughtsView: View {
   var body: some View {
     NavigationStack(path: $viewModel.navigationPath) {
       content
-      .navigationTitle("Thoughts")
+        .overlay(alignment: .bottomLeading) {
+          StatusView(status: .ok)
+        }
+        .navigationTitle("Thoughts")
     }
   }
   

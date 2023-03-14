@@ -22,6 +22,8 @@
 		EA103189298E6B45004819F5 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA103188298E6B45004819F5 /* Store.swift */; };
 		EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */; };
 		EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */; };
+		EA26322029C0B92600D95CBE /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26321F29C0B92600D95CBE /* StatusView.swift */; };
+		EA26322229C0B98400D95CBE /* StatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26322129C0B98400D95CBE /* StatusViewModel.swift */; };
 		EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4279F329B3947E00BAE0CE /* Store+Live.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
 		EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */; };
@@ -111,6 +113,8 @@
 		EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModel.swift; sourceTree = "<group>"; };
 		EA10318D298E6CE8004819F5 /* Thought.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thought.swift; sourceTree = "<group>"; };
 		EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModel.swift; sourceTree = "<group>"; };
+		EA26321F29C0B92600D95CBE /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
+		EA26322129C0B98400D95CBE /* StatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewModel.swift; sourceTree = "<group>"; };
 		EA4279F329B3947E00BAE0CE /* Store+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Live.swift"; sourceTree = "<group>"; };
 		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
 		EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesService.swift; sourceTree = "<group>"; };
@@ -265,6 +269,8 @@
 				EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */,
 				EAFD595729AF7B7B007B1E25 /* SettingsView.swift */,
 				EAFD595929AF7F79007B1E25 /* SettingsViewModel.swift */,
+				EA26321F29C0B92600D95CBE /* StatusView.swift */,
+				EA26322129C0B98400D95CBE /* StatusViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -557,6 +563,7 @@
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
 				EAD69EB029B9134200B53673 /* CloudKitService+Test.swift in Sources */,
 				EA0250D229B37CBE006B1465 /* Store+Preview.swift in Sources */,
+				EA26322229C0B98400D95CBE /* StatusViewModel.swift in Sources */,
 				EAFD595A29AF7F79007B1E25 /* SettingsViewModel.swift in Sources */,
 				EACA3F5829B6311B00390A91 /* ThoughtRowView.swift in Sources */,
 				EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */,
@@ -564,6 +571,7 @@
 				EA768BBE29A161D800C65A00 /* SharedAppDelegate.swift in Sources */,
 				EA01123C299521F600AEEE55 /* iOSAppDelegate.swift in Sources */,
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
+				EA26322029C0B92600D95CBE /* StatusView.swift in Sources */,
 				EAD69EAE29B9124600B53673 /* CloudKitService+Preview.swift in Sources */,
 				EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */,
 				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
