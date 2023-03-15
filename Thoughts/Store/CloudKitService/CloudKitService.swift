@@ -220,8 +220,14 @@ extension CloudKitService: CloudKitServiceType {
   func fetchChangesFromCloud() async -> FetchCloudChangesResult {
     let api = syncService.api(usingDatabaseScope: .private)
     let databaseChanges = await api.fetchDatabaseChanges(qualityOfService: .default)
-    guard let changedRecordZoneIDs = try? databaseChanges.get().changedRecordZoneIDs else {
-      return .failed
+    
+    let changedRecordZoneIDs: [CKRecordZone.ID]
+    
+    switch databaseChanges {
+    case .success(let result):
+      changedRecordZoneIDs = result.changedRecordZoneIDs
+    case .failure(let error):
+      return .failed(error)
     }
     
     guard changedRecordZoneIDs.contains(Self.thoughtsZone.zoneID) else {
@@ -251,7 +257,7 @@ extension CloudKitService: CloudKitServiceType {
       return changes.isEmpty ? .noData : .newData
     case .failure(let error):
       logger.log("Error fetching Thoughts zone changes: \(error)")
-      return .failed
+      return .failed(error)
     }
   }
   

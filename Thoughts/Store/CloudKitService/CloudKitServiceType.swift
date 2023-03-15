@@ -9,7 +9,7 @@ import UIKit
 enum FetchCloudChangesResult {
   case newData
   case noData
-  case failed
+  case failed(LocalizedError)
   
   #if os(iOS)
   var backgroundFetchResult: UIBackgroundFetchResult {

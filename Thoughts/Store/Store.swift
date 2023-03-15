@@ -4,24 +4,6 @@ import IdentifiedCollections
 import os.log
 import ThoughtsTypes
 
-enum StoreAction {
-  /// User indicated to create a new thought with the indicated content.
-  case saveNewThought(title: String, body: String)
-  
-  /// User indicated to update an existing thought with the indicated content.
-  case modifyExistingThought(thought: Thought, title: String, body: String)
-  
-  /// User indicated to delete this thought.
-  case delete(Thought)
-  
-  /// Clear local state and re-download everything.
-  ///
-  /// This may happen in two cases: user can manually request this in Settings,
-  /// or a CloudKit record name mismatch is detected (meaning that another iCloud
-  /// user logged in, who shouldn’t see previous user’s content.)
-  case clearLocalState
-}
-
 actor Store {
 
   enum Behavior {
@@ -30,6 +12,43 @@ actor Store {
     
     /// Regular behavior.
     case regular
+  }
+  
+  enum Action {
+    /// User indicated to create a new thought with the indicated content.
+    case saveNewThought(title: String, body: String)
+    
+    /// User indicated to update an existing thought with the indicated content.
+    case modifyExistingThought(thought: Thought, title: String, body: String)
+    
+    /// User indicated to delete this thought.
+    case delete(Thought)
+    
+    /// Clear local state and re-download everything.
+    ///
+    /// This may happen in two cases: user can manually request this in Settings,
+    /// or a CloudKit record name mismatch is detected (meaning that another iCloud
+    /// user logged in, who shouldn’t see previous user’s content.)
+    case clearLocalState
+  }
+  
+  /// Indicate cloud transaction status in a form that’s suitable for presenting to the user.
+  ///
+  /// This is not a comprehensive log. Latest changes will overwrite previous ones.
+  /// The main use for this is to present the latest status to user in UI, and allow them
+  /// to find out more.
+  enum CloudTransactionStatus {
+    /// No operations in progress.
+    case idle
+    
+    /// Saving one thought.
+    case saving(Thought)
+    
+    /// Fetching new changes from the cloud.
+    case fetching
+    
+    /// There was an error fetching or syncing.
+    case error(LocalizedError)
   }
   
   /// Current in-memory source of truth for the state of the model,
@@ -45,6 +64,8 @@ actor Store {
   @Published private(set) var thoughts: IdentifiedArrayOf<Thought> = []
   
   @Published private(set) var cloudKitAccountState: CloudKitAccountState = .provisionalAvailable
+  
+  @Published private(set) var cloudTransactionStatus = CloudTransactionStatus.idle
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
@@ -118,10 +139,18 @@ actor Store {
   }
   
   func fetchChangesFromCloud() async -> FetchCloudChangesResult {
-    await cloudKitService.fetchChangesFromCloud()
+    cloudTransactionStatus = .fetching
+    let result = await cloudKitService.fetchChangesFromCloud()
+    switch result {
+    case .noData, .newData:
+      cloudTransactionStatus = .idle
+    case .failed(let error):
+      cloudTransactionStatus = .error(error)
+    }
+    return result
   }
     
-  func send(_ action: StoreAction) async {
+  func send(_ action: Store.Action) async {
     switch action {
     case .saveNewThought(title: let title, body: let body):
       let thought = Thought(
