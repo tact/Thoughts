@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import ThoughtsTypes
 
 /// A view to indicate the status of CloudKit operations, as an overlay
 /// on the main view.
@@ -14,19 +15,25 @@ import SwiftUI
 struct StatusView: View {
   @StateObject var viewModel: StatusViewModel
   
-  init(status: StatusViewModel.Status) {
-    self._viewModel = StateObject(wrappedValue: .init(status: status))
+  init(statusProvider: CloudTransactionStatusProvider) {
+    self._viewModel = StateObject(wrappedValue: StatusViewModel(statusProvider: statusProvider))
   }
   
   var body: some View {
     switch viewModel.status {
-    case .ok: EmptyView()
+    case .idle: EmptyView()
     case .fetching:
-      HStack {
+      HStack(spacing: 10) {
         ProgressView()
-        Text("Some state … ")
+        Text("Fetching…")
       }
-      .background(Color.yellow)
+      .padding()
+    case.saving:
+      HStack(spacing: 10) {
+        ProgressView()
+        Text("Saving…")
+      }
+      .padding()
     case .error:
       Text("Error state")
     }
@@ -34,13 +41,57 @@ struct StatusView: View {
 }
 
 #if DEBUG
+import Combine
+import Canopy
+
 struct StatusView_Previews: PreviewProvider {
+  struct PreviewStatusProvider: CloudTransactionStatusProvider {
+    let status: Store.CloudTransactionStatus
+    var transactionPublisher: AnyPublisher<Store.CloudTransactionStatus, Never> {
+      Just(status)
+        .eraseToAnyPublisher()
+    }
+  }
+
   static var previews: some View {
-    StatusView(status: .ok)
-      .previewDisplayName("ok")
-    
-    StatusView(status: .fetching)
-      .previewDisplayName("fetching")
+    Rectangle()
+      .fill(Color.gray.opacity(0.2))
+      .overlay(alignment: .bottomLeading) {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            status: .idle
+          )
+        )
+      }
+      .previewDisplayName("Idle")
+
+    Rectangle()
+      .fill(Color.gray.opacity(0.2))
+      .overlay(alignment: .bottomLeading) {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            status: .fetching
+          )
+        )
+      }
+      .previewDisplayName("Fetching")
+
+    Rectangle()
+      .fill(Color.gray.opacity(0.2))
+      .overlay(alignment: .bottomLeading) {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            status: .saving(
+              Thought(
+                id: .init(),
+                title: "Saving title",
+                body: "Saving body"
+              )
+            )
+          )
+        )
+      }
+      .previewDisplayName("Saving")
   }
 }
 #endif

@@ -17,10 +17,10 @@ struct ThoughtsView: View {
   var body: some View {
     NavigationStack(path: $viewModel.navigationPath) {
       content
-        .overlay(alignment: .bottomLeading) {
-          StatusView(status: .ok)
-        }
         .navigationTitle("Thoughts")
+    }
+    .overlay(alignment: .bottomLeading) {
+      StatusView(statusProvider: viewModel.store)
     }
   }
   
@@ -96,6 +96,7 @@ struct ThoughtsView: View {
   @ViewBuilder
   var noThoughtsContent: some View {
     VStack(spacing: 32) {
+      Spacer()
       Image(systemName: "lightbulb")
         .resizable()
         .aspectRatio(contentMode: .fit)
@@ -103,8 +104,9 @@ struct ThoughtsView: View {
         .opacity(0.2)
       Text("No thoughts.")
       Text("Tap + to add a thought.")
+      Spacer()
     }
-    .padding(.horizontal, 16)
+    .frame(maxWidth: .infinity)
   }
 }
 

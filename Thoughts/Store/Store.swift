@@ -70,7 +70,7 @@ actor Store {
   
   @Published private(set) var cloudKitAccountState: CloudKitAccountState = .provisionalAvailable
   
-  @Published private(set) var cloudTransactionStatus: CloudTransactionStatus
+  @Published private(set) var cloudTransactionStatus: CloudTransactionStatus = .idle
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
@@ -108,9 +108,12 @@ actor Store {
     self.preferencesService = preferencesService
     self.tokenStore = tokenStore
     self.behavior = behavior
-    self.cloudTransactionStatus = cloudTransactionStatus
     
     guard behavior == .regular else { return }
+
+    Task {
+      await setInitialCloudTransactionStatus(cloudTransactionStatus)
+    }
     
     Task {
       // Task to observe CloudKit account state.
@@ -136,8 +139,12 @@ actor Store {
     }
   }
   
+  func setInitialCloudTransactionStatus(_ status: CloudTransactionStatus) async {
+    print("Store \(Unmanaged.passUnretained(self).toOpaque()): Setting initial cloud transaction status: \(status)")
+    self.cloudTransactionStatus = status
+  }
   
-  func loadThoughtsFromLocalCache() async {
+  private func loadThoughtsFromLocalCache() async {
     self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
   }
   
@@ -145,7 +152,7 @@ actor Store {
     await cloudKitService.ingestRemoteNotification(withUserInfo: userInfo)
   }
   
-  func fetchChangesFromCloud() async -> FetchCloudChangesResult {
+  private func fetchChangesFromCloud() async -> FetchCloudChangesResult {
     cloudTransactionStatus = .fetching
     let result = await cloudKitService.fetchChangesFromCloud()
     switch result {
@@ -165,6 +172,11 @@ actor Store {
         title: title,
         body: body
       )
+      cloudTransactionStatus = .saving(thought)
+      
+      #warning("fixme remove debugging")
+//      try? await Task.sleep(for: .seconds(3600))
+      
       thoughts.append(thought)
       localCacheService.storeThoughts(thoughts.elements)
       let storedThought = await cloudKitService.saveThought(thought)
@@ -172,8 +184,14 @@ actor Store {
       case .success(let thought):
         logger.debug("Saved new thought to CloudKit: \(thought)")
         ingestChangesFromCloud([.modified(thought)])
+        cloudTransactionStatus = .idle
       case .failure(let error):
         logger.error("Could not save thought to CloudKit: \(error)")
+        if let localizedError = error as? LocalizedError {
+          cloudTransactionStatus = .error(localizedError)
+        } else {
+          cloudTransactionStatus = .idle
+        }
       }
     case .modifyExistingThought(thought: let thought, title: let title, body: let body):
       let updatedThought = Thought(
@@ -183,6 +201,7 @@ actor Store {
         createdAt: thought.createdAt,
         modifiedAt: thought.modifiedAt
       )
+      cloudTransactionStatus = .saving(updatedThought)
       thoughts[id: thought.id] = updatedThought
       localCacheService.storeThoughts(thoughts.elements)
       let storedThought = await cloudKitService.saveThought(updatedThought)
@@ -190,8 +209,14 @@ actor Store {
       case .success(let thought):
         logger.debug("Saved modified thought to CloudKit: \(thought)")
         ingestChangesFromCloud([.modified(thought)])
+        cloudTransactionStatus = .idle
       case .failure(let error):
         logger.error("Could not save modified thought to CloudKit: \(error)")
+        if let localizedError = error as? LocalizedError {
+          cloudTransactionStatus = .error(localizedError)
+        } else {
+          cloudTransactionStatus = .idle
+        }
       }
       
     case .delete(let thought):

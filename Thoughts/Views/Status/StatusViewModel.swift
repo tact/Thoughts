@@ -1,16 +1,31 @@
+import Combine
 import Foundation
+
+protocol CloudTransactionStatusProvider {
+  var transactionPublisher: AnyPublisher<Store.CloudTransactionStatus, Never> { get async }
+}
+
+extension Store: CloudTransactionStatusProvider {
+  var transactionPublisher: AnyPublisher<CloudTransactionStatus, Never> {
+    $cloudTransactionStatus.eraseToAnyPublisher()
+  }
+}
 
 @MainActor
 class StatusViewModel: ObservableObject {
-  enum Status {
-    case ok
-    case fetching
-    case error(LocalizedError)
-  }
+  @Published private(set) var status: Store.CloudTransactionStatus = .idle
   
-  init(status: Status) {
-    self.status = status
-  }
+  private var statusCancellable: AnyCancellable?
   
-  @Published var status = Status.ok
+  init(statusProvider: CloudTransactionStatusProvider) {
+    Task {
+      statusCancellable = await statusProvider.transactionPublisher
+        .receive(on: DispatchQueue.main)
+        .sink(
+          receiveValue: { [weak self] newStatus in
+            self?.status = newStatus
+          }
+        )
+    }
+  }
 }

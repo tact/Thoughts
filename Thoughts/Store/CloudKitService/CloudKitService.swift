@@ -62,6 +62,8 @@ actor CloudKitService {
     syncService: SyncService,
     preferencesService: PreferencesServiceType
   ) {
+    print("Real CloudKitService init")
+    
     self.syncService = syncService
     self.preferencesService = preferencesService
 
@@ -85,6 +87,8 @@ actor CloudKitService {
   }
   
   private func createZoneAndSubscriptionIfNeeded() async {
+    print("createZoneAndSubscriptionIfNeeded")
+    
     guard await !preferencesService.cloudKitSetupDone else {
       logger.debug("Previously already created zone and subscription. Not doing again.")
       return
@@ -111,6 +115,9 @@ actor CloudKitService {
     let notificationInfo = CKSubscription.NotificationInfo()
     notificationInfo.shouldSendContentAvailable = true
     subscription.notificationInfo = notificationInfo
+    
+//    print("modifying subscriptions")
+//    Thread.callStackSymbols.forEach{print($0)}
     
     let subscriptionResult = await api.modifySubscriptions(
       saving: [subscription],
