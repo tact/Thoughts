@@ -53,7 +53,7 @@ actor Store {
     case fetching
     
     /// There was an error fetching or syncing.
-    case error(LocalizedError)
+    case error(CloudKitServiceError)
   }
   
   /// Current in-memory source of truth for the state of the model,
@@ -159,7 +159,7 @@ actor Store {
     case .noData, .newData:
       cloudTransactionStatus = .idle
     case .failed(let error):
-      cloudTransactionStatus = .error(error)
+      cloudTransactionStatus = .error(.canopy(error))
     }
     return result
   }
@@ -187,11 +187,7 @@ actor Store {
         cloudTransactionStatus = .idle
       case .failure(let error):
         logger.error("Could not save thought to CloudKit: \(error)")
-        if let localizedError = error as? LocalizedError {
-          cloudTransactionStatus = .error(localizedError)
-        } else {
-          cloudTransactionStatus = .idle
-        }
+        cloudTransactionStatus = .error(error)
       }
     case .modifyExistingThought(thought: let thought, title: let title, body: let body):
       let updatedThought = Thought(
@@ -212,11 +208,7 @@ actor Store {
         cloudTransactionStatus = .idle
       case .failure(let error):
         logger.error("Could not save modified thought to CloudKit: \(error)")
-        if let localizedError = error as? LocalizedError {
-          cloudTransactionStatus = .error(localizedError)
-        } else {
-          cloudTransactionStatus = .idle
-        }
+        cloudTransactionStatus = .error(error)
       }
       
     case .delete(let thought):
@@ -248,7 +240,7 @@ actor Store {
         cloudTransactionStatus = .idle
       case .failed(let error):
         logger.debug("Ended refresh with error: \(error)")
-        cloudTransactionStatus = .error(error)
+        cloudTransactionStatus = .error(.canopy(error))
       }
     }
   }

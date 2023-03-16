@@ -1,3 +1,4 @@
+import Canopy
 import CloudKit
 import Foundation
 import ThoughtsTypes
@@ -9,7 +10,7 @@ import UIKit
 enum FetchCloudChangesResult {
   case newData
   case noData
-  case failed(LocalizedError)
+  case failed(CanopyError)
   
   #if os(iOS)
   var backgroundFetchResult: UIBackgroundFetchResult {
@@ -20,6 +21,36 @@ enum FetchCloudChangesResult {
     }
   }
   #endif
+}
+
+enum CloudKitServiceError: Error, LocalizedError {
+  case couldNotGetModifiedThought
+  case couldNotGetDeletedThoughtID
+  case couldNotGetUserRecordID
+  case canopy(CanopyError)
+  
+  var errorDescription: String? {
+    switch self {
+    case .couldNotGetModifiedThought: return "Could not get modified thought."
+    case .couldNotGetDeletedThoughtID: return "Could not get deleted thought ID."
+    case .couldNotGetUserRecordID: return "Could not get user record ID."
+    case .canopy(let canopyError): return canopyError.localizedDescription
+    }
+  }
+  
+  var failureReason: String? {
+    switch self {
+    case .canopy(let canopyError): return canopyError.failureReason
+    default: return "You might be offline or might not have iCloud account."
+    }
+  }
+  
+  var recoverySuggestion: String? {
+    switch self {
+    case .canopy(let canopyError): return canopyError.recoverySuggestion
+    default: return "Check your network connection and iCloud account."
+    }
+  }
 }
 
 /// One change made in CloudKit.
@@ -39,12 +70,12 @@ protocol CloudKitServiceType {
   ///
   /// Returns the thought that has been possibly augmented by CloudKit. E.g CloudKit
   /// adds `createdAt` and updates `modifiedAt` timestamps.
-  func saveThought(_ thought: Thought) async -> Result<Thought, Error>
+  func saveThought(_ thought: Thought) async -> Result<Thought, CloudKitServiceError>
   
   /// Delete a thought from CloudKit.
   ///
   /// If successful, returns the ID of the deleted thought.
-  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error>
+  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, CloudKitServiceError>
   
   /// Emit a collection of changes received from the cloud.
   var changes: AsyncStream<[CloudChange]> { get }
@@ -55,5 +86,5 @@ protocol CloudKitServiceType {
   
   func fetchChangesFromCloud() async -> FetchCloudChangesResult
   
-  func cloudKitUserRecordName() async -> Result<String, Error>
+  func cloudKitUserRecordName() async -> Result<String, CloudKitServiceError>
 }

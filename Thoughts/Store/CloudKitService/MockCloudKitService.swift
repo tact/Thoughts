@@ -17,11 +17,11 @@ struct MockCloudKitService: CloudKitServiceType {
     accountState = initialAccountState
   }
   
-  func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
+  func saveThought(_ thought: Thought) async -> Result<Thought, CloudKitServiceError> {
     .success(thought)
   }
 
-  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error> {
+  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, CloudKitServiceError> {
     .success(thought.id)
   }
   
@@ -37,7 +37,7 @@ struct MockCloudKitService: CloudKitServiceType {
     .noData
   }
   
-  func cloudKitUserRecordName() async -> Result<String, Error> {
+  func cloudKitUserRecordName() async -> Result<String, CloudKitServiceError> {
     .success(Self.mockUserRecordName)
   }
   

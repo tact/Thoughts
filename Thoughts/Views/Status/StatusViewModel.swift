@@ -1,3 +1,4 @@
+import Canopy
 import Combine
 import Foundation
 
@@ -16,6 +17,8 @@ class StatusViewModel: ObservableObject {
   @Published private(set) var status: Store.CloudTransactionStatus = .idle
   
   private var statusCancellable: AnyCancellable?
+  private(set) var error: CloudKitServiceError?
+  @Published var showErrorAlert = false
   
   init(statusProvider: CloudTransactionStatusProvider) {
     Task {
@@ -27,5 +30,10 @@ class StatusViewModel: ObservableObject {
           }
         )
     }
+  }
+  
+  func showError(_ error: CloudKitServiceError) {
+    self.error = error
+    self.showErrorAlert = true
   }
 }

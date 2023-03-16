@@ -34,8 +34,31 @@ struct StatusView: View {
         Text("Saving…")
       }
       .padding()
-    case .error:
-      Text("Error state")
+    case .error(let error):
+      Button(
+        action: {
+          viewModel.showError(error)
+        },
+        label: {
+          HStack(spacing: 10) {
+            Image(systemName: "exclamationmark.circle")
+              .symbolRenderingMode(.multicolor)
+            Text("Error state")
+              .foregroundColor(.red)
+          }
+          .padding(8)
+          .background(Capsule().fill(Color(.systemBackground)))
+          .padding()
+        }
+      )
+      .buttonStyle(PlainButtonStyle())
+      .alert(
+        isPresented: $viewModel.showErrorAlert,
+        error: viewModel.error,
+        actions: { _ in }, message: { error in
+          Text("\(error.failureReason ?? "?")\n\n\(error.recoverySuggestion ?? "?")")
+        }
+      )
     }
   }
 }
@@ -43,6 +66,7 @@ struct StatusView: View {
 #if DEBUG
 import Combine
 import Canopy
+import CloudKit
 
 struct StatusView_Previews: PreviewProvider {
   struct PreviewStatusProvider: CloudTransactionStatusProvider {
@@ -92,6 +116,23 @@ struct StatusView_Previews: PreviewProvider {
         )
       }
       .previewDisplayName("Saving")
+    
+    Rectangle()
+      .fill(Color.gray.opacity(0.2))
+      .overlay(alignment: .bottomLeading) {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            status: .error(
+              .canopy(.ckRecordError(
+                .init(
+                  from: CKError(CKError.Code.badContainer)
+                ))
+              )
+            )
+          )
+        )
+      }
+      .previewDisplayName("Error")
   }
 }
 #endif

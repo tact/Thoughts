@@ -161,11 +161,6 @@ actor CloudKitService {
   }
 }
 
-enum CloudKitServiceError: Error {
-  case couldNotGetModifiedThought
-  case couldNotGetDeletedThoughtID
-  case couldNotGetUserRecordID
-}
 
 
 
@@ -173,7 +168,7 @@ extension CloudKitService: CloudKitServiceType {
   
   nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
   
-  func saveThought(_ thought: Thought) async -> Result<Thought, Error> {
+  func saveThought(_ thought: Thought) async -> Result<Thought, CloudKitServiceError> {
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: [Self.ckRecord(for: thought)],
@@ -189,11 +184,11 @@ extension CloudKitService: CloudKitServiceType {
         return .failure(CloudKitServiceError.couldNotGetModifiedThought)
       }
     case .failure(let error):
-      return .failure(error)
+      return .failure(.canopy(.ckRecordError(error)))
     }
   }
   
-  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, Error> {
+  func deleteThought(_ thought: Thought) async -> Result<Thought.ID, CloudKitServiceError> {
     let api = syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: nil,
@@ -211,7 +206,7 @@ extension CloudKitService: CloudKitServiceType {
         return .failure(CloudKitServiceError.couldNotGetDeletedThoughtID)
       }
     case .failure(let error):
-      return .failure(error)
+      return .failure(.canopy(.ckRecordError(error)))
     }
   }
   
@@ -269,15 +264,15 @@ extension CloudKitService: CloudKitServiceType {
   }
   
   /// Fetch current user’s CloudKit record name.
-  func cloudKitUserRecordName() async -> Result<String, Error> {
+  func cloudKitUserRecordName() async -> Result<String, CloudKitServiceError> {
     let result = await syncService.containerAPI().userRecordID
     switch result {
-    case .failure(let error): return .failure(error)
+    case .failure(let error): return .failure(.canopy(.ckRecordError(error)))
     case .success(let recordID):
       if let recordID {
         return .success(recordID.recordName)
       } else {
-        return .failure(CloudKitServiceError.couldNotGetUserRecordID)
+        return .failure(.couldNotGetUserRecordID)
       }
     }
   }
