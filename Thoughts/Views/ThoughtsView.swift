@@ -35,7 +35,9 @@ struct ThoughtsView: View {
           ToolbarItem {
             Button(
               action: {
-                viewModel.send(.addThought)
+                Task {
+                  await viewModel.send(.addThought)
+                }
               }, label: {
                 Label("Add", systemImage: "plus")
                   .help("Add a thought")
@@ -84,6 +86,9 @@ struct ThoughtsView: View {
             viewModel.delete(at: firstIndex)
           }
         }
+      }
+      .refreshable {
+        await viewModel.send(.refresh)
       }
       .animation(.default, value: viewModel.thoughts)
     }

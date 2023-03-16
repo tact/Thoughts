@@ -30,6 +30,11 @@ actor Store {
     /// or a CloudKit record name mismatch is detected (meaning that another iCloud
     /// user logged in, who shouldn’t see previous user’s content.)
     case clearLocalState
+    
+    /// Refresh data from the cloud.
+    ///
+    /// This could be from a user interaction, e.g pull down in the list.
+    case refresh
   }
   
   /// Indicate cloud transaction status in a form that’s suitable for presenting to the user.
@@ -205,6 +210,19 @@ actor Store {
       localCacheService.clear()
       await tokenStore.clear()
       _ = await cloudKitService.fetchChangesFromCloud()
+      
+    case .refresh:
+      logger.debug("Starting refresh")
+      cloudTransactionStatus = .fetching
+      let result = await cloudKitService.fetchChangesFromCloud()
+      switch result {
+      case .newData, .noData:
+        logger.debug("Ended refresh, no error.")
+        cloudTransactionStatus = .idle
+      case .failed(let error):
+        logger.debug("Ended refresh with error: \(error)")
+        cloudTransactionStatus = .error(error)
+      }
     }
   }
   

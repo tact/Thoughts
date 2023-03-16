@@ -6,6 +6,7 @@ import os.log
 
 enum ThoughtsViewAction {
   case addThought
+  case refresh
 }
 
 @MainActor
@@ -70,10 +71,12 @@ class ThoughtsViewModel: ObservableObject {
   }
   
   
-  func send(_ action: ThoughtsViewAction) {
+  func send(_ action: ThoughtsViewAction) async {
     switch action {
     case .addThought:
       navigationPath.append(.new)
+    case .refresh:
+      await store.send(.refresh)
     }
   }
   
