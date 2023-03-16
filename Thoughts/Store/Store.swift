@@ -70,7 +70,7 @@ actor Store {
   
   @Published private(set) var cloudKitAccountState: CloudKitAccountState = .provisionalAvailable
   
-  @Published private(set) var cloudTransactionStatus = CloudTransactionStatus.idle
+  @Published private(set) var cloudTransactionStatus: CloudTransactionStatus
   
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
@@ -100,13 +100,15 @@ actor Store {
     cloudKitService: CloudKitServiceType,
     preferencesService: PreferencesServiceType,
     tokenStore: TokenStore,
-    behavior: Behavior = .regular
+    behavior: Behavior = .regular,
+    cloudTransactionStatus: CloudTransactionStatus = .idle
   ) {
     self.localCacheService = localCacheService
     self.cloudKitService = cloudKitService
     self.preferencesService = preferencesService
     self.tokenStore = tokenStore
     self.behavior = behavior
+    self.cloudTransactionStatus = cloudTransactionStatus
     
     guard behavior == .regular else { return }
     

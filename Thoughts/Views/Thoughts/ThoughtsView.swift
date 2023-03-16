@@ -66,8 +66,7 @@ struct ThoughtsView: View {
   @ViewBuilder
   var accountAvailableContent: some View {
     if viewModel.thoughts.isEmpty {
-      Text("No thoughts. Tap + to add one.")
-      #warning("big add button here")
+      noThoughtsContent
     } else {
       List {
         ForEach(viewModel.thoughts) { thought in
@@ -92,6 +91,20 @@ struct ThoughtsView: View {
       }
       .animation(.default, value: viewModel.thoughts)
     }
+  }
+  
+  @ViewBuilder
+  var noThoughtsContent: some View {
+    VStack(spacing: 32) {
+      Image(systemName: "lightbulb")
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(maxWidth: 128)
+        .opacity(0.2)
+      Text("No thoughts.")
+      Text("Tap + to add a thought.")
+    }
+    .padding(.horizontal, 16)
   }
 }
 

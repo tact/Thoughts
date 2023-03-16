@@ -262,15 +262,10 @@
 		EA103184298E6695004819F5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				EA0B2070298E65CF00462577 /* ThoughtsView.swift */,
-				EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */,
-				EACA3F5729B6311B00390A91 /* ThoughtRowView.swift */,
-				EA103185298E679C004819F5 /* OneThoughtView.swift */,
-				EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */,
-				EAFD595729AF7B7B007B1E25 /* SettingsView.swift */,
-				EAFD595929AF7F79007B1E25 /* SettingsViewModel.swift */,
-				EA26321F29C0B92600D95CBE /* StatusView.swift */,
-				EA26322129C0B98400D95CBE /* StatusViewModel.swift */,
+				EAF9D00929C3106400B74B77 /* Thoughts */,
+				EAF9D00A29C3106800B74B77 /* One thought */,
+				EAF9D00C29C3107100B74B77 /* Status */,
+				EAF9D00B29C3106D00B74B77 /* Settings */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -353,6 +348,43 @@
 				EAF87FE229AA4245004133CF /* CloudKitAccountState.swift */,
 			);
 			path = ThoughtsTypes;
+			sourceTree = "<group>";
+		};
+		EAF9D00929C3106400B74B77 /* Thoughts */ = {
+			isa = PBXGroup;
+			children = (
+				EA0B2070298E65CF00462577 /* ThoughtsView.swift */,
+				EA10318F298E707C004819F5 /* ThoughtsViewModel.swift */,
+				EACA3F5729B6311B00390A91 /* ThoughtRowView.swift */,
+			);
+			path = Thoughts;
+			sourceTree = "<group>";
+		};
+		EAF9D00A29C3106800B74B77 /* One thought */ = {
+			isa = PBXGroup;
+			children = (
+				EA103185298E679C004819F5 /* OneThoughtView.swift */,
+				EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */,
+			);
+			path = "One thought";
+			sourceTree = "<group>";
+		};
+		EAF9D00B29C3106D00B74B77 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				EAFD595729AF7B7B007B1E25 /* SettingsView.swift */,
+				EAFD595929AF7F79007B1E25 /* SettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		EAF9D00C29C3107100B74B77 /* Status */ = {
+			isa = PBXGroup;
+			children = (
+				EA26321F29C0B92600D95CBE /* StatusView.swift */,
+				EA26322129C0B98400D95CBE /* StatusViewModel.swift */,
+			);
+			path = Status;
 			sourceTree = "<group>";
 		};
 		EAFD595429AF7A93007B1E25 /* PreferencesService */ = {
