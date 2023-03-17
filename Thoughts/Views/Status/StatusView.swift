@@ -85,6 +85,8 @@ struct StatusView_Previews: PreviewProvider {
         .eraseToAnyPublisher()
     }
   }
+  
+  #warning("Use a timer for animated demo that rotates between statuses for animation testing")
 
   static var previews: some View {
     Rectangle()
