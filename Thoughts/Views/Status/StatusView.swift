@@ -26,12 +26,16 @@ struct StatusView: View {
       HStack(spacing: 10) {
         ProgressView()
         Text("Fetching…")
+          .font(.caption)
+          .foregroundColor(Color.secondary)
       }
       .padding()
     case.saving:
       HStack(spacing: 10) {
         ProgressView()
         Text("Saving…")
+          .font(.caption)
+          .foregroundColor(Color.secondary)
       }
       .padding()
     case .error(let error):
@@ -43,11 +47,16 @@ struct StatusView: View {
           HStack(spacing: 10) {
             Image(systemName: "exclamationmark.circle")
               .symbolRenderingMode(.multicolor)
-            Text("Error state")
-              .foregroundColor(.red)
+            Text("Error talking to iCloud.")
+              .font(.caption)
+              .foregroundColor(Color.secondary)
           }
           .padding(8)
+          #if os(iOS)
           .background(Capsule().fill(Color(.systemBackground)))
+          #else
+          .background(Capsule().fill(Color(.white)))
+          #endif
           .padding()
         }
       )
@@ -123,10 +132,10 @@ struct StatusView_Previews: PreviewProvider {
         StatusView(
           statusProvider: PreviewStatusProvider(
             status: .error(
-              .canopy(.ckRecordError(
-                .init(
-                  from: CKError(CKError.Code.badContainer)
-                ))
+              .canopy(
+                .ckRecordError(
+                  .init(from: CKError(CKError.Code.badContainer))
+                )
               )
             )
           )
