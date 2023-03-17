@@ -35,15 +35,18 @@ struct StatusView: View {
     switch viewModel.status {
     case .idle: EmptyView()
     case .fetching:
-      HStack(spacing: 10) {
+      HStack(spacing: hStackSpacing) {
         ProgressView()
+        #if os(macOS)
+          .scaleEffect(x: 0.5, y: 0.5)
+        #endif
         Text("Fetching…")
           .font(.caption)
           .foregroundColor(Color.secondary)
       }
       .padding()
     case.saving:
-      HStack(spacing: 10) {
+      HStack(spacing: hStackSpacing) {
         ProgressView()
         Text("Saving…")
           .font(.caption)
@@ -56,7 +59,7 @@ struct StatusView: View {
           viewModel.showError(error)
         },
         label: {
-          HStack(spacing: 10) {
+          HStack(spacing: hStackSpacing) {
             Image(systemName: "exclamationmark.circle")
               .symbolRenderingMode(.multicolor)
             Text("Error talking to iCloud.")
@@ -77,10 +80,18 @@ struct StatusView: View {
         isPresented: $viewModel.showErrorAlert,
         error: viewModel.error,
         actions: { _ in }, message: { error in
-          Text("\(error.failureReason ?? "?")\n\n\(error.recoverySuggestion ?? "?")")
+          Text("\(error.recoverySuggestion ?? "?")")
         }
       )
     }
+  }
+  
+  var hStackSpacing: CGFloat {
+    #if os(iOS)
+    10
+    #else
+    0
+    #endif
   }
 }
 

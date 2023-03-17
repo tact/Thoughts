@@ -38,13 +38,6 @@ enum CloudKitServiceError: Error, LocalizedError, Equatable {
     }
   }
   
-  var failureReason: String? {
-    switch self {
-    case .canopy(let canopyError): return canopyError.failureReason
-    default: return "You might be offline or might not have iCloud account."
-    }
-  }
-  
   var recoverySuggestion: String? {
     switch self {
     case .canopy(let canopyError): return canopyError.recoverySuggestion
