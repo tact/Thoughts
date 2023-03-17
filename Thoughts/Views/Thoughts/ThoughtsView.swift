@@ -27,8 +27,8 @@ struct ThoughtsView: View {
   @ViewBuilder
   var content: some View {
     switch viewModel.accountState {
-    case .unknown: Text("Unknown account state")
-    case .noAccount: Text("No account available")
+    case .unknown: ProgressView()
+    case .noAccount: noICloudAccount
     case .available, .provisionalAvailable:
       accountAvailableContent
         .toolbar {
@@ -104,6 +104,24 @@ struct ThoughtsView: View {
         .opacity(0.2)
       Text("No thoughts.")
       Text("Tap + to add a thought.")
+        .foregroundColor(.secondary)
+      Spacer()
+    }
+    .frame(maxWidth: .infinity)
+  }
+  
+  @ViewBuilder
+  var noICloudAccount: some View {
+    VStack(spacing: 32) {
+      Spacer()
+      Image(systemName: "exclamationmark.icloud")
+        .resizable()
+        .aspectRatio(contentMode: .fit)
+        .frame(maxWidth: 128)
+        .opacity(0.2)
+      Text("No iCloud account.")
+      Text("Sign in to iCloud in your device settings.")
+        .foregroundColor(.secondary)
       Spacer()
     }
     .frame(maxWidth: .infinity)
