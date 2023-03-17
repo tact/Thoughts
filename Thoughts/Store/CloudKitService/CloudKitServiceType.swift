@@ -23,7 +23,7 @@ enum FetchCloudChangesResult {
   #endif
 }
 
-enum CloudKitServiceError: Error, LocalizedError {
+enum CloudKitServiceError: Error, LocalizedError, Equatable {
   case couldNotGetModifiedThought
   case couldNotGetDeletedThoughtID
   case couldNotGetUserRecordID

@@ -42,7 +42,7 @@ actor Store {
   /// This is not a comprehensive log. Latest changes will overwrite previous ones.
   /// The main use for this is to present the latest status to user in UI, and allow them
   /// to find out more.
-  enum CloudTransactionStatus {
+  enum CloudTransactionStatus: Equatable {
     /// No operations in progress.
     case idle
     

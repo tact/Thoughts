@@ -15,11 +15,23 @@ import ThoughtsTypes
 struct StatusView: View {
   @StateObject var viewModel: StatusViewModel
   
+  #warning("re-test this once there is simulation of errors")
+  
   init(statusProvider: CloudTransactionStatusProvider) {
-    self._viewModel = StateObject(wrappedValue: StatusViewModel(statusProvider: statusProvider))
+    self._viewModel = StateObject(
+      wrappedValue: StatusViewModel(
+        statusProvider: statusProvider
+      )
+    )
   }
   
   var body: some View {
+    content
+      .animation(.default, value: viewModel.status)
+  }
+  
+  @ViewBuilder
+  var content: some View {
     switch viewModel.status {
     case .idle: EmptyView()
     case .fetching:
@@ -78,15 +90,47 @@ import Canopy
 import CloudKit
 
 struct StatusView_Previews: PreviewProvider {
-  struct PreviewStatusProvider: CloudTransactionStatusProvider {
-    let status: Store.CloudTransactionStatus
+  class PreviewStatusProvider: CloudTransactionStatusProvider {
+    @Published var status = Store.CloudTransactionStatus.idle
+    
     var transactionPublisher: AnyPublisher<Store.CloudTransactionStatus, Never> {
-      Just(status)
-        .eraseToAnyPublisher()
+      $status.eraseToAnyPublisher()
+    }
+    
+    static var error = CloudKitServiceError.canopy(
+      .ckRecordError(
+        .init(from: CKError(CKError.Code.badContainer))
+      )
+    )
+    
+    static var thought = Thought(
+      id: .init(),
+      title: "Saving title",
+      body: "Saving body"
+    )
+    
+    private var timerCancellable: AnyCancellable?
+    
+    init(initialStatus: Store.CloudTransactionStatus = .idle, rotate: Bool = false) {
+      status = initialStatus
+      if rotate {
+        // Rotates through the values, so you can see the transition animation in SwiftUI preview.
+        timerCancellable = Timer.publish(every: 2, on: .main, in: .common)
+          .autoconnect()
+          .sink(
+            receiveValue: { [weak self] _ in
+              switch self?.status {
+              case .idle: self?.status = .fetching
+              case .fetching: self?.status = .saving(Self.thought)
+              case .saving: self?.status = .error(Self.error)
+              case .error: self?.status = .idle
+              case .none: break
+              }
+            }
+          )
+      }
     }
   }
-  
-  #warning("Use a timer for animated demo that rotates between statuses for animation testing")
 
   static var previews: some View {
     Rectangle()
@@ -94,7 +138,7 @@ struct StatusView_Previews: PreviewProvider {
       .overlay(alignment: .bottomLeading) {
         StatusView(
           statusProvider: PreviewStatusProvider(
-            status: .idle
+            initialStatus: .idle
           )
         )
       }
@@ -105,7 +149,7 @@ struct StatusView_Previews: PreviewProvider {
       .overlay(alignment: .bottomLeading) {
         StatusView(
           statusProvider: PreviewStatusProvider(
-            status: .fetching
+            initialStatus: .fetching
           )
         )
       }
@@ -116,13 +160,7 @@ struct StatusView_Previews: PreviewProvider {
       .overlay(alignment: .bottomLeading) {
         StatusView(
           statusProvider: PreviewStatusProvider(
-            status: .saving(
-              Thought(
-                id: .init(),
-                title: "Saving title",
-                body: "Saving body"
-              )
-            )
+            initialStatus: .saving(PreviewStatusProvider.thought)
           )
         )
       }
@@ -133,17 +171,22 @@ struct StatusView_Previews: PreviewProvider {
       .overlay(alignment: .bottomLeading) {
         StatusView(
           statusProvider: PreviewStatusProvider(
-            status: .error(
-              .canopy(
-                .ckRecordError(
-                  .init(from: CKError(CKError.Code.badContainer))
-                )
-              )
-            )
+            initialStatus: .error(PreviewStatusProvider.error)
           )
         )
       }
       .previewDisplayName("Error")
+    
+    Rectangle()
+      .fill(Color.gray.opacity(0.2))
+      .overlay(alignment: .bottomLeading) {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            rotate: true
+          )
+        )
+      }
+      .previewDisplayName("Rotating status")
   }
 }
 #endif
