@@ -131,62 +131,60 @@ struct StatusView_Previews: PreviewProvider {
       }
     }
   }
+  
+  static func containedOverlay(overlay: () -> StatusView) -> some View {
+    Rectangle()
+      .fill(Color.gray.opacity(0.2))
+      .overlay(alignment: .bottomLeading) {
+        overlay()
+      }
+  }
 
   static var previews: some View {
-    Rectangle()
-      .fill(Color.gray.opacity(0.2))
-      .overlay(alignment: .bottomLeading) {
-        StatusView(
-          statusProvider: PreviewStatusProvider(
-            initialStatus: .idle
-          )
+    containedOverlay {
+      StatusView(
+        statusProvider: PreviewStatusProvider(
+          initialStatus: .idle
         )
-      }
-      .previewDisplayName("Idle")
+      )
+    }
+   .previewDisplayName("Idle")
 
-    Rectangle()
-      .fill(Color.gray.opacity(0.2))
-      .overlay(alignment: .bottomLeading) {
-        StatusView(
-          statusProvider: PreviewStatusProvider(
-            initialStatus: .fetching
-          )
+    containedOverlay {
+      StatusView(
+        statusProvider: PreviewStatusProvider(
+          initialStatus: .fetching
         )
-      }
-      .previewDisplayName("Fetching")
+      )
+    }
+    .previewDisplayName("Fetching")
 
-    Rectangle()
-      .fill(Color.gray.opacity(0.2))
-      .overlay(alignment: .bottomLeading) {
-        StatusView(
-          statusProvider: PreviewStatusProvider(
-            initialStatus: .saving(PreviewStatusProvider.thought)
-          )
+    containedOverlay {
+      StatusView(
+        statusProvider: PreviewStatusProvider(
+          initialStatus: .saving(PreviewStatusProvider.thought)
         )
-      }
-      .previewDisplayName("Saving")
+      )
+    }
+    .previewDisplayName("Saving")
     
-    Rectangle()
-      .fill(Color.gray.opacity(0.2))
-      .overlay(alignment: .bottomLeading) {
-        StatusView(
-          statusProvider: PreviewStatusProvider(
-            initialStatus: .error(PreviewStatusProvider.error)
-          )
+    containedOverlay {
+      StatusView(
+        statusProvider: PreviewStatusProvider(
+          initialStatus: .error(PreviewStatusProvider.error)
         )
-      }
-      .previewDisplayName("Error")
-    
-    Rectangle()
-      .fill(Color.gray.opacity(0.2))
-      .overlay(alignment: .bottomLeading) {
-        StatusView(
-          statusProvider: PreviewStatusProvider(
-            rotate: true
-          )
+      )
+    }
+    .previewDisplayName("Error")
+
+    containedOverlay {
+      StatusView(
+        statusProvider: PreviewStatusProvider(
+          rotate: true
         )
-      }
-      .previewDisplayName("Rotating status")
+      )
+    }
+    .previewDisplayName("Rotating status")
   }
 }
 #endif
