@@ -7,7 +7,7 @@ import ThoughtsTypes
 import UIKit
 #endif
 
-enum FetchCloudChangesResult {
+enum FetchCloudChangesResult: Equatable {
   case newData
   case noData
   case failed(CanopyError)

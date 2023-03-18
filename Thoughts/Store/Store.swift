@@ -152,7 +152,8 @@ actor Store {
     await cloudKitService.ingestRemoteNotification(withUserInfo: userInfo)
   }
   
-  private func fetchChangesFromCloud() async -> FetchCloudChangesResult {
+  #warning("this should be private? get changes only with sending action?")
+  func fetchChangesFromCloud() async -> FetchCloudChangesResult {
     cloudTransactionStatus = .fetching
     let result = await cloudKitService.fetchChangesFromCloud()
     switch result {

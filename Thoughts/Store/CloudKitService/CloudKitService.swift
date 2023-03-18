@@ -14,7 +14,7 @@ struct ThoughtsSyncSettings: SyncSettings {
 
 actor CloudKitService {
 
-  let syncService: SyncService
+  let syncService: CanopyType
   let preferencesService: PreferencesServiceType
   
   private let logger = Logger(subsystem: "Thoughts", category: "CloudKitService")
@@ -28,10 +28,8 @@ actor CloudKitService {
     tokenStore: TokenStore
   ) -> CloudKitService {
     CloudKitService(
-      syncService: CloudKitSyncService(
-        ThoughtsSyncSettings(),
-        cloudKitContainerIdentifier: "iCloud.com.justtact.Thoughts",
-        tokenStore: tokenStore
+      syncService: Canopy(
+        tokenStoreProvider: { tokenStore }
       ),
       preferencesService: preferencesService
     )
@@ -59,7 +57,7 @@ actor CloudKitService {
   #endif
   
   init(
-    syncService: SyncService,
+    syncService: CanopyType,
     preferencesService: PreferencesServiceType
   ) {
     print("Real CloudKitService init")
@@ -97,7 +95,7 @@ actor CloudKitService {
     // Create CloudKit zone.
     
     let zoneCreatedSuccessfully: Bool
-    let api = syncService.api(usingDatabaseScope: .private)
+    let api = await syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyZones(saving: [Self.thoughtsZone], deleting: nil, qualityOfService: .default)
     switch result {
     case .success:
@@ -169,7 +167,7 @@ extension CloudKitService: CloudKitServiceType {
   nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
   
   func saveThought(_ thought: Thought) async -> Result<Thought, CloudKitServiceError> {
-    let api = syncService.api(usingDatabaseScope: .private)
+    let api = await syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: [Self.ckRecord(for: thought)],
       deleting: nil,
@@ -189,7 +187,7 @@ extension CloudKitService: CloudKitServiceType {
   }
   
   func deleteThought(_ thought: Thought) async -> Result<Thought.ID, CloudKitServiceError> {
-    let api = syncService.api(usingDatabaseScope: .private)
+    let api = await syncService.api(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: nil,
       deleting: [Self.ckRecord(for: thought).recordID],
@@ -211,7 +209,7 @@ extension CloudKitService: CloudKitServiceType {
   }
   
   func accountStateStream() async -> CloudKitAccountStateSequence {
-    let containerAPI = syncService.containerAPI()
+    let containerAPI = await syncService.containerAPI()
     // Don’t handle the unlikely case where getting the account stream is an error - crash in that case
     let stream = try! await containerAPI.accountStatusStream.get()
     
@@ -220,7 +218,7 @@ extension CloudKitService: CloudKitServiceType {
   
   /// Fetch set of changes
   func fetchChangesFromCloud() async -> FetchCloudChangesResult {
-    let api = syncService.api(usingDatabaseScope: .private)
+    let api = await syncService.api(usingDatabaseScope: .private)
     let databaseChanges = await api.fetchDatabaseChanges(qualityOfService: .default)
     
     let changedRecordZoneIDs: [CKRecordZone.ID]
