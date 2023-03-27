@@ -1,3 +1,5 @@
+import Canopy
+
 /// Store user preferences and settings on this device.
 ///
 /// This stores local state of the user, except CloudKit tokens which are managed by
@@ -21,6 +23,14 @@ protocol PreferencesServiceType {
   
   func setCloudKitUserRecordName(_ recordName: String?) async
   
+  var simulateModifyFailure: Bool { get async }
+  func setSimulateModifyFailure(_ simulateModifyFailure: Bool) async
+  
+  var simulateFetchFailure: Bool { get async }
+  func setSimulateFetchFailure(_ simulatFetchFailure: Bool) async
+  
+  var canopySettings: CanopySettings { get async }
+  
   /// Clear the preferences and start from fresh state.
   func clear() async
 }
@@ -28,10 +38,22 @@ protocol PreferencesServiceType {
 actor TestPreferencesService: PreferencesServiceType {
   var cloudKitSetupDone: Bool
   var cloudKitUserRecordName: String?
+  var simulateModifyFailure: Bool
+  var simulateFetchFailure: Bool
+  var autoRetryForRetriableErrors: Bool
   
-  init(cloudKitSetupDone: Bool = false, cloudKitUserRecordName: String? = nil) {
+  init(
+    cloudKitSetupDone: Bool = false,
+    cloudKitUserRecordName: String? = nil,
+    simulateModifyFailure: Bool = false,
+    simulateFetchFailure: Bool = false,
+    autoRetryForRetriableErrors: Bool = true
+  ) {
     self.cloudKitSetupDone = cloudKitSetupDone
     self.cloudKitUserRecordName = cloudKitUserRecordName
+    self.simulateModifyFailure = simulateModifyFailure
+    self.simulateFetchFailure = simulateFetchFailure
+    self.autoRetryForRetriableErrors = autoRetryForRetriableErrors
   }
   
   func setCloudKitSetupDone(_ done: Bool) async {
@@ -40,6 +62,20 @@ actor TestPreferencesService: PreferencesServiceType {
   
   func setCloudKitUserRecordName(_ recordName: String?) async {
     self.cloudKitUserRecordName = recordName
+  }
+  
+  func setSimulateModifyFailure(_ simulateModifyFailure: Bool) async {
+    self.simulateModifyFailure = simulateModifyFailure
+  }
+  
+  func setSimulateFetchFailure(_ simulatFetchFailure: Bool) async {
+    self.simulateFetchFailure = simulatFetchFailure
+  }
+  
+  var canopySettings: CanopySettings {
+    .init(
+      autoRetryForRetriableErrors: autoRetryForRetriableErrors
+    )
   }
   
   func clear() {}

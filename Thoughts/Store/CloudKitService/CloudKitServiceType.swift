@@ -3,7 +3,7 @@ import CloudKit
 import Foundation
 import ThoughtsTypes
 
-#if os(iOS)
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -12,7 +12,7 @@ enum FetchCloudChangesResult: Equatable {
   case noData
   case failed(CanopyError)
   
-  #if os(iOS)
+  #if canImport(UIKit)
   var backgroundFetchResult: UIBackgroundFetchResult {
     switch self {
     case .newData: return .newData

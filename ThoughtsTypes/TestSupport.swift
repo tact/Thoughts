@@ -34,18 +34,28 @@ public enum TestSupport {
     }
   }
   
+  public struct MockUUIDServiceContent: Codable {
+    public let uuids: [UUID]
+    public init(uuids: [UUID]) {
+      self.uuids = uuids
+    }
+  }
+  
   public struct MockStore: Codable {
     public let mockLocalCacheServiceContent: MockLocalCacheServiceContent
     public let mockCloudKitServiceContent: MockCloudKitServiceContent
     public let mockPreferencesServiceContent: MockPreferencesServiceContent
+    public let mockUUIDServiceContent: MockUUIDServiceContent
     public init(
       mockLocalCacheServiceContent: MockLocalCacheServiceContent,
       mockCloudKitServiceContent: MockCloudKitServiceContent,
-      mockPreferencesServiceContent: MockPreferencesServiceContent
+      mockPreferencesServiceContent: MockPreferencesServiceContent,
+      mockUUIDServiceContent: MockUUIDServiceContent
     ) {
       self.mockLocalCacheServiceContent = mockLocalCacheServiceContent
       self.mockCloudKitServiceContent = mockCloudKitServiceContent
       self.mockPreferencesServiceContent = mockPreferencesServiceContent
+      self.mockUUIDServiceContent = mockUUIDServiceContent
     }
   }
 }

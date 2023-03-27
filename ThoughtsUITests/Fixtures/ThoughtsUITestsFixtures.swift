@@ -3,13 +3,13 @@ import CloudKit
 import ThoughtsTypes
 
 extension ThoughtsUITests {
+  static var mockUUIDs: [UUID] = [UUID()]
+  
   static var blankAppMockStore: TestSupport.MockStore {
     .init(
       mockLocalCacheServiceContent: .init(thoughts: []),
       mockCloudKitServiceContent: .init(
         containerOperationResults: [
-          .accountStatus(.init(status: .available, error: nil)),
-          .accountStatus(.init(status: .available, error: nil)),
           .accountStatus(.init(status: .available, error: nil)),
           .userRecordID(.init(userRecordID: .init(recordName: "blankTestUserRecordName")))
         ],
@@ -47,7 +47,8 @@ extension ThoughtsUITests {
           )
         ]
       ),
-      mockPreferencesServiceContent: .init(cloudKitSetupDone: false, cloudKitUserRecordName: nil)
+      mockPreferencesServiceContent: .init(cloudKitSetupDone: false, cloudKitUserRecordName: nil),
+      mockUUIDServiceContent: .init(uuids: [])
     )
   }
   
@@ -67,8 +68,6 @@ extension ThoughtsUITests {
       mockCloudKitServiceContent: .init(
         containerOperationResults: [
           .userRecordID(.init(userRecordID: .init(recordName: "TestUserRecordName"))),
-          .accountStatus(.init(status: .available, error: nil)),
-          .accountStatus(.init(status: .available, error: nil)),
           .accountStatus(.init(status: .available, error: nil))
         ],
         privateDatabaseOperationResults: [
@@ -78,7 +77,8 @@ extension ThoughtsUITests {
       mockPreferencesServiceContent: .init(
         cloudKitSetupDone: true,
         cloudKitUserRecordName: "TestUserRecordName"
-      )
+      ),
+      mockUUIDServiceContent: .init(uuids: [])
     )
   }
   
@@ -136,7 +136,72 @@ extension ThoughtsUITests {
       mockPreferencesServiceContent: .init(
         cloudKitSetupDone: true,
         cloudKitUserRecordName: "TestUserRecordName"
-      )
+      ),
+      mockUUIDServiceContent: .init(uuids: [])
+    )
+  }
+  
+  static var addThoughtToBlankAppMockStore: TestSupport.MockStore {
+    let savedRecordID = CKRecord.ID(recordName: mockUUIDs[0].uuidString)
+    let savedRecord = CKRecord(recordType: "Thought", recordID: savedRecordID)
+    savedRecord.encryptedValues["title"] = "New title"
+    savedRecord.encryptedValues["body"] = "New body"
+    savedRecord[MockCKRecord.testingCreatedAtKey] = ISO8601DateFormatter().date(from: "2023-03-01T10:00:00Z00:00")
+    savedRecord[MockCKRecord.testingModifiedAtKey] = ISO8601DateFormatter().date(from: "2023-03-02T10:00:00Z00:00")
+    return .init(
+      mockLocalCacheServiceContent: .init(thoughts: []),
+      mockCloudKitServiceContent: .init(
+        containerOperationResults: [
+          .accountStatus(.init(status: .available, error: nil)),
+          .userRecordID(.init(userRecordID: .init(recordName: "blankTestUserRecordName")))
+        ],
+        privateDatabaseOperationResults: [
+          .modifyZones(
+            .init(
+              savedZoneResults: [
+                .init(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName), result: .success(.init(zoneID: .init(zoneName: "Thoughts", ownerName: CKCurrentUserDefaultName))))
+              ],
+              deletedZoneIDResults: [],
+              modifyZonesResult: .init(
+                result: .success(())
+              )
+            )
+          ),
+          .modifySubscriptions(
+            .init(
+              savedSubscriptionResults: [
+                .init(
+                  subscriptionID: "Thoughts",
+                  result: .success(CKDatabaseSubscription(subscriptionID: "Thoughts"))
+                )
+              ],
+              deletedSubscriptionIDResults: [],
+              modifySubscriptionsResult: .init(result: .success(()))
+            )
+          ),
+          .fetchDatabaseChanges(
+            .init(
+              changedRecordZoneIDs: [],
+              deletedRecordZoneIDs: [],
+              purgedRecordZoneIDs: [],
+              fetchDatabaseChangesResult: .success
+            )
+          ),
+          .modify(
+            .init(
+              savedRecordResults: [
+                .init(recordID: savedRecordID, result: .success(savedRecord))
+              ],
+              deletedRecordIDResults: [],
+              modifyResult: .init(
+                result: .success(())
+              )
+            )
+          )
+        ]
+      ),
+      mockPreferencesServiceContent: .init(cloudKitSetupDone: false, cloudKitUserRecordName: nil),
+      mockUUIDServiceContent: .init(uuids: mockUUIDs)
     )
   }
 }

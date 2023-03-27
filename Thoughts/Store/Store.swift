@@ -3,6 +3,7 @@ import Foundation
 import IdentifiedCollections
 import os.log
 import ThoughtsTypes
+import Semaphore
 
 actor Store {
 
@@ -20,7 +21,7 @@ actor Store {
     
     /// User indicated to update an existing thought with the indicated content.
     case modifyExistingThought(thought: Thought, title: String, body: String)
-    
+         
     /// User indicated to delete this thought.
     case delete(Thought)
     
@@ -35,6 +36,16 @@ actor Store {
     ///
     /// This could be from a user interaction, e.g pull down in the list.
     case refresh
+    
+    /// Simulate send failure.
+    ///
+    /// This instructs the system to treat all saving to CloudKit as failed.
+    case simulateSendFailure(Bool)
+    
+    /// Simulate fetch failure
+    ///
+    /// This instructs the system to treat all change fetching as failed.
+    case simulateFetchFailure(Bool)
   }
   
   /// Indicate cloud transaction status in a form that’s suitable for presenting to the user.
@@ -72,6 +83,10 @@ actor Store {
   
   @Published private(set) var cloudTransactionStatus: CloudTransactionStatus = .idle
   
+  /// The semaphore makes sure that only one state-modifying operation is in progress at a time.
+  /// This involves the initial bootstrap function, as well as action handling.
+  private let semaphore = AsyncSemaphore(value: 1)
+  
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
   #if DEBUG
@@ -92,25 +107,32 @@ actor Store {
   private let localCacheService: LocalCacheServiceType
   private let cloudKitService: CloudKitServiceType
   private let preferencesService: PreferencesServiceType
-  private let tokenStore: TokenStore
+  private let tokenStore: TokenStoreType
+  private let uuidService: UUIDServiceType
   private let behavior: Behavior
   
   init(
     localCacheService: LocalCacheServiceType,
     cloudKitService: CloudKitServiceType,
     preferencesService: PreferencesServiceType,
-    tokenStore: TokenStore,
+    tokenStore: TokenStoreType,
     behavior: Behavior = .regular,
-    cloudTransactionStatus: CloudTransactionStatus = .idle
+    cloudTransactionStatus: CloudTransactionStatus = .idle,
+    uuidService: UUIDServiceType = UUIDService()
   ) {
     self.localCacheService = localCacheService
     self.cloudKitService = cloudKitService
     self.preferencesService = preferencesService
     self.tokenStore = tokenStore
     self.behavior = behavior
+    self.uuidService = uuidService
     
     guard behavior == .regular else { return }
 
+    Task {
+      await bootstrap()
+    }
+    
     Task {
       await setInitialCloudTransactionStatus(cloudTransactionStatus)
     }
@@ -125,11 +147,6 @@ actor Store {
     Task {
       // Task to load initial state and then apply changes from cloud.
       
-      // Get the initial state of thoughts from storage
-      await loadThoughtsFromLocalCache()
-
-      await verifyCloudKitUser()
-      
       // Stream the changes from cloud.
       // The stream is never closed and remains running
       // for the lifetime of the store.
@@ -139,57 +156,44 @@ actor Store {
     }
   }
   
-  func setInitialCloudTransactionStatus(_ status: CloudTransactionStatus) async {
-    print("Store \(Unmanaged.passUnretained(self).toOpaque()): Setting initial cloud transaction status: \(status)")
-    self.cloudTransactionStatus = status
-  }
-  
-  private func loadThoughtsFromLocalCache() async {
-    self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
-  }
-  
   func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult {
     await cloudKitService.ingestRemoteNotification(withUserInfo: userInfo)
   }
   
-  #warning("this should be private? get changes only with sending action?")
-  func fetchChangesFromCloud() async -> FetchCloudChangesResult {
-    cloudTransactionStatus = .fetching
-    let result = await cloudKitService.fetchChangesFromCloud()
-    switch result {
-    case .noData, .newData:
-      cloudTransactionStatus = .idle
-    case .failed(let error):
-      cloudTransactionStatus = .error(.canopy(error))
+  var simulateSendFailureEnabled: Bool {
+    get async {
+      await preferencesService.simulateModifyFailure
     }
-    return result
+  }
+  
+  var simulateFetchFailureEnabled: Bool {
+    get async {
+      await preferencesService.simulateFetchFailure
+    }
   }
     
+  /// Receive an action, and process it.
+  ///
+  /// Actions are processed serially, guarded by the semaphore.
   func send(_ action: Store.Action) async {
+    await semaphore.wait()
+    defer { semaphore.signal() }
+    
     switch action {
     case .saveNewThought(title: let title, body: let body):
+      print("save new thought")
+      let uuid = await uuidService.uuid
       let thought = Thought(
-        id: UUID(),
+        id: uuid,
         title: title,
         body: body
       )
-      cloudTransactionStatus = .saving(thought)
-      
-      #warning("fixme remove debugging")
-//      try? await Task.sleep(for: .seconds(3600))
-      
+      print("created new thought: \(thought)")
+      print("thoughts content before appending: \(thoughts)")
       thoughts.append(thought)
-      localCacheService.storeThoughts(thoughts.elements)
-      let storedThought = await cloudKitService.saveThought(thought)
-      switch storedThought {
-      case .success(let thought):
-        logger.debug("Saved new thought to CloudKit: \(thought)")
-        ingestChangesFromCloud([.modified(thought)])
-        cloudTransactionStatus = .idle
-      case .failure(let error):
-        logger.error("Could not save thought to CloudKit: \(error)")
-        cloudTransactionStatus = .error(error)
-      }
+      print("thoughts content after appending: \(thoughts)")
+      await saveThought(thought)
+      
     case .modifyExistingThought(thought: let thought, title: let title, body: let body):
       let updatedThought = Thought(
         id: thought.id,
@@ -198,19 +202,8 @@ actor Store {
         createdAt: thought.createdAt,
         modifiedAt: thought.modifiedAt
       )
-      cloudTransactionStatus = .saving(updatedThought)
       thoughts[id: thought.id] = updatedThought
-      localCacheService.storeThoughts(thoughts.elements)
-      let storedThought = await cloudKitService.saveThought(updatedThought)
-      switch storedThought {
-      case .success(let thought):
-        logger.debug("Saved modified thought to CloudKit: \(thought)")
-        ingestChangesFromCloud([.modified(thought)])
-        cloudTransactionStatus = .idle
-      case .failure(let error):
-        logger.error("Could not save modified thought to CloudKit: \(error)")
-        cloudTransactionStatus = .error(error)
-      }
+      await saveThought(updatedThought)
       
     case .delete(let thought):
       thoughts.remove(id: thought.id)
@@ -232,18 +225,72 @@ actor Store {
       _ = await cloudKitService.fetchChangesFromCloud()
       
     case .refresh:
-      logger.debug("Starting refresh")
-      cloudTransactionStatus = .fetching
-      let result = await cloudKitService.fetchChangesFromCloud()
-      switch result {
-      case .newData, .noData:
-        logger.debug("Ended refresh, no error.")
-        cloudTransactionStatus = .idle
-      case .failed(let error):
-        logger.debug("Ended refresh with error: \(error)")
-        cloudTransactionStatus = .error(.canopy(error))
-      }
+      _ = await fetchChangesFromCloud()
+      
+    case .simulateSendFailure(let simulate):
+      await preferencesService.setSimulateModifyFailure(simulate)
+      
+    case .simulateFetchFailure(let simulate):
+      await preferencesService.setSimulateFetchFailure(simulate)
     }
+  }
+}
+
+// Private functions, called only from sender and other public code above.
+extension Store {
+  /// Bootstrap the store state upon initialization.
+  ///
+  /// Load data from storage and verify the iCloud user.
+  private func bootstrap() async {
+    await semaphore.wait()
+    defer { semaphore.signal() }
+
+    await loadThoughtsFromLocalCache()
+    await verifyCloudKitUser()
+  }
+  
+  /// A thought object has been created and updated locally and is ready to be saved.
+  ///
+  /// This could be either a new or updated thought, doesn’t really matter, they behave the same.
+  /// It’s not meant to be called directly from outside: it should be called by the action handler.
+  private func saveThought(_ thought: Thought) async {
+    print("calling saveThought")
+    cloudTransactionStatus = .saving(thought)
+    localCacheService.storeThoughts(thoughts.elements)
+    let storedThought = await cloudKitService.saveThought(thought)
+    switch storedThought {
+    case .success(let thought):
+      logger.debug("Saved modified thought to CloudKit: \(thought)")
+      ingestChangesFromCloud([.modified(thought)])
+      cloudTransactionStatus = .idle
+    case .failure(let error):
+      logger.error("Could not save modified thought to CloudKit: \(error)")
+      cloudTransactionStatus = .error(error)
+    }
+  }
+  
+  private func fetchChangesFromCloud() async -> FetchCloudChangesResult {
+    // Slightly ghetto to do the waiting with a timer, but it will do for now.
+    // We wait for the initial CloudKit setup to be done, and check every 0.2 seconds.
+    // When it’s done, we do the initial pull from the cloud.
+    // This makes sure the initial pull is done on a new device, as well as
+    // when re-starting the app on a device where the setup is already done.
+    while await preferencesService.cloudKitSetupDone == false {
+      try? await Task.sleep(nanoseconds: UInt64(0.2 * Double(NSEC_PER_SEC)))
+    }
+    
+    logger.debug("Starting to fetch changes from cloud.")
+    cloudTransactionStatus = .fetching
+    let result = await cloudKitService.fetchChangesFromCloud()
+    switch result {
+    case .noData, .newData:
+      logger.debug("Fetched changes from cloud. No error.")
+      cloudTransactionStatus = .idle
+    case .failed(let error):
+      logger.debug("Error fetching changes from cloud: \(error)")
+      cloudTransactionStatus = .error(.canopy(error))
+    }
+    return result
   }
   
   /// Ingest a collection of changes from the cloud.
@@ -291,6 +338,12 @@ actor Store {
       await send(.clearLocalState)
     }
   }
+  
+  private func loadThoughtsFromLocalCache() async {
+    self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
+  }
+  
+  private func setInitialCloudTransactionStatus(_ status: CloudTransactionStatus) async {
+    self.cloudTransactionStatus = status
+  }
 }
-
-

@@ -35,7 +35,7 @@ struct StatusView: View {
     switch viewModel.status {
     case .idle: EmptyView()
     case .fetching:
-      HStack(spacing: hStackSpacing) {
+      HStack(spacing: progressHStackSpacing) {
         ProgressView()
         #if os(macOS)
           .scaleEffect(x: 0.5, y: 0.5)
@@ -46,8 +46,11 @@ struct StatusView: View {
       }
       .padding()
     case.saving:
-      HStack(spacing: hStackSpacing) {
+      HStack(spacing: progressHStackSpacing) {
         ProgressView()
+        #if os(macOS)
+          .scaleEffect(x: 0.5, y: 0.5)
+        #endif
         Text("Saving…")
           .font(.caption)
           .foregroundColor(Color.secondary)
@@ -59,7 +62,7 @@ struct StatusView: View {
           viewModel.showError(error)
         },
         label: {
-          HStack(spacing: hStackSpacing) {
+          HStack(spacing: 4) {
             Image(systemName: "exclamationmark.circle")
               .symbolRenderingMode(.multicolor)
             Text("Error talking to iCloud.")
@@ -86,7 +89,7 @@ struct StatusView: View {
     }
   }
   
-  var hStackSpacing: CGFloat {
+  var progressHStackSpacing: CGFloat {
     #if os(iOS)
     10
     #else

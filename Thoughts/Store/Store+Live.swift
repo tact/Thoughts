@@ -8,7 +8,8 @@ extension Store {
       localCacheService: LocalCacheService(),
       cloudKitService: CloudKitService.live(
         withPreferencesService: preferencesService,
-        tokenStore: tokenStore
+        tokenStore: tokenStore,
+        canopySettingsProvider: { preferencesService.canopySettings }
       ),
       preferencesService: preferencesService,
       tokenStore: tokenStore

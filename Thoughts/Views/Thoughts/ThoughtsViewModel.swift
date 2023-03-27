@@ -70,7 +70,6 @@ class ThoughtsViewModel: ObservableObject {
     }
   }
   
-  
   func send(_ action: ThoughtsViewAction) async {
     switch action {
     case .addThought:

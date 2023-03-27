@@ -29,7 +29,8 @@ final class ThoughtsUITests: XCTestCase {
   
   func test_blank_app() throws {
     let app = launchAppWithMockStore(ThoughtsUITests.blankAppMockStore)
-    XCTAssertTrue(app.staticTexts["No thoughts. Tap + to add one."].exists)
+    XCTAssertTrue(app.staticTexts["No thoughts."].exists)
+    XCTAssertTrue(app.staticTexts["Tap + to add a thought."].exists)
   }
   
   func test_with_some_local_thoughts() throws {
@@ -46,12 +47,32 @@ final class ThoughtsUITests: XCTestCase {
     app.navigationBars["Title from cloud"].buttons["Thoughts"].tap()
   }
   
-  func testLaunchPerformance() throws {
-    if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-      // This measures how long it takes to launch your application.
-      measure(metrics: [XCTApplicationLaunchMetric()]) {
-        let _ = launchAppWithMockStore(ThoughtsUITests.withSomeLocalThoughtsMockStore)
-      }
-    }
+  func test_add_thought() throws {
+    let app = launchAppWithMockStore(ThoughtsUITests.addThoughtToBlankAppMockStore)
+
+    app.navigationBars["Thoughts"]/*@START_MENU_TOKEN@*/.buttons["Add"]/*[[".otherElements[\"Add\"].buttons[\"Add\"]",".buttons[\"Add\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+    app.keys["N"].tap()
+    app.keys["e"].tap()
+    app.keys["w"].tap()
+    app.keys["space"].tap()
+    app.keys["b"].tap()
+    app.keys["o"].tap()
+    app.keys["d"].tap()
+    app.keys["y"].tap()
+    
+    app.textFields["Title (optional)"].tap()
+    app.keys["N"].tap()
+    app.keys["e"].tap()
+    app.keys["w"].tap()
+    app.keys["space"].tap()
+    app.keys["t"].tap()
+    app.keys["i"].tap()
+    app.keys["t"].tap()
+    app.keys["l"].tap()
+    app.keys["e"].tap()
+    app.navigationBars["Add thought"].buttons["Done"].tap()
+            
+    let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'New title'")
+    XCTAssertTrue(app.collectionViews.buttons.element(matching: buttonPredicate).exists)
   }
 }

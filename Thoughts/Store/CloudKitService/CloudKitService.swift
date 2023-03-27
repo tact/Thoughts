@@ -7,14 +7,9 @@ import ThoughtsTypes
 import CanopyTestTools
 #endif
 
-struct ThoughtsSyncSettings: SyncSettings {
-  var developerCausePostingToFail: Bool { false }
-  var developerAddFailureResponseDelay: Double { 0.0 }
-}
-
 actor CloudKitService {
 
-  let syncService: CanopyType
+  let canopy: CanopyType
   let preferencesService: PreferencesServiceType
   
   private let logger = Logger(subsystem: "Thoughts", category: "CloudKitService")
@@ -25,11 +20,13 @@ actor CloudKitService {
   
   static func live(
     withPreferencesService preferencesService: PreferencesServiceType,
-    tokenStore: TokenStore
+    tokenStore: TokenStoreType,
+    canopySettingsProvider: @escaping ()->CanopySettingsType
   ) -> CloudKitService {
     CloudKitService(
-      syncService: Canopy(
-        tokenStoreProvider: { tokenStore }
+      canopy: Canopy(
+        settings: canopySettingsProvider,
+        tokenStore: tokenStore
       ),
       preferencesService: preferencesService
     )
@@ -42,14 +39,15 @@ actor CloudKitService {
     preferencesService: PreferencesServiceType
   ) -> CloudKitService {
     CloudKitService(
-      syncService: MockSyncService(
+      canopy: MockCanopy(
         mockPrivateDatabase: MockDatabase(
           operationResults: privateDatabaseOperationResults,
           scope: .private
         ),
         mockContainer: MockCKContainer(
           operationResults: containerOperationResults
-        )
+        ),
+        settingsProvider: { await preferencesService.canopySettings }
       ),
       preferencesService: preferencesService
     )
@@ -57,12 +55,12 @@ actor CloudKitService {
   #endif
   
   init(
-    syncService: CanopyType,
+    canopy: CanopyType,
     preferencesService: PreferencesServiceType
   ) {
     print("Real CloudKitService init")
     
-    self.syncService = syncService
+    self.canopy = canopy
     self.preferencesService = preferencesService
 
     // Idea to capture and store the continuation from here:
@@ -74,13 +72,6 @@ actor CloudKitService {
     self.cloudChangeContinuation = capturedContinuation
     Task {
       await createZoneAndSubscriptionIfNeeded()
-
-      // Not sure why code from here on is run with Xcode 14.3.0 previews??? But above is not?
-      // Thread.callStackSymbols.forEach{print($0)}
-      
-      // Fetch initial set of changes from cloud when starting up.
-      #warning("Move this to Store.")
-      _ = await fetchChangesFromCloud()
     }
   }
   
@@ -95,7 +86,7 @@ actor CloudKitService {
     // Create CloudKit zone.
     
     let zoneCreatedSuccessfully: Bool
-    let api = await syncService.api(usingDatabaseScope: .private)
+    let api = await canopy.databaseAPI(usingDatabaseScope: .private)
     let result = await api.modifyZones(saving: [Self.thoughtsZone], deleting: nil, qualityOfService: .default)
     switch result {
     case .success:
@@ -113,9 +104,6 @@ actor CloudKitService {
     let notificationInfo = CKSubscription.NotificationInfo()
     notificationInfo.shouldSendContentAvailable = true
     subscription.notificationInfo = notificationInfo
-    
-//    print("modifying subscriptions")
-//    Thread.callStackSymbols.forEach{print($0)}
     
     let subscriptionResult = await api.modifySubscriptions(
       saving: [subscription],
@@ -167,7 +155,7 @@ extension CloudKitService: CloudKitServiceType {
   nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
   
   func saveThought(_ thought: Thought) async -> Result<Thought, CloudKitServiceError> {
-    let api = await syncService.api(usingDatabaseScope: .private)
+    let api = await canopy.databaseAPI(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: [Self.ckRecord(for: thought)],
       deleting: nil,
@@ -187,7 +175,7 @@ extension CloudKitService: CloudKitServiceType {
   }
   
   func deleteThought(_ thought: Thought) async -> Result<Thought.ID, CloudKitServiceError> {
-    let api = await syncService.api(usingDatabaseScope: .private)
+    let api = await canopy.databaseAPI(usingDatabaseScope: .private)
     let result = await api.modifyRecords(
       saving: nil,
       deleting: [Self.ckRecord(for: thought).recordID],
@@ -209,7 +197,7 @@ extension CloudKitService: CloudKitServiceType {
   }
   
   func accountStateStream() async -> CloudKitAccountStateSequence {
-    let containerAPI = await syncService.containerAPI()
+    let containerAPI = await canopy.containerAPI()
     // Don’t handle the unlikely case where getting the account stream is an error - crash in that case
     let stream = try! await containerAPI.accountStatusStream.get()
     
@@ -218,7 +206,7 @@ extension CloudKitService: CloudKitServiceType {
   
   /// Fetch set of changes
   func fetchChangesFromCloud() async -> FetchCloudChangesResult {
-    let api = await syncService.api(usingDatabaseScope: .private)
+    let api = await canopy.databaseAPI(usingDatabaseScope: .private)
     let databaseChanges = await api.fetchDatabaseChanges(qualityOfService: .default)
     
     let changedRecordZoneIDs: [CKRecordZone.ID]
@@ -263,7 +251,7 @@ extension CloudKitService: CloudKitServiceType {
   
   /// Fetch current user’s CloudKit record name.
   func cloudKitUserRecordName() async -> Result<String, CloudKitServiceError> {
-    let result = await syncService.containerAPI().userRecordID
+    let result = await canopy.containerAPI().userRecordID
     switch result {
     case .failure(let error): return .failure(.canopy(.ckRecordError(error)))
     case .success(let recordID):

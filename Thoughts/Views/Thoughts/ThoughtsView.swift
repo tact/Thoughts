@@ -22,6 +22,12 @@ struct ThoughtsView: View {
     .overlay(alignment: .bottomLeading) {
       StatusView(statusProvider: viewModel.store)
     }
+    .onAppear {
+      Task {
+        // Refresh the data when the view initially appears.
+        await viewModel.send(.refresh)
+      }
+    }
   }
   
   @ViewBuilder

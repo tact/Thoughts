@@ -7,7 +7,7 @@ import Foundation
 extension CloudKitService {
   static var accountAvailable: CloudKitService {
     CloudKitService(
-      syncService: MockSyncService(
+      canopy: MockCanopy(
         mockPrivateDatabase: MockDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
@@ -32,7 +32,7 @@ extension CloudKitService {
   
   static var populatedWithOneThought: CloudKitService {
     CloudKitService(
-      syncService: MockSyncService(
+      canopy: MockCanopy(
         mockPrivateDatabase: MockDatabase(
           operationResults: [
             .fetchDatabaseChanges(
@@ -75,7 +75,7 @@ extension CloudKitService {
   
   static var noAccountState: CloudKitService {
     CloudKitService(
-      syncService: MockSyncService(
+      canopy: MockCanopy(
         mockPrivateDatabase: MockDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
@@ -100,7 +100,7 @@ extension CloudKitService {
   
   static var unknownAccountState: CloudKitService {
     CloudKitService(
-      syncService: MockSyncService(
+      canopy: MockCanopy(
         mockPrivateDatabase: MockDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)

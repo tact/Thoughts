@@ -23,7 +23,8 @@ extension Store {
         preferencesService: preferencesService
       ),
       preferencesService: preferencesService,
-      tokenStore: TestTokenStore()
+      tokenStore: TestTokenStore(),
+      uuidService: MockUUIDService(uuids: mockStore.mockUUIDServiceContent.uuids)
     )
   }
 }

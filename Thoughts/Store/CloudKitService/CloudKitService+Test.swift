@@ -11,7 +11,7 @@ extension CloudKitService {
   /// where the app shouldn’t actually talk to any real services.
   static var blank: CloudKitService {
     CloudKitService(
-      syncService: MockSyncService(
+      canopy: MockCanopy(
         mockPrivateDatabase: MockDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)

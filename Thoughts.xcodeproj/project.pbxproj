@@ -25,7 +25,13 @@
 		EA26322029C0B92600D95CBE /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26321F29C0B92600D95CBE /* StatusView.swift */; };
 		EA26322229C0B98400D95CBE /* StatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26322129C0B98400D95CBE /* StatusViewModel.swift */; };
 		EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4279F329B3947E00BAE0CE /* Store+Live.swift */; };
+		EA56559829CF5733004C4B7B /* ThoughtsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA56559729CF5733004C4B7B /* ThoughtsViewModelTests.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
+		EA59E44E29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59E44D29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift */; };
+		EA59E45129CF2C770073648B /* UUIDServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59E45029CF2C770073648B /* UUIDServiceType.swift */; };
+		EA59E45329CF2D0D0073648B /* UUIDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59E45229CF2D0D0073648B /* UUIDService.swift */; };
+		EA59E45529CF2D5E0073648B /* MockUUIDService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59E45429CF2D5E0073648B /* MockUUIDService.swift */; };
+		EA59E45829CF3A8C0073648B /* StoreTests+Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59E45729CF3A8C0073648B /* StoreTests+Fixtures.swift */; };
 		EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */; };
 		EA6E1CB729AE639A009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CB629AE639A009195C6 /* CanopyTestTools */; };
 		EA6E1CBB29AE63B2009195C6 /* CanopyTestTools in Frameworks */ = {isa = PBXBuildFile; productRef = EA6E1CBA29AE63B2009195C6 /* CanopyTestTools */; };
@@ -117,7 +123,13 @@
 		EA26321F29C0B92600D95CBE /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		EA26322129C0B98400D95CBE /* StatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewModel.swift; sourceTree = "<group>"; };
 		EA4279F329B3947E00BAE0CE /* Store+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Live.swift"; sourceTree = "<group>"; };
+		EA56559729CF5733004C4B7B /* ThoughtsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModelTests.swift; sourceTree = "<group>"; };
 		EA588CEC29913EC000DBACAA /* Library */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Library; path = ../Tact/Library; sourceTree = "<group>"; };
+		EA59E44D29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUILaunchPerformanceTests.swift; sourceTree = "<group>"; };
+		EA59E45029CF2C770073648B /* UUIDServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDServiceType.swift; sourceTree = "<group>"; };
+		EA59E45229CF2D0D0073648B /* UUIDService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDService.swift; sourceTree = "<group>"; };
+		EA59E45429CF2D5E0073648B /* MockUUIDService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUUIDService.swift; sourceTree = "<group>"; };
+		EA59E45729CF3A8C0073648B /* StoreTests+Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StoreTests+Fixtures.swift"; sourceTree = "<group>"; };
 		EA5A949A29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsPreferencesService.swift; sourceTree = "<group>"; };
 		EA768BBD29A161D800C65A00 /* SharedAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedAppDelegate.swift; sourceTree = "<group>"; };
 		EA768BBF29A164CC00C65A00 /* Store+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Mock.swift"; sourceTree = "<group>"; };
@@ -223,7 +235,6 @@
 		EA0B206D298E65CF00462577 /* Thoughts */ = {
 			isa = PBXGroup;
 			children = (
-				EA5923FC29BF6174004188D0 /* Styling */,
 				EA768BC929A1779A00C65A00 /* App */,
 				EA103187298E6B3C004819F5 /* Store */,
 				EA103184298E6695004819F5 /* Views */,
@@ -246,7 +257,9 @@
 		EA0B207F298E65D000462577 /* ThoughtsTests */ = {
 			isa = PBXGroup;
 			children = (
+				EA59E45629CF3A7F0073648B /* Fixtures */,
 				EAB6B92F2991A032005DF614 /* StoreTests.swift */,
+				EA56559729CF5733004C4B7B /* ThoughtsViewModelTests.swift */,
 			);
 			path = ThoughtsTests;
 			sourceTree = "<group>";
@@ -257,6 +270,7 @@
 				EA768BC329A16E6000C65A00 /* Fixtures */,
 				EA0B208A298E65D000462577 /* ThoughtsUITests.swift */,
 				EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */,
+				EA59E44D29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift */,
 			);
 			path = ThoughtsUITests;
 			sourceTree = "<group>";
@@ -275,6 +289,7 @@
 		EA103187298E6B3C004819F5 /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				EA59E44F29CF2C680073648B /* UUIDService */,
 				EAFD595429AF7A93007B1E25 /* PreferencesService */,
 				EAB6B92829918EB7005DF614 /* CloudKitService */,
 				EA7D901929912DF100E1CCE3 /* LocalCacheService */,
@@ -293,11 +308,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		EA5923FC29BF6174004188D0 /* Styling */ = {
+		EA59E44F29CF2C680073648B /* UUIDService */ = {
 			isa = PBXGroup;
 			children = (
+				EA59E45029CF2C770073648B /* UUIDServiceType.swift */,
+				EA59E45229CF2D0D0073648B /* UUIDService.swift */,
+				EA59E45429CF2D5E0073648B /* MockUUIDService.swift */,
 			);
-			path = Styling;
+			path = UUIDService;
+			sourceTree = "<group>";
+		};
+		EA59E45629CF3A7F0073648B /* Fixtures */ = {
+			isa = PBXGroup;
+			children = (
+				EA59E45729CF3A8C0073648B /* StoreTests+Fixtures.swift */,
+			);
+			path = Fixtures;
 			sourceTree = "<group>";
 		};
 		EA768BC329A16E6000C65A00 /* Fixtures */ = {
@@ -593,6 +619,7 @@
 			files = (
 				EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */,
 				EAFD595629AF7AFB007B1E25 /* PreferencesServiceType.swift in Sources */,
+				EA59E45329CF2D0D0073648B /* UUIDService.swift in Sources */,
 				EA7D901B29912E0600E1CCE3 /* LocalCacheServiceType.swift in Sources */,
 				EA0B2071298E65CF00462577 /* ThoughtsView.swift in Sources */,
 				EA01123E2995220100AEEE55 /* macOSAppDelegate.swift in Sources */,
@@ -608,6 +635,7 @@
 				EA7D901F2991303F00E1CCE3 /* LocalCacheService.swift in Sources */,
 				EA26322029C0B92600D95CBE /* StatusView.swift in Sources */,
 				EAD69EAE29B9124600B53673 /* CloudKitService+Preview.swift in Sources */,
+				EA59E45529CF2D5E0073648B /* MockUUIDService.swift in Sources */,
 				EA768BC029A164CC00C65A00 /* Store+Mock.swift in Sources */,
 				EA103190298E707C004819F5 /* ThoughtsViewModel.swift in Sources */,
 				EA103186298E679C004819F5 /* OneThoughtView.swift in Sources */,
@@ -615,6 +643,7 @@
 				EAF9D01029C316C600B74B77 /* MockCloudKitService.swift in Sources */,
 				EAFD595829AF7B7B007B1E25 /* SettingsView.swift in Sources */,
 				EA10318B298E6B6B004819F5 /* OneThoughtViewModel.swift in Sources */,
+				EA59E45129CF2C770073648B /* UUIDServiceType.swift in Sources */,
 				EA103189298E6B45004819F5 /* Store.swift in Sources */,
 				EA5A949B29B36BAD0049CB07 /* UserDefaultsPreferencesService.swift in Sources */,
 				EA7D901D29912F0A00E1CCE3 /* MockLocalCacheService.swift in Sources */,
@@ -626,7 +655,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA56559829CF5733004C4B7B /* ThoughtsViewModelTests.swift in Sources */,
 				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
+				EA59E45829CF3A8C0073648B /* StoreTests+Fixtures.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,6 +666,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA0B208D298E65D000462577 /* ThoughtsUITestsLaunchTests.swift in Sources */,
+				EA59E44E29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift in Sources */,
 				EA048C4729B9C65800FAF487 /* ThoughtsUITestsFixtures.swift in Sources */,
 				EA0B208B298E65D000462577 /* ThoughtsUITests.swift in Sources */,
 			);
