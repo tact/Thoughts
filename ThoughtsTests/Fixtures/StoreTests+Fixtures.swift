@@ -25,7 +25,7 @@ extension StoreTests {
   static var testUserRecordName = "testUserRecordID"
   
   /// Initial mock operations to run at store startup.
-  static var initialContainerOperationResults: [MockCKContainer.OperationResult] = {
+  static var initialContainerOperationResults: [ReplayingMockCKContainer.OperationResult] = {
     [
       .accountStatus(.init(status: .available, error: nil)),
       .userRecordID(.init(userRecordID: .init(recordName: testUserRecordName)))
@@ -34,7 +34,7 @@ extension StoreTests {
   
   
   /// The operations performed from a blank state of the app.
-  static var initialPrivateDatabaseOperationResults: [MockDatabase.OperationResult] = {
+  static var initialPrivateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult] = {
     let zoneID = CKRecordZone.ID(zoneName: "Thoughts")
     let zone = CKRecordZone(zoneID: zoneID)
     let subscription = CKDatabaseSubscription(subscriptionID: "privateDatabase")
@@ -62,7 +62,7 @@ extension StoreTests {
   }()
   
   /// Initial operations performed by the store when the CloudKit setup is done and we have a subscription.
-  static var initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone: [MockDatabase.OperationResult] = {
+  static var initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone: [ReplayingMockCKDatabase.OperationResult] = {
     [
       
     ]

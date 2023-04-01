@@ -8,13 +8,13 @@ extension CloudKitService {
   static var accountAvailable: CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
-        mockPrivateDatabase: MockDatabase(
+        mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
           ],
           scope: .private
         ),
-        mockContainer: MockCKContainer(
+        mockContainer: ReplayingMockCKContainer(
           operationResults: [
             .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
             .accountStatus(.init(status: .available, error: nil)),
@@ -33,7 +33,7 @@ extension CloudKitService {
   static var populatedWithOneThought: CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
-        mockPrivateDatabase: MockDatabase(
+        mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(
               .init(
@@ -60,7 +60,7 @@ extension CloudKitService {
           ],
           scope: .private
         ),
-        mockContainer: MockCKContainer(
+        mockContainer: ReplayingMockCKContainer(
           operationResults: [
             .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
             .accountStatus(.init(status: .available, error: nil)),
@@ -76,13 +76,13 @@ extension CloudKitService {
   static var noAccountState: CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
-        mockPrivateDatabase: MockDatabase(
+        mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
           ],
           scope: .private
         ),
-        mockContainer: MockCKContainer(
+        mockContainer: ReplayingMockCKContainer(
           operationResults: [
             .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
             .accountStatus(.init(status: .noAccount, error: nil)),
@@ -101,13 +101,13 @@ extension CloudKitService {
   static var unknownAccountState: CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
-        mockPrivateDatabase: MockDatabase(
+        mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
           ],
           scope: .private
         ),
-        mockContainer: MockCKContainer(
+        mockContainer: ReplayingMockCKContainer(
           operationResults: [
             .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
             .accountStatus(.init(status: .couldNotDetermine, error: nil)),

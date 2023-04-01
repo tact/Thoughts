@@ -12,13 +12,13 @@ extension CloudKitService {
   static var blank: CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
-        mockPrivateDatabase: MockDatabase(
+        mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
           ],
           scope: .private
         ),
-        mockContainer: MockCKContainer(
+        mockContainer: ReplayingMockCKContainer(
           operationResults: [
           ]
         )

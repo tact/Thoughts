@@ -34,17 +34,17 @@ actor CloudKitService {
   
   #if DEBUG
   static func test(
-    containerOperationResults: [MockCKContainer.OperationResult],
-    privateDatabaseOperationResults: [MockDatabase.OperationResult],
+    containerOperationResults: [ReplayingMockCKContainer.OperationResult],
+    privateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult],
     preferencesService: PreferencesServiceType
   ) -> CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
-        mockPrivateDatabase: MockDatabase(
+        mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: privateDatabaseOperationResults,
           scope: .private
         ),
-        mockContainer: MockCKContainer(
+        mockContainer: ReplayingMockCKContainer(
           operationResults: containerOperationResults
         ),
         settingsProvider: { await preferencesService.canopySettings }
