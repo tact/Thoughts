@@ -113,14 +113,18 @@ struct OneThoughtView: View {
         Text(LocalizedStringKey(thought.body))
           .frame(maxWidth: .infinity, alignment: .leading)
           .onTapGesture {
-            viewModel.send(.editExisting(thought))
+            Task {
+              await viewModel.send(.editExisting(thought))
+            }
           }
       }
       .toolbar {
         ToolbarItem {
           Button(
             action: {
-              viewModel.send(.editExisting(thought))
+              Task {
+                await viewModel.send(.editExisting(thought))
+              }
             }, label: {
               Text("Edit")
                 .help("Edit")
@@ -151,7 +155,9 @@ struct OneThoughtView: View {
           ToolbarItem {
             Button(
               action: {
-                viewModel.send(.done)
+                Task {
+                  await viewModel.send(.done)
+                }
                 if viewModel.shouldDismissOnDone {
                   dismiss()
                 }

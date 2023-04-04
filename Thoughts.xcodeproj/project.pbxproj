@@ -25,6 +25,7 @@
 		EA26322029C0B92600D95CBE /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26321F29C0B92600D95CBE /* StatusView.swift */; };
 		EA26322229C0B98400D95CBE /* StatusViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26322129C0B98400D95CBE /* StatusViewModel.swift */; };
 		EA4279F429B3947E00BAE0CE /* Store+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4279F329B3947E00BAE0CE /* Store+Live.swift */; };
+		EA454AE329DC3FCA007D036A /* OneThoughtViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA454AE229DC3FCA007D036A /* OneThoughtViewModelTests.swift */; };
 		EA56559829CF5733004C4B7B /* ThoughtsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA56559729CF5733004C4B7B /* ThoughtsViewModelTests.swift */; };
 		EA588CEF29913ED400DBACAA /* Canopy in Frameworks */ = {isa = PBXBuildFile; productRef = EA588CEE29913ED400DBACAA /* Canopy */; };
 		EA59E44E29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA59E44D29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift */; };
@@ -123,6 +124,7 @@
 		EA26321F29C0B92600D95CBE /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		EA26322129C0B98400D95CBE /* StatusViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusViewModel.swift; sourceTree = "<group>"; };
 		EA4279F329B3947E00BAE0CE /* Store+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Live.swift"; sourceTree = "<group>"; };
+		EA454AE229DC3FCA007D036A /* OneThoughtViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModelTests.swift; sourceTree = "<group>"; };
 		EA56559729CF5733004C4B7B /* ThoughtsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsViewModelTests.swift; sourceTree = "<group>"; };
 		EA59E44D29CF28920073648B /* ThoughtsUILaunchPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUILaunchPerformanceTests.swift; sourceTree = "<group>"; };
 		EA59E45029CF2C770073648B /* UUIDServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UUIDServiceType.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				EA59E45629CF3A7F0073648B /* Fixtures */,
 				EAB6B92F2991A032005DF614 /* StoreTests.swift */,
 				EA56559729CF5733004C4B7B /* ThoughtsViewModelTests.swift */,
+				EA454AE229DC3FCA007D036A /* OneThoughtViewModelTests.swift */,
 			);
 			path = ThoughtsTests;
 			sourceTree = "<group>";
@@ -656,6 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA56559829CF5733004C4B7B /* ThoughtsViewModelTests.swift in Sources */,
+				EA454AE329DC3FCA007D036A /* OneThoughtViewModelTests.swift in Sources */,
 				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
 				EA59E45829CF3A8C0073648B /* StoreTests+Fixtures.swift in Sources */,
 			);
