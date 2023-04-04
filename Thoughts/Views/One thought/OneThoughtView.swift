@@ -181,8 +181,6 @@ struct PreviewWrapper: ViewModifier {
 
 struct OneThoughtView_Previews: PreviewProvider {
   static var previews: some View {
-    
-    
     let thought = Thought(
       id: UUID(),
       title: "A thought",
