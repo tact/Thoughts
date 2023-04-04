@@ -50,7 +50,9 @@ struct SettingsView: View {
       switch viewModel.state {
       case .regular:
         Button(action: {
-          viewModel.resetLocalCache()
+          Task {
+            await viewModel.resetLocalCache()
+          }
         }, label: {
           Text("Reset local cache")
         })

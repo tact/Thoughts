@@ -48,14 +48,14 @@ class SettingsViewModel: ObservableObject {
     }
   }
   
-  func resetLocalCache() {
+  func resetLocalCache() async {
     logger.debug("User requested to reset local cache.")
-    state = .clearing
-    Task {
-      await store.send(.clearLocalState)
-      await MainActor.run {
-        state = .regular
-      }
+    await MainActor.run {
+      state = .clearing
+    }
+    await store.send(.clearLocalState)
+    await MainActor.run {
+      state = .regular
     }
   }
 }
