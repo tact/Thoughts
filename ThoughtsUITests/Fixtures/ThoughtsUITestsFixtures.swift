@@ -143,7 +143,7 @@ extension ThoughtsUITests {
   
   static var addThoughtToBlankAppMockStore: TestSupport.MockStore {
     let savedRecordID = CKRecord.ID(recordName: mockUUIDs[0].uuidString)
-    let savedRecord = CKRecord(recordType: "Thought", recordID: savedRecordID)
+    let savedRecord = MockCKRecord(recordType: "Thought", recordID: savedRecordID)
     savedRecord.encryptedValues["title"] = "New title"
     savedRecord.encryptedValues["body"] = "New body"
     savedRecord[MockCKRecord.testingCreatedAtKey] = ISO8601DateFormatter().date(from: "2023-03-01T10:00:00Z00:00")
