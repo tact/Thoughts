@@ -59,6 +59,9 @@ struct OneThoughtView: View {
         
       case .editing:
         editingView
+        #if os(macOS)
+          .padding(.bottom)
+        #endif
       }
     }
     .onChange(of: focusedField) {
