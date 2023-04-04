@@ -11,8 +11,7 @@ extension CloudKitService {
         mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
-          ],
-          scope: .private
+          ]
         ),
         mockContainer: ReplayingMockCKContainer(
           operationResults: [
@@ -57,8 +56,7 @@ extension CloudKitService {
                 )
               )
             )
-          ],
-          scope: .private
+          ]
         ),
         mockContainer: ReplayingMockCKContainer(
           operationResults: [
@@ -79,8 +77,7 @@ extension CloudKitService {
         mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
-          ],
-          scope: .private
+          ]
         ),
         mockContainer: ReplayingMockCKContainer(
           operationResults: [
@@ -104,8 +101,7 @@ extension CloudKitService {
         mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
-          ],
-          scope: .private
+          ]
         ),
         mockContainer: ReplayingMockCKContainer(
           operationResults: [

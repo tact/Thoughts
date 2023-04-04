@@ -41,8 +41,7 @@ actor CloudKitService {
     CloudKitService(
       canopy: MockCanopy(
         mockPrivateDatabase: ReplayingMockCKDatabase(
-          operationResults: privateDatabaseOperationResults,
-          scope: .private
+          operationResults: privateDatabaseOperationResults
         ),
         mockContainer: ReplayingMockCKContainer(
           operationResults: containerOperationResults

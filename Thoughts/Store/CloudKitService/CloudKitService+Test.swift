@@ -15,8 +15,7 @@ extension CloudKitService {
         mockPrivateDatabase: ReplayingMockCKDatabase(
           operationResults: [
             .fetchDatabaseChanges(.blank)
-          ],
-          scope: .private
+          ]
         ),
         mockContainer: ReplayingMockCKContainer(
           operationResults: [
