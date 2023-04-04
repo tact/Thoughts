@@ -120,8 +120,8 @@ class OneThoughtViewModel: ObservableObject {
   var navigationTitle: String {
     switch kind {
     case .new: return "Add thought"
-    case .existing(let thought):
-      return state == .editing ? "" : thought.title
+    case .existing:
+      return state == .editing ? "" : self.thought?.title ?? ""
     }
   }
   
