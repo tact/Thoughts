@@ -21,7 +21,6 @@ struct ThoughtRowView: View {
       }
     }
     .frame(maxWidth: .infinity, alignment: .leading)
-
   }
 }
 
@@ -67,6 +66,5 @@ struct ThoughtRowView_Previews: PreviewProvider {
       )
     )
     .previewDisplayName("Truncated Markdown")
-
   }
 }

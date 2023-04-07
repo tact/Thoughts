@@ -4,7 +4,6 @@ import ThoughtsTypes
 ///
 /// It’s called a “Cache” because it’s not source of truth: CloudKit holds the source of truth.
 protocol LocalCacheServiceType {
-
   /// Get the current state of local cache.
   var thoughts: [Thought] { get }
   

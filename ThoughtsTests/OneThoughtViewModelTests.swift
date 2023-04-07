@@ -30,8 +30,8 @@ final class OneThoughtViewModelTests: XCTestCase {
     XCTAssertTrue(shouldDismissOnDone)
     
     #if os(iOS)
-    let navigationBarTitleDisplayMode = await vm.navigationBarTitleDisplayMode
-    XCTAssertEqual(navigationBarTitleDisplayMode, .inline)
+      let navigationBarTitleDisplayMode = await vm.navigationBarTitleDisplayMode
+      XCTAssertEqual(navigationBarTitleDisplayMode, .inline)
     #endif
 
     let thoughts = await store.thoughts
@@ -68,8 +68,8 @@ final class OneThoughtViewModelTests: XCTestCase {
     XCTAssertEqual(navigationTitle, "Previous title")
     
     #if os(iOS)
-    let navigationBarTitleDisplayMode = await vm.navigationBarTitleDisplayMode
-    XCTAssertEqual(navigationBarTitleDisplayMode, .automatic)
+      let navigationBarTitleDisplayMode = await vm.navigationBarTitleDisplayMode
+      XCTAssertEqual(navigationBarTitleDisplayMode, .automatic)
     #endif
     
     await store.send(.modifyExistingThought(thought: thought, title: "New title", body: "New body"))
@@ -133,7 +133,6 @@ final class OneThoughtViewModelTests: XCTestCase {
     await vm.send(.done)
     let newState = await vm.state
     XCTAssertEqual(newState, .viewing)
-
   }
   
   func test_view_edit_save() async {

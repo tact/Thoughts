@@ -57,11 +57,11 @@ actor TestPreferencesService: PreferencesServiceType {
   }
   
   func setCloudKitSetupDone(_ done: Bool) async {
-    self.cloudKitSetupDone = done
+    cloudKitSetupDone = done
   }
   
   func setCloudKitUserRecordName(_ recordName: String?) async {
-    self.cloudKitUserRecordName = recordName
+    cloudKitUserRecordName = recordName
   }
   
   func setSimulateModifyFailure(_ simulateModifyFailure: Bool) async {
@@ -69,7 +69,7 @@ actor TestPreferencesService: PreferencesServiceType {
   }
   
   func setSimulateFetchFailure(_ simulatFetchFailure: Bool) async {
-    self.simulateFetchFailure = simulatFetchFailure
+    simulateFetchFailure = simulatFetchFailure
   }
   
   var canopySettings: CanopySettings {

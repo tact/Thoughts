@@ -45,7 +45,7 @@ struct StatusView: View {
           .foregroundColor(Color.secondary)
       }
       .padding()
-    case.saving:
+    case .saving:
       HStack(spacing: progressHStackSpacing) {
         ProgressView()
         #if os(macOS)
@@ -56,7 +56,7 @@ struct StatusView: View {
           .foregroundColor(Color.secondary)
       }
       .padding()
-    case .error(let error):
+    case let .error(error):
       Button(
         action: {
           viewModel.showError(error)
@@ -71,11 +71,11 @@ struct StatusView: View {
           }
           .padding(8)
           #if os(iOS)
-          .background(Capsule().fill(Color(.systemBackground)))
+            .background(Capsule().fill(Color(.systemBackground)))
           #else
-          .background(Capsule().fill(Color(.white)))
+            .background(Capsule().fill(Color(.white)))
           #endif
-          .padding()
+            .padding()
         }
       )
       .buttonStyle(PlainButtonStyle())
@@ -91,114 +91,114 @@ struct StatusView: View {
   
   var progressHStackSpacing: CGFloat {
     #if os(iOS)
-    10
+      10
     #else
-    0
+      0
     #endif
   }
 }
 
 #if DEBUG
-import Combine
-import Canopy
-import CloudKit
+  import Canopy
+  import CloudKit
+  import Combine
 
-struct StatusView_Previews: PreviewProvider {
-  class PreviewStatusProvider: CloudTransactionStatusProvider {
-    @Published var status = Store.CloudTransactionStatus.idle
+  struct StatusView_Previews: PreviewProvider {
+    class PreviewStatusProvider: CloudTransactionStatusProvider {
+      @Published var status = Store.CloudTransactionStatus.idle
     
-    var transactionPublisher: AnyPublisher<Store.CloudTransactionStatus, Never> {
-      $status.eraseToAnyPublisher()
-    }
+      var transactionPublisher: AnyPublisher<Store.CloudTransactionStatus, Never> {
+        $status.eraseToAnyPublisher()
+      }
     
-    static var error = CloudKitServiceError.canopy(
-      .ckRecordError(
-        .init(from: CKError(CKError.Code.badContainer))
+      static var error = CloudKitServiceError.canopy(
+        .ckRecordError(
+          .init(from: CKError(CKError.Code.badContainer))
+        )
       )
-    )
     
-    static var thought = Thought(
-      id: .init(),
-      title: "Saving title",
-      body: "Saving body"
-    )
+      static var thought = Thought(
+        id: .init(),
+        title: "Saving title",
+        body: "Saving body"
+      )
     
-    private var timerCancellable: AnyCancellable?
+      private var timerCancellable: AnyCancellable?
     
-    init(initialStatus: Store.CloudTransactionStatus = .idle, rotate: Bool = false) {
-      status = initialStatus
-      if rotate {
-        // Rotates through the values, so you can see the transition animation in SwiftUI preview.
-        timerCancellable = Timer.publish(every: 2, on: .main, in: .common)
-          .autoconnect()
-          .sink(
-            receiveValue: { [weak self] _ in
-              switch self?.status {
-              case .idle: self?.status = .fetching
-              case .fetching: self?.status = .saving(Self.thought)
-              case .saving: self?.status = .error(Self.error)
-              case .error: self?.status = .idle
-              case .none: break
+      init(initialStatus: Store.CloudTransactionStatus = .idle, rotate: Bool = false) {
+        self.status = initialStatus
+        if rotate {
+          // Rotates through the values, so you can see the transition animation in SwiftUI preview.
+          self.timerCancellable = Timer.publish(every: 2, on: .main, in: .common)
+            .autoconnect()
+            .sink(
+              receiveValue: { [weak self] _ in
+                switch self?.status {
+                case .idle: self?.status = .fetching
+                case .fetching: self?.status = .saving(Self.thought)
+                case .saving: self?.status = .error(Self.error)
+                case .error: self?.status = .idle
+                case .none: break
+                }
               }
-            }
-          )
+            )
+        }
       }
     }
-  }
   
-  static func containedOverlay(overlay: () -> StatusView) -> some View {
-    Rectangle()
-      .fill(Color.gray.opacity(0.2))
-      .overlay(alignment: .bottomLeading) {
-        overlay()
+    static func containedOverlay(overlay: () -> StatusView) -> some View {
+      Rectangle()
+        .fill(Color.gray.opacity(0.2))
+        .overlay(alignment: .bottomLeading) {
+          overlay()
+        }
+    }
+
+    static var previews: some View {
+      containedOverlay {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            initialStatus: .idle
+          )
+        )
       }
-  }
+      .previewDisplayName("Idle")
 
-  static var previews: some View {
-    containedOverlay {
-      StatusView(
-        statusProvider: PreviewStatusProvider(
-          initialStatus: .idle
+      containedOverlay {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            initialStatus: .fetching
+          )
         )
-      )
-    }
-   .previewDisplayName("Idle")
+      }
+      .previewDisplayName("Fetching")
 
-    containedOverlay {
-      StatusView(
-        statusProvider: PreviewStatusProvider(
-          initialStatus: .fetching
+      containedOverlay {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            initialStatus: .saving(PreviewStatusProvider.thought)
+          )
         )
-      )
-    }
-    .previewDisplayName("Fetching")
-
-    containedOverlay {
-      StatusView(
-        statusProvider: PreviewStatusProvider(
-          initialStatus: .saving(PreviewStatusProvider.thought)
-        )
-      )
-    }
-    .previewDisplayName("Saving")
+      }
+      .previewDisplayName("Saving")
     
-    containedOverlay {
-      StatusView(
-        statusProvider: PreviewStatusProvider(
-          initialStatus: .error(PreviewStatusProvider.error)
+      containedOverlay {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            initialStatus: .error(PreviewStatusProvider.error)
+          )
         )
-      )
-    }
-    .previewDisplayName("Error")
+      }
+      .previewDisplayName("Error")
 
-    containedOverlay {
-      StatusView(
-        statusProvider: PreviewStatusProvider(
-          rotate: true
+      containedOverlay {
+        StatusView(
+          statusProvider: PreviewStatusProvider(
+            rotate: true
+          )
         )
-      )
+      }
+      .previewDisplayName("Rotating status")
     }
-    .previewDisplayName("Rotating status")
   }
-}
 #endif

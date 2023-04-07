@@ -2,7 +2,6 @@ import CloudKit
 import ThoughtsTypes
 
 struct CloudKitAccountStateSequence: AsyncSequence {
-
   enum Kind {
     case mock(CloudKitAccountState)
     case live(AsyncStream<CKAccountStatus>)
@@ -32,11 +31,11 @@ struct CloudKitAccountStateSequence: AsyncSequence {
     
     public mutating func next() async -> Element? {
       switch kind {
-      case .mock(let state):
+      case let .mock(state):
         guard !mockEmitted else { return nil }
         mockEmitted = true
         return state
-      case .live(let stream):
+      case let .live(stream):
         let nextStatus = await stream.first(where: { _ in true })
         switch nextStatus {
         case .available: return .available

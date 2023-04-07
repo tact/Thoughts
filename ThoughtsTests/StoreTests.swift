@@ -1,8 +1,8 @@
-@testable import Thoughts
-import ThoughtsTypes
 import Canopy
 import CanopyTestTools
 import CloudKit
+@testable import Thoughts
+import ThoughtsTypes
 import XCTest
 
 final class StoreTests: XCTestCase {
@@ -115,7 +115,7 @@ final class StoreTests: XCTestCase {
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
           .fetchDatabaseChanges(
             .init(
-              changedRecordZoneIDs: [ zoneID ],
+              changedRecordZoneIDs: [zoneID],
               deletedRecordZoneIDs: [],
               purgedRecordZoneIDs: [],
               fetchDatabaseChangesResult: .success
@@ -328,7 +328,7 @@ final class StoreTests: XCTestCase {
     
     let store = Store(
       localCacheService: MockLocalCacheService(
-        thoughts: [ thought ]
+        thoughts: [thought]
       ),
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
@@ -385,7 +385,7 @@ final class StoreTests: XCTestCase {
     
     let store = Store(
       localCacheService: MockLocalCacheService(
-        thoughts: [ thought ]
+        thoughts: [thought]
       ),
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
@@ -435,7 +435,7 @@ final class StoreTests: XCTestCase {
     
     let store = Store(
       localCacheService: MockLocalCacheService(
-        thoughts: [ thought ]
+        thoughts: [thought]
       ),
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
@@ -484,7 +484,7 @@ final class StoreTests: XCTestCase {
     
     let store = Store(
       localCacheService: MockLocalCacheService(
-        thoughts: [ thought ]
+        thoughts: [thought]
       ),
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
@@ -551,8 +551,7 @@ final class StoreTests: XCTestCase {
           )
         )
       )
-    )
-    )
+    ))
   }
   
   func test_ingests_delete_from_cloud() async {
@@ -572,7 +571,7 @@ final class StoreTests: XCTestCase {
     
     let store = Store(
       localCacheService: MockLocalCacheService(
-        thoughts: [ thought ]
+        thoughts: [thought]
       ),
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,

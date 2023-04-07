@@ -8,6 +8,7 @@ final class StatusViewModelTests: XCTestCase {
     var transactionPublisher: AnyPublisher<Thoughts.Store.CloudTransactionStatus, Never> {
       subject.eraseToAnyPublisher()
     }
+
     func publishStatus(_ status: Thoughts.Store.CloudTransactionStatus) {
       subject.send(status)
     }

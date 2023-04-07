@@ -4,7 +4,7 @@ import Foundation
 import ThoughtsTypes
 
 #if canImport(UIKit)
-import UIKit
+  import UIKit
 #endif
 
 enum FetchCloudChangesResult: Equatable {
@@ -13,13 +13,13 @@ enum FetchCloudChangesResult: Equatable {
   case failed(CanopyError)
   
   #if canImport(UIKit)
-  var backgroundFetchResult: UIBackgroundFetchResult {
-    switch self {
-    case .newData: return .newData
-    case .noData: return .noData
-    case .failed: return .failed
+    var backgroundFetchResult: UIBackgroundFetchResult {
+      switch self {
+      case .newData: return .newData
+      case .noData: return .noData
+      case .failed: return .failed
+      }
     }
-  }
   #endif
 }
 
@@ -34,13 +34,13 @@ enum CloudKitServiceError: Error, LocalizedError, Equatable {
     case .couldNotGetModifiedThought: return "Could not get modified thought."
     case .couldNotGetDeletedThoughtID: return "Could not get deleted thought ID."
     case .couldNotGetUserRecordID: return "Could not get user record ID."
-    case .canopy(let canopyError): return canopyError.localizedDescription
+    case let .canopy(canopyError): return canopyError.localizedDescription
     }
   }
   
   var recoverySuggestion: String? {
     switch self {
-    case .canopy(let canopyError): return canopyError.recoverySuggestion
+    case let .canopy(canopyError): return canopyError.recoverySuggestion
     default: return "Check your network connection and iCloud account."
     }
   }
@@ -48,7 +48,6 @@ enum CloudKitServiceError: Error, LocalizedError, Equatable {
 
 /// One change made in CloudKit.
 enum CloudChange {
-  
   /// Thought was modified or added.
   case modified(Thought)
   
@@ -56,9 +55,7 @@ enum CloudChange {
   case deleted(Thought.ID)
 }
 
-
 protocol CloudKitServiceType {
-  
   /// Save a new or existing thought to CloudKit.
   ///
   /// Returns the thought that has been possibly augmented by CloudKit. E.g CloudKit

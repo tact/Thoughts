@@ -98,6 +98,5 @@ final class ThoughtsViewModelTests: XCTestCase {
     try? await Task.sleep(for: .seconds(0.01))
     let modifiedThoughts = await sut.thoughts
     XCTAssertEqual(modifiedThoughts, [])
-
   }
 }

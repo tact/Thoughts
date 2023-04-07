@@ -1,8 +1,7 @@
-import Foundation
 import CloudKit
+import Foundation
 
 public struct Thought: Identifiable, Equatable, Hashable, Codable {
-  
   public typealias ID = UUID
   
   public let id: ID

@@ -57,7 +57,7 @@ extension ThoughtsUITests {
       mockLocalCacheServiceContent: .init(
         thoughts: [
           .init(
-            id:  .init(uuidString: "BF69292D-27CE-49C0-84C6-80F93D28A74D")!,
+            id: .init(uuidString: "BF69292D-27CE-49C0-84C6-80F93D28A74D")!,
             title: "Title from UI test",
             body: "Body from UI test",
             createdAt: ISO8601DateFormatter().date(from: "2023-02-24T05:43:00Z02:00"),
@@ -95,7 +95,7 @@ extension ThoughtsUITests {
       mockLocalCacheServiceContent: .init(
         thoughts: [
           .init(
-            id:  .init(uuidString: "BF69292D-27CE-49C0-84C6-80F93D28A74D")!,
+            id: .init(uuidString: "BF69292D-27CE-49C0-84C6-80F93D28A74D")!,
             title: "Title from UI test",
             body: "Body from UI test",
             createdAt: ISO8601DateFormatter().date(from: "2023-02-24T05:43:00Z02:00"),

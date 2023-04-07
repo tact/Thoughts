@@ -5,17 +5,17 @@
 //  Created by Jaanus Kase on 04.02.2023.
 //
 
-import XCTest
 import ThoughtsTypes
+import XCTest
 
 final class ThoughtsUITestsLaunchTests: XCTestCase {
-    override class var runsForEachTargetApplicationUIConfiguration: Bool {
-      true
-    }
+  override class var runsForEachTargetApplicationUIConfiguration: Bool {
+    true
+  }
 
-    override func setUpWithError() throws {
-      continueAfterFailure = false
-    }
+  override func setUpWithError() throws {
+    continueAfterFailure = false
+  }
   
   private func launchAppWithMockStore(_ mockStore: TestSupport.MockStore) -> XCUIApplication {
     let encoded = try! JSONEncoder().encode(mockStore)

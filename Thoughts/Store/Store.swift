@@ -2,8 +2,8 @@ import Canopy
 import Foundation
 import IdentifiedCollections
 import os.log
-import ThoughtsTypes
 import Semaphore
+import ThoughtsTypes
 
 actor Store {
   enum Behavior {
@@ -89,18 +89,18 @@ actor Store {
   private let logger = Logger(subsystem: "Thoughts", category: "Store")
   
   #if DEBUG
-  /// Return a blank store that doesn’t talk to anything.
-  ///
-  /// This is mainly to be used in unit tests where the tests start the app but the app itself shouldn’t talk to any real services.
-  static var blank: Store {
-    Store(
-      localCacheService: MockLocalCacheService(),
-      cloudKitService: CloudKitService.blank,
-      preferencesService: TestPreferencesService(),
-      tokenStore: TestTokenStore(),
-      behavior: .blank
-    )
-  }
+    /// Return a blank store that doesn’t talk to anything.
+    ///
+    /// This is mainly to be used in unit tests where the tests start the app but the app itself shouldn’t talk to any real services.
+    static var blank: Store {
+      Store(
+        localCacheService: MockLocalCacheService(),
+        cloudKitService: CloudKitService.blank,
+        preferencesService: TestPreferencesService(),
+        tokenStore: TestTokenStore(),
+        behavior: .blank
+      )
+    }
   #endif
   
   private let localCacheService: LocalCacheServiceType
@@ -179,7 +179,7 @@ actor Store {
     defer { semaphore.signal() }
     
     switch action {
-    case .saveNewThought(title: let title, body: let body):
+    case let .saveNewThought(title: title, body: body):
       let uuid = await uuidService.uuid
       let thought = Thought(
         id: uuid,
@@ -189,7 +189,7 @@ actor Store {
       thoughts.append(thought)
       await saveThought(thought)
       
-    case .modifyExistingThought(thought: let thought, title: let title, body: let body):
+    case let .modifyExistingThought(thought: thought, title: title, body: body):
       let updatedThought = Thought(
         id: thought.id,
         title: title,
@@ -200,16 +200,16 @@ actor Store {
       thoughts[id: thought.id] = updatedThought
       await saveThought(updatedThought)
       
-    case .delete(let thought):
+    case let .delete(thought):
       thoughts.remove(id: thought.id)
       localCacheService.storeThoughts(thoughts.elements)
       
       let deleteResult = await cloudKitService.deleteThought(thought)
       switch deleteResult {
-      case .success(let deletedThoughtID):
+      case let .success(deletedThoughtID):
         logger.debug("Deleted thought ID from CloudKit: \(deletedThoughtID)")
-        // Since local store was already modified above, nothing further to do here.
-      case .failure(let error):
+      // Since local store was already modified above, nothing further to do here.
+      case let .failure(error):
         logger.error("Could not delete thought from CloudKit: \(error)")
       }
       
@@ -222,10 +222,10 @@ actor Store {
     case .refresh:
       _ = await fetchChangesFromCloud()
       
-    case .simulateSendFailure(let simulate):
+    case let .simulateSendFailure(simulate):
       await preferencesService.setSimulateModifyFailure(simulate)
       
-    case .simulateFetchFailure(let simulate):
+    case let .simulateFetchFailure(simulate):
       await preferencesService.setSimulateFetchFailure(simulate)
     }
   }
@@ -253,11 +253,11 @@ extension Store {
     localCacheService.storeThoughts(thoughts.elements)
     let storedThought = await cloudKitService.saveThought(thought)
     switch storedThought {
-    case .success(let thought):
+    case let .success(thought):
       logger.debug("Saved modified thought to CloudKit: \(thought)")
       ingestChangesFromCloud([.modified(thought)])
       cloudTransactionStatus = .idle
-    case .failure(let error):
+    case let .failure(error):
       logger.error("Could not save modified thought to CloudKit: \(error)")
       cloudTransactionStatus = .error(error)
     }
@@ -280,7 +280,7 @@ extension Store {
     case .noData, .newData:
       logger.debug("Fetched changes from cloud. No error.")
       cloudTransactionStatus = .idle
-    case .failed(let error):
+    case let .failed(error):
       logger.debug("Error fetching changes from cloud: \(error)")
       cloudTransactionStatus = .error(.canopy(error))
     }
@@ -297,9 +297,9 @@ extension Store {
   private func ingestChangesFromCloud(_ changes: [CloudChange]) {
     for change in changes {
       switch change {
-      case .modified(let thought):
+      case let .modified(thought):
         thoughts[id: thought.id] = thought
-      case .deleted(let thoughtId):
+      case let .deleted(thoughtId):
         thoughts.remove(id: thoughtId)
       }
     }
@@ -335,10 +335,10 @@ extension Store {
   private func loadThoughtsFromLocalCache() async {
     let cachedThoughts = localCacheService.thoughts
     logger.debug("Restoring \(cachedThoughts.count) thoughts from local cache.")
-    self.thoughts = IdentifiedArray(uniqueElements: cachedThoughts)
+    thoughts = IdentifiedArray(uniqueElements: cachedThoughts)
   }
   
   private func setInitialCloudTransactionStatus(_ status: CloudTransactionStatus) async {
-    self.cloudTransactionStatus = status
+    cloudTransactionStatus = status
   }
 }

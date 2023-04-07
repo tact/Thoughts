@@ -1,8 +1,8 @@
 import Combine
 import Foundation
-import ThoughtsTypes
 import os.log
 import SwiftUI
+import ThoughtsTypes
 
 enum OneThoughtViewAction {
   /// Done editing a thought.
@@ -16,7 +16,6 @@ enum OneThoughtViewAction {
 
 @MainActor
 class OneThoughtViewModel: ObservableObject {
-  
   enum Field: Hashable, Equatable {
     case title
     case body
@@ -40,7 +39,7 @@ class OneThoughtViewModel: ObservableObject {
     self.state = state
     
     switch kind {
-    case .existing(let thought):
+    case let .existing(thought):
       self.thought = thought
       Task {
         // Watch for changes in the source of truth, and update the local UI with the updated thought.
@@ -61,8 +60,8 @@ class OneThoughtViewModel: ObservableObject {
     switch state {
     case .editing:
       if let thought {
-        title = thought.title
-        body = thought.body
+        self.title = thought.title
+        self.body = thought.body
       }
     default: break
     }
@@ -78,7 +77,7 @@ class OneThoughtViewModel: ObservableObject {
   
   func send(_ action: OneThoughtViewAction) async {
     switch action {
-    case .editExisting(let thought):
+    case let .editExisting(thought):
       title = thought.title
       body = thought.body
       state = .editing
@@ -87,7 +86,7 @@ class OneThoughtViewModel: ObservableObject {
       switch kind {
       case .new:
         await store.send(.saveNewThought(title: title, body: body))
-      case .existing(let thought):
+      case let .existing(thought):
         await MainActor.run {
           self.state = .viewing
         }
@@ -119,7 +118,7 @@ class OneThoughtViewModel: ObservableObject {
     switch kind {
     case .new: return "Add thought"
     case .existing:
-      return state == .editing ? "" : self.thought!.title
+      return state == .editing ? "" : thought!.title
     }
   }
   
@@ -128,8 +127,8 @@ class OneThoughtViewModel: ObservableObject {
   }
   
   #if os(iOS)
-  var navigationBarTitleDisplayMode: NavigationBarItem.TitleDisplayMode {
-    state == .editing ? .inline : .automatic
-  }
+    var navigationBarTitleDisplayMode: NavigationBarItem.TitleDisplayMode {
+      state == .editing ? .inline : .automatic
+    }
   #endif
 }

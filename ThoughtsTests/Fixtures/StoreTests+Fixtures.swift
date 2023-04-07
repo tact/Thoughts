@@ -9,7 +9,7 @@ extension StoreTests {
         "zid": "Thoughts",
         "sid": "PrivateThoughtsZone",
         "zoid": "_deadbeef8badf00dd637d6f1feedface",
-        "dbs": Int64(1),
+        "dbs": Int64(1)
       ],
       "ckuserid": "_deadbeef8badf00dd637d6f1feedface",
       "ce": Int64(2),
@@ -31,7 +31,6 @@ extension StoreTests {
       .userRecordID(.init(userRecordID: .init(recordName: testUserRecordName)))
     ]
   }()
-  
   
   /// The operations performed from a blank state of the app.
   static var initialPrivateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult] = {
@@ -64,7 +63,6 @@ extension StoreTests {
   /// Initial operations performed by the store when the CloudKit setup is done and we have a subscription.
   static var initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone: [ReplayingMockCKDatabase.OperationResult] = {
     [
-      
     ]
   }()
 }

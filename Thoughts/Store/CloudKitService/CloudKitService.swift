@@ -4,11 +4,10 @@ import os.log
 import ThoughtsTypes
 
 #if DEBUG
-import CanopyTestTools
+  import CanopyTestTools
 #endif
 
 actor CloudKitService {
-
   let canopy: CanopyType
   let preferencesService: PreferencesServiceType
   
@@ -16,12 +15,12 @@ actor CloudKitService {
   private let cloudChanges: AsyncStream<[CloudChange]>
   private static let thoughtsCloudKitZoneName = "Thoughts"
   
-  private var cloudChangeContinuation: AsyncStream<[CloudChange]>.Continuation? = nil
+  private var cloudChangeContinuation: AsyncStream<[CloudChange]>.Continuation?
   
   static func live(
     withPreferencesService preferencesService: PreferencesServiceType,
     tokenStore: TokenStoreType,
-    canopySettingsProvider: @escaping ()->CanopySettingsType
+    canopySettingsProvider: @escaping () -> CanopySettingsType
   ) -> CloudKitService {
     CloudKitService(
       canopy: Canopy(
@@ -33,24 +32,24 @@ actor CloudKitService {
   }
   
   #if DEBUG
-  static func test(
-    containerOperationResults: [ReplayingMockCKContainer.OperationResult],
-    privateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult],
-    preferencesService: PreferencesServiceType
-  ) -> CloudKitService {
-    CloudKitService(
-      canopy: MockCanopy(
-        mockPrivateDatabase: ReplayingMockCKDatabase(
-          operationResults: privateDatabaseOperationResults
+    static func test(
+      containerOperationResults: [ReplayingMockCKContainer.OperationResult],
+      privateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult],
+      preferencesService: PreferencesServiceType
+    ) -> CloudKitService {
+      CloudKitService(
+        canopy: MockCanopy(
+          mockPrivateDatabase: ReplayingMockCKDatabase(
+            operationResults: privateDatabaseOperationResults
+          ),
+          mockContainer: ReplayingMockCKContainer(
+            operationResults: containerOperationResults
+          ),
+          settingsProvider: { await preferencesService.canopySettings }
         ),
-        mockContainer: ReplayingMockCKContainer(
-          operationResults: containerOperationResults
-        ),
-        settingsProvider: { await preferencesService.canopySettings }
-      ),
-      preferencesService: preferencesService
-    )
-  }
+        preferencesService: preferencesService
+      )
+    }
   #endif
   
   init(
@@ -62,7 +61,7 @@ actor CloudKitService {
 
     // Idea to capture and store the continuation from here:
     // https://www.donnywals.com/understanding-swift-concurrencys-asyncstream/
-    var capturedContinuation: AsyncStream<[CloudChange]>.Continuation? = nil
+    var capturedContinuation: AsyncStream<[CloudChange]>.Continuation?
     self.cloudChanges = AsyncStream { continuation in
       capturedContinuation = continuation
     }
@@ -87,7 +86,7 @@ actor CloudKitService {
     case .success:
       logger.debug("Stored CKRecordZone for thoughts.")
       zoneCreatedSuccessfully = true
-    case .failure(let error):
+    case let .failure(error):
       logger.error("Error storing CKRecordZone for thoughts: \(error)")
       zoneCreatedSuccessfully = false
     }
@@ -106,25 +105,26 @@ actor CloudKitService {
       qualityOfService: .utility
     )
     switch subscriptionResult {
-    case .success(let subs):
+    case let .success(subs):
       subscriptionCreatedSuccessfully = true
       logger.debug("Configured \(subs.savedSubscriptions.count) subscriptions successfully.")
-    case .failure(let error):
+    case let .failure(error):
       subscriptionCreatedSuccessfully = false
       logger.error("Error saving subscriptions: \(error)")
     }
 
     // We are done with initial setup and successfully created zone and subscription,
     // no need to run it in the future until the state is cleared for some reason.
-    if zoneCreatedSuccessfully && subscriptionCreatedSuccessfully {
+    if zoneCreatedSuccessfully, subscriptionCreatedSuccessfully {
       await preferencesService.setCloudKitSetupDone(true)
     }
   }
 
-  func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable : Any]) async -> FetchCloudChangesResult {
+  func ingestRemoteNotification(withUserInfo userInfo: [AnyHashable: Any]) async -> FetchCloudChangesResult {
     guard let notification = CKNotification(fromRemoteNotificationDictionary: userInfo),
           let databaseNotification = notification as? CKDatabaseNotification,
-          databaseNotification.databaseScope == .private else {
+          databaseNotification.databaseScope == .private
+    else {
       return .noData
     }
     return await fetchChangesFromCloud()
@@ -142,11 +142,7 @@ actor CloudKitService {
   }
 }
 
-
-
-
 extension CloudKitService: CloudKitServiceType {
-  
   nonisolated var changes: AsyncStream<[CloudChange]> { cloudChanges }
   
   func saveThought(_ thought: Thought) async -> Result<Thought, CloudKitServiceError> {
@@ -158,13 +154,13 @@ extension CloudKitService: CloudKitServiceType {
       qualityOfService: .userInitiated
     )
     switch result {
-    case .success(let modifyRecordsResult):
+    case let .success(modifyRecordsResult):
       if let modifiedThought = modifyRecordsResult.savedRecords.first {
         return .success(Thought(from: modifiedThought))
       } else {
         return .failure(CloudKitServiceError.couldNotGetModifiedThought)
       }
-    case .failure(let error):
+    case let .failure(error):
       return .failure(.canopy(.ckRecordError(error)))
     }
   }
@@ -178,7 +174,7 @@ extension CloudKitService: CloudKitServiceType {
       qualityOfService: .userInitiated
     )
     switch result {
-    case .success(let modifyRecordsResult):
+    case let .success(modifyRecordsResult):
       if let deletedThoughtIDResult = modifyRecordsResult.deletedRecordIDs.first,
          let deletedThoughtID = Thought.ID(uuidString: deletedThoughtIDResult.recordName)
       {
@@ -186,7 +182,7 @@ extension CloudKitService: CloudKitServiceType {
       } else {
         return .failure(CloudKitServiceError.couldNotGetDeletedThoughtID)
       }
-    case .failure(let error):
+    case let .failure(error):
       return .failure(.canopy(.ckRecordError(error)))
     }
   }
@@ -207,10 +203,10 @@ extension CloudKitService: CloudKitServiceType {
     let changedRecordZoneIDs: [CKRecordZone.ID]
     
     switch databaseChanges {
-    case .success(let result):
+    case let .success(result):
       changedRecordZoneIDs = result.changedRecordZoneIDs
       logger.debug("Fetched CKDatabase changes. \(changedRecordZoneIDs.count) changed zones.")
-    case .failure(let error):
+    case let .failure(error):
       return .failed(error)
     }
     
@@ -224,7 +220,7 @@ extension CloudKitService: CloudKitServiceType {
       qualityOfService: .default
     )
     switch zoneChanges {
-    case .success(let result):
+    case let .success(result):
       logger.debug("Fetched Thoughts zone changes: \(result.changedRecords.count) changed, \(result.deletedRecords.count) deleted records.")
       var changes: [CloudChange] = []
       for changed in result.changedRecords {
@@ -239,7 +235,7 @@ extension CloudKitService: CloudKitServiceType {
       }
       cloudChangeContinuation?.yield(changes)
       return changes.isEmpty ? .noData : .newData
-    case .failure(let error):
+    case let .failure(error):
       logger.log("Error fetching Thoughts zone changes: \(error)")
       return .failed(error)
     }
@@ -249,8 +245,8 @@ extension CloudKitService: CloudKitServiceType {
   func cloudKitUserRecordName() async -> Result<String, CloudKitServiceError> {
     let result = await canopy.containerAPI().userRecordID
     switch result {
-    case .failure(let error): return .failure(.canopy(.ckRecordError(error)))
-    case .success(let recordID):
+    case let .failure(error): return .failure(.canopy(.ckRecordError(error)))
+    case let .success(recordID):
       if let recordID {
         return .success(recordID.recordName)
       } else {

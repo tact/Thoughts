@@ -23,41 +23,42 @@ struct SharedAppDelegate {
   
   init() {
     #if DEBUG
-    switch SharedAppDelegate.appBehavior {
-    case .regular: store = Store.live
-    case .unitTesting: store = Store.blank
-    case .mockStore(let mockStore): store = Store.fromMockStore(mockStore)
-    }
+      switch SharedAppDelegate.appBehavior {
+      case .regular: self.store = Store.live
+      case .unitTesting: self.store = Store.blank
+      case let .mockStore(mockStore): self.store = Store.fromMockStore(mockStore)
+      }
     #else
-    // When running the app in non-debug configuration, just use the live store.
-    store = Store.live
+      // When running the app in non-debug configuration, just use the live store.
+      self.store = Store.live
     #endif
   }
   
   static var appBehavior: AppBehavior {
     #if DEBUG
-    if let behavior = ProcessInfo.processInfo.environment["APP_BEHAVIOR"], behavior == "unitTesting" {
-      return .unitTesting
-    }
-    
-    if let mockJson = ProcessInfo.processInfo.environment[TestSupport.StoreEnvironmentKey],
-       let jsonData = mockJson.data(using: .utf8) {
-      // We have a mock store passed in. Attempt to decode it.
-      do {
-        let decodedMockStore = try JSONDecoder().decode(TestSupport.MockStore.self, from: jsonData)
-        return .mockStore(decodedMockStore)
-      } catch {
-        // If it looks like it was a mock, but we couldn’t decode it properly, it’s best to crash
-        // and not put the app in some weird state. Probably there was invalid data passed in
-        // that couldn’t be decoded.
-        fatalError("Error decoding store from mock: \(error)")
+      if let behavior = ProcessInfo.processInfo.environment["APP_BEHAVIOR"], behavior == "unitTesting" {
+        return .unitTesting
       }
-    }
     
-    // There was no unit test and no mock store. We are running a regular app.
-    return .regular
+      if let mockJson = ProcessInfo.processInfo.environment[TestSupport.StoreEnvironmentKey],
+         let jsonData = mockJson.data(using: .utf8)
+      {
+        // We have a mock store passed in. Attempt to decode it.
+        do {
+          let decodedMockStore = try JSONDecoder().decode(TestSupport.MockStore.self, from: jsonData)
+          return .mockStore(decodedMockStore)
+        } catch {
+          // If it looks like it was a mock, but we couldn’t decode it properly, it’s best to crash
+          // and not put the app in some weird state. Probably there was invalid data passed in
+          // that couldn’t be decoded.
+          fatalError("Error decoding store from mock: \(error)")
+        }
+      }
+    
+      // There was no unit test and no mock store. We are running a regular app.
+      return .regular
     #else
-    .regular
+        .regular
     #endif
   }
 }

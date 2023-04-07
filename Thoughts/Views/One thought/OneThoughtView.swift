@@ -2,7 +2,6 @@ import SwiftUI
 import ThoughtsTypes
 
 struct OneThoughtView: View {
-
   @StateObject private var viewModel: OneThoughtViewModel
 
   @FocusState private var focusedField: OneThoughtViewModel.Field?
@@ -20,7 +19,7 @@ struct OneThoughtView: View {
     var description: String {
       switch self {
       case .new: return "new"
-      case .existing(let thought): return "existing(\(thought))"
+      case let .existing(thought): return "existing(\(thought))"
       }
     }
   }
@@ -60,7 +59,7 @@ struct OneThoughtView: View {
       case .editing:
         editingView
         #if os(macOS)
-          .padding(.bottom)
+        .padding(.bottom)
         #endif
       }
     }
@@ -79,7 +78,7 @@ struct OneThoughtView: View {
     .padding(.horizontal)
     .navigationTitle(viewModel.navigationTitle)
     #if os(iOS)
-    .navigationBarTitleDisplayMode(viewModel.navigationBarTitleDisplayMode)
+      .navigationBarTitleDisplayMode(viewModel.navigationBarTitleDisplayMode)
     #endif
   }
   
@@ -88,11 +87,11 @@ struct OneThoughtView: View {
     ScrollView(.vertical) {
       VStack(spacing: 4) {
         #if os(macOS)
-        Text(thought.title)
-          .font(.title)
-          .bold()
-          .padding(.vertical)
-          .frame(maxWidth: .infinity, alignment: .leading)
+          Text(thought.title)
+            .font(.title)
+            .bold()
+            .padding(.vertical)
+            .frame(maxWidth: .infinity, alignment: .leading)
         #endif
         VStack {
           if let createdAt = thought.createdAt {
@@ -145,7 +144,7 @@ struct OneThoughtView: View {
         .padding(.top)
       
       #if os(iOS)
-      Divider()
+        Divider()
       #endif
       
       TextEditor(text: $viewModel.body)
@@ -172,55 +171,54 @@ struct OneThoughtView: View {
         }
     }
   }
-  
 }
 
 #if DEBUG
-struct PreviewWrapper: ViewModifier {
-  func body(content: Content) -> some View {
-    #if os(macOS)
-    content
-    #else
-    NavigationView {
-      content
+  struct PreviewWrapper: ViewModifier {
+    func body(content: Content) -> some View {
+      #if os(macOS)
+        content
+      #else
+        NavigationView {
+          content
+        }
+      #endif
     }
-    #endif
   }
-}
 
-struct OneThoughtView_Previews: PreviewProvider {
-  static var previews: some View {
-    let thought = Thought(
-      id: UUID(),
-      title: "A thought",
-      body: "The thought body.\n\nAnother paragraph.\n\nHow about a **bold text** and link: https://apple.com/",
-      createdAt: Date(),
-      modifiedAt: Date()
-    )
+  struct OneThoughtView_Previews: PreviewProvider {
+    static var previews: some View {
+      let thought = Thought(
+        id: UUID(),
+        title: "A thought",
+        body: "The thought body.\n\nAnother paragraph.\n\nHow about a **bold text** and link: https://apple.com/",
+        createdAt: Date(),
+        modifiedAt: Date()
+      )
     
-    OneThoughtView(
-      store: .previewEmpty,
-      kind: .new,
-      state: .editing
-    )
-    .modifier(PreviewWrapper())
-    .previewDisplayName("Enter new")
+      OneThoughtView(
+        store: .previewEmpty,
+        kind: .new,
+        state: .editing
+      )
+      .modifier(PreviewWrapper())
+      .previewDisplayName("Enter new")
     
-    OneThoughtView(
-      store: .previewPopulated,
-      kind: .existing(thought),
-      state: .viewing
-    )
-    .modifier(PreviewWrapper())
-    .previewDisplayName("View existing thought")
+      OneThoughtView(
+        store: .previewPopulated,
+        kind: .existing(thought),
+        state: .viewing
+      )
+      .modifier(PreviewWrapper())
+      .previewDisplayName("View existing thought")
 
-    OneThoughtView(
-      store: .previewPopulated,
-      kind: .existing(thought),
-      state: .editing
-    )
-    .modifier(PreviewWrapper())
-    .previewDisplayName("Edit existing thought")
+      OneThoughtView(
+        store: .previewPopulated,
+        kind: .existing(thought),
+        state: .editing
+      )
+      .modifier(PreviewWrapper())
+      .previewDisplayName("Edit existing thought")
+    }
   }
-}
 #endif

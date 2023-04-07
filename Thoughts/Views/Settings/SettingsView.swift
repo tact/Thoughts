@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-  
   @StateObject private var viewModel: SettingsViewModel
   
   init(store: Store, state: SettingsViewModel.State = .regular) {
@@ -14,11 +13,11 @@ struct SettingsView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: interBlockSpacing) {
       #if os(iOS)
-      Text("Settings")
-        .font(.largeTitle)
-        .bold()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.top)
+        Text("Settings")
+          .font(.largeTitle)
+          .bold()
+          .frame(maxWidth: .infinity, alignment: .leading)
+          .padding(.top)
       #endif
       Spacer()
       simulateFetchFailureView
@@ -34,7 +33,6 @@ struct SettingsView: View {
       Text("Simulate a failure for getting all changes on CloudKit. This lets you see how fetch errors are handled in the UI.")
         .font(.caption)
     }
-
   }
   
   var simulateSendFailureView: some View {

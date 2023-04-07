@@ -1,8 +1,8 @@
 import Combine
 import Foundation
 import IdentifiedCollections
-import ThoughtsTypes
 import os.log
+import ThoughtsTypes
 
 enum ThoughtsViewAction {
   case addThought
@@ -28,7 +28,7 @@ class ThoughtsViewModel: ObservableObject {
     Task {
       // Receive any changes to the source of truth
       // and re-publish them for the UI.
-      thoughtsCancellable = await store.$thoughts
+      self.thoughtsCancellable = await store.$thoughts
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { [weak self] thoughts in
           // Sort by modification time, newest, first.
@@ -43,7 +43,7 @@ class ThoughtsViewModel: ObservableObject {
         })
       
       // Observe the account state.
-      accountStateCancellable = await store.$cloudKitAccountState
+      self.accountStateCancellable = await store.$cloudKitAccountState
         .receive(on: DispatchQueue.main)
         .sink(receiveValue: { [weak self] newState in
           self?.accountState = newState
@@ -61,8 +61,9 @@ class ThoughtsViewModel: ObservableObject {
   /// or editing it, drop it from the path.
   private func updateNavigationPathFromThoughts() {
     if let lastPath = navigationPath.last,
-       case OneThoughtView.Kind.existing(let visibleThought) = lastPath,
-       !thoughts.contains(visibleThought) {
+       case let OneThoughtView.Kind.existing(visibleThought) = lastPath,
+       !thoughts.contains(visibleThought)
+    {
       // We are looking at a thought which is no longer present in the store.
       // It was likely deleted on this or another device.
       // So we unconditionally drop it from the navigation path.

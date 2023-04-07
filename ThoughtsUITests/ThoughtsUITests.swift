@@ -1,9 +1,8 @@
 import CloudKit
-import XCTest
 import ThoughtsTypes
+import XCTest
 
 final class ThoughtsUITests: XCTestCase {
-  
   override func setUpWithError() throws {
     // Put setup code here. This method is called before the invocation of each test method in the class.
     
@@ -50,7 +49,7 @@ final class ThoughtsUITests: XCTestCase {
   func test_add_thought() throws {
     let app = launchAppWithMockStore(ThoughtsUITests.addThoughtToBlankAppMockStore)
 
-    app.navigationBars["Thoughts"]/*@START_MENU_TOKEN@*/.buttons["Add"]/*[[".otherElements[\"Add\"].buttons[\"Add\"]",".buttons[\"Add\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+    app.navigationBars["Thoughts"]/*@START_MENU_TOKEN@*/.buttons["Add"]/*[[".otherElements[\"Add\"].buttons[\"Add\"]",".buttons[\"Add\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ .tap()
     app.keys["N"].tap()
     app.keys["e"].tap()
     app.keys["w"].tap()

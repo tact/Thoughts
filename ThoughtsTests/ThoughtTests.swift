@@ -29,5 +29,4 @@ final class ThoughtTests: XCTestCase {
     XCTAssertEqual(thought.title, "")
     XCTAssertEqual(thought.body, "")
   }
-
 }

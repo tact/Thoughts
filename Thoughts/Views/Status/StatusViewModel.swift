@@ -22,7 +22,7 @@ class StatusViewModel: ObservableObject {
   
   init(statusProvider: CloudTransactionStatusProvider) {
     Task {
-      statusCancellable = await statusProvider.transactionPublisher
+      self.statusCancellable = await statusProvider.transactionPublisher
         .receive(on: DispatchQueue.main)
         .sink(
           receiveValue: { [weak self] newStatus in
@@ -34,6 +34,6 @@ class StatusViewModel: ObservableObject {
   
   func showError(_ error: CloudKitServiceError) {
     self.error = error
-    self.showErrorAlert = true
+    showErrorAlert = true
   }
 }

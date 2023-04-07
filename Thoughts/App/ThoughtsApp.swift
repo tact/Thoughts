@@ -9,13 +9,12 @@ import SwiftUI
 
 @main
 struct ThoughtsApp: App {
-  
   #if os(iOS)
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #endif
   
   #if os(macOS)
-  @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
   #endif
   
   var body: some Scene {
@@ -23,9 +22,9 @@ struct ThoughtsApp: App {
       ThoughtsView(store: appDelegate.sharedAppDelegate.store)
     }
     #if os(macOS)
-    Settings {
-      SettingsView(store: appDelegate.sharedAppDelegate.store)
-    }
+      Settings {
+        SettingsView(store: appDelegate.sharedAppDelegate.store)
+      }
     #endif
   }
 }

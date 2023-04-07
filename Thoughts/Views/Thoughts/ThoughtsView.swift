@@ -2,7 +2,6 @@ import SwiftUI
 import ThoughtsTypes
 
 struct ThoughtsView: View {
-  
   @StateObject private var viewModel: ThoughtsViewModel
   
   init(store: Store) {
@@ -47,17 +46,18 @@ struct ThoughtsView: View {
               }, label: {
                 Label("Add", systemImage: "plus")
                   .help("Add a thought")
-              })
+              }
+            )
           }
           #if os(iOS)
-          ToolbarItem(placement: .navigationBarLeading) {
-            Button(action: {
-              viewModel.showSettingsSheet = true
-            }, label: {
-              Label("Settings", systemImage: "gear")
-                .help("Settings")
-            })
-          }
+            ToolbarItem(placement: .navigationBarLeading) {
+              Button(action: {
+                viewModel.showSettingsSheet = true
+              }, label: {
+                Label("Settings", systemImage: "gear")
+                  .help("Settings")
+              })
+            }
           #endif
         }
         .navigationDestination(for: OneThoughtView.Kind.self) { kind in
@@ -135,19 +135,19 @@ struct ThoughtsView: View {
 }
 
 #if DEBUG
-struct ThoughtsView_Previews: PreviewProvider {
-  static var previews: some View {
-    ThoughtsView(store: .previewEmpty)
-      .previewDisplayName("Empty")
+  struct ThoughtsView_Previews: PreviewProvider {
+    static var previews: some View {
+      ThoughtsView(store: .previewEmpty)
+        .previewDisplayName("Empty")
 
-    ThoughtsView(store: .previewPopulated)
-      .previewDisplayName("Some thoughts")
+      ThoughtsView(store: .previewPopulated)
+        .previewDisplayName("Some thoughts")
 
-    ThoughtsView(store: .noAccountState)
-      .previewDisplayName("No CloudKit account")
+      ThoughtsView(store: .noAccountState)
+        .previewDisplayName("No CloudKit account")
 
-    ThoughtsView(store: .unknownAccountState)
-      .previewDisplayName("Unknown account state")
+      ThoughtsView(store: .unknownAccountState)
+        .previewDisplayName("Unknown account state")
+    }
   }
-}
 #endif

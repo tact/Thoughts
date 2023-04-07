@@ -2,7 +2,6 @@ import Canopy
 import Foundation
 
 struct UserDefaultsPreferencesService: PreferencesServiceType {
-  
   private let cloudKitSetupDoneKey = "cloudKitSetupDone"
   private let cloudKitUserRecordNameKey = "cloudKitUserRecordName"
   private let simulateModifyFailureKey = "simulateModifyFailure"
