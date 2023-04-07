@@ -6,7 +6,6 @@ import ThoughtsTypes
 import Semaphore
 
 actor Store {
-
   enum Behavior {
     /// The store should not run any logic.
     case blank
