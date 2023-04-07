@@ -49,6 +49,7 @@
 		EAB6B92C29918F7A005DF614 /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92B29918F7A005DF614 /* CloudKitService.swift */; };
 		EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB6B92F2991A032005DF614 /* StoreTests.swift */; };
 		EACA3F5829B6311B00390A91 /* ThoughtRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACA3F5729B6311B00390A91 /* ThoughtRowView.swift */; };
+		EACEAA8429E0335900158EE4 /* ThoughtTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACEAA8329E0335900158EE4 /* ThoughtTests.swift */; };
 		EAD69EAE29B9124600B53673 /* CloudKitService+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD69EAD29B9124600B53673 /* CloudKitService+Preview.swift */; };
 		EAD69EB029B9134200B53673 /* CloudKitService+Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD69EAF29B9134200B53673 /* CloudKitService+Test.swift */; };
 		EAD69EB229B918D600B53673 /* CloudKitAccountStateSequence.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD69EB129B918D600B53673 /* CloudKitAccountStateSequence.swift */; };
@@ -147,6 +148,7 @@
 		EAB6B92B29918F7A005DF614 /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
 		EAB6B92F2991A032005DF614 /* StoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreTests.swift; sourceTree = "<group>"; };
 		EACA3F5729B6311B00390A91 /* ThoughtRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtRowView.swift; sourceTree = "<group>"; };
+		EACEAA8329E0335900158EE4 /* ThoughtTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtTests.swift; sourceTree = "<group>"; };
 		EAD69EAD29B9124600B53673 /* CloudKitService+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CloudKitService+Preview.swift"; sourceTree = "<group>"; };
 		EAD69EAF29B9134200B53673 /* CloudKitService+Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CloudKitService+Test.swift"; sourceTree = "<group>"; };
 		EAD69EB129B918D600B53673 /* CloudKitAccountStateSequence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitAccountStateSequence.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				EA454AE229DC3FCA007D036A /* OneThoughtViewModelTests.swift */,
 				EA454AE429DC4C1A007D036A /* StatusViewModelTests.swift */,
 				EA454AE629DC4F69007D036A /* SettingsViewModelTests.swift */,
+				EACEAA8329E0335900158EE4 /* ThoughtTests.swift */,
 			);
 			path = ThoughtsTests;
 			sourceTree = "<group>";
@@ -665,6 +668,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA56559829CF5733004C4B7B /* ThoughtsViewModelTests.swift in Sources */,
+				EACEAA8429E0335900158EE4 /* ThoughtTests.swift in Sources */,
 				EA454AE329DC3FCA007D036A /* OneThoughtViewModelTests.swift in Sources */,
 				EAB6B9302991A032005DF614 /* StoreTests.swift in Sources */,
 				EA454AE529DC4C1A007D036A /* StatusViewModelTests.swift in Sources */,
