@@ -290,7 +290,6 @@ final class StoreTests: XCTestCase {
       tokenStore: TestTokenStore(),
       uuidService: MockUUIDService(uuids: [uuid])
     )
-    print("test - sending save")
     // Give the Store bootstrap a moment to run, so it manages to load the empty local store first.
     // Otherwise there is a data race - first the save runs, and then the bootstrap overwrites local store
     // with empty content.

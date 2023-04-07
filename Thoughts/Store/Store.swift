@@ -181,17 +181,13 @@ actor Store {
     
     switch action {
     case .saveNewThought(title: let title, body: let body):
-      print("save new thought")
       let uuid = await uuidService.uuid
       let thought = Thought(
         id: uuid,
         title: title,
         body: body
       )
-      print("created new thought: \(thought)")
-      print("thoughts content before appending: \(thoughts)")
       thoughts.append(thought)
-      print("thoughts content after appending: \(thoughts)")
       await saveThought(thought)
       
     case .modifyExistingThought(thought: let thought, title: let title, body: let body):
@@ -254,7 +250,6 @@ extension Store {
   /// This could be either a new or updated thought, doesn’t really matter, they behave the same.
   /// It’s not meant to be called directly from outside: it should be called by the action handler.
   private func saveThought(_ thought: Thought) async {
-    print("calling saveThought")
     cloudTransactionStatus = .saving(thought)
     localCacheService.storeThoughts(thoughts.elements)
     let storedThought = await cloudKitService.saveThought(thought)
@@ -313,7 +308,6 @@ extension Store {
   }
   
   private func ingestAccountState(_ state: CloudKitAccountState) {
-    print("Ingesting account state: \(state)")
     cloudKitAccountState = state
   }
   
@@ -340,7 +334,9 @@ extension Store {
   }
   
   private func loadThoughtsFromLocalCache() async {
-    self.thoughts = IdentifiedArray(uniqueElements: localCacheService.thoughts)
+    let cachedThoughts = localCacheService.thoughts
+    logger.debug("Restoring \(cachedThoughts.count) thoughts from local cache.")
+    self.thoughts = IdentifiedArray(uniqueElements: cachedThoughts)
   }
   
   private func setInitialCloudTransactionStatus(_ status: CloudTransactionStatus) async {

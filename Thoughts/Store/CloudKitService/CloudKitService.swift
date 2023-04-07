@@ -57,8 +57,6 @@ actor CloudKitService {
     canopy: CanopyType,
     preferencesService: PreferencesServiceType
   ) {
-    print("Real CloudKitService init")
-    
     self.canopy = canopy
     self.preferencesService = preferencesService
 
@@ -75,8 +73,6 @@ actor CloudKitService {
   }
   
   private func createZoneAndSubscriptionIfNeeded() async {
-    print("createZoneAndSubscriptionIfNeeded")
-    
     guard await !preferencesService.cloudKitSetupDone else {
       logger.debug("Previously already created zone and subscription. Not doing again.")
       return
@@ -112,10 +108,10 @@ actor CloudKitService {
     switch subscriptionResult {
     case .success(let subs):
       subscriptionCreatedSuccessfully = true
-      print("Got subscriptions: \(subs)")
+      logger.debug("Configured \(subs.savedSubscriptions.count) subscriptions successfully.")
     case .failure(let error):
       subscriptionCreatedSuccessfully = false
-      print("Error saving subscriptions: \(error)")
+      logger.error("Error saving subscriptions: \(error)")
     }
 
     // We are done with initial setup and successfully created zone and subscription,
@@ -213,6 +209,7 @@ extension CloudKitService: CloudKitServiceType {
     switch databaseChanges {
     case .success(let result):
       changedRecordZoneIDs = result.changedRecordZoneIDs
+      logger.debug("Fetched CKDatabase changes. \(changedRecordZoneIDs.count) changed zones.")
     case .failure(let error):
       return .failed(error)
     }
