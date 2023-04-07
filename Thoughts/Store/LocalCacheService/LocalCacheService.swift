@@ -6,8 +6,9 @@ import ThoughtsTypes
 ///
 /// Persists the thoughts to local disk.
 ///
-/// Disk operations can take time. There is no queues defined here, but the code here will work asynchronously.
-/// This is because it’s driven by Store mutating functions, which anyway run asynchronously.
+/// Disk operations can take time. There is no queues defined here, but the code here will work
+/// on a background queue and won’t block UI. This is because it’s driven by
+/// Store mutating functions, which run off the main queue.
 struct LocalCacheService: LocalCacheServiceType {
   private let logger = Logger(subsystem: "Thoughts", category: "LocalCacheService")
 
