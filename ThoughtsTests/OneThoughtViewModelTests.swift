@@ -20,8 +20,8 @@ final class OneThoughtViewModelTests: XCTestCase {
     let state = await vm.state
     XCTAssertEqual(state, .editing)
     
-    let shouldShowCancelEditButton = await vm.shouldShowCancelEditButton
-    XCTAssertFalse(shouldShowCancelEditButton)
+    let shouldEnableSave = await vm.shouldEnableSave
+    XCTAssertFalse(shouldEnableSave)
     
     let navigationTitle = await vm.navigationTitle
     XCTAssertEqual(navigationTitle, "Add thought")
@@ -36,6 +36,13 @@ final class OneThoughtViewModelTests: XCTestCase {
 
     let thoughts = await store.thoughts
     XCTAssertEqual(thoughts.count, 0)
+    
+    await MainActor.run {
+      vm.body = "New body"
+    }
+    
+    let newShouldEnableSave = await vm.shouldEnableSave
+    XCTAssertTrue(newShouldEnableSave)
     
     await vm.send(.done)
     let newThoughts = await store.thoughts
@@ -61,11 +68,11 @@ final class OneThoughtViewModelTests: XCTestCase {
       state: .viewing
     )
     
-    let shouldShowCancelEditButton = await vm.shouldShowCancelEditButton
-    XCTAssertTrue(shouldShowCancelEditButton)
-    
     let navigationTitle = await vm.navigationTitle
     XCTAssertEqual(navigationTitle, "Previous title")
+    
+    let shouldEnableSave = await vm.shouldEnableSave
+    XCTAssertFalse(shouldEnableSave)
     
     #if os(iOS)
       let navigationBarTitleDisplayMode = await vm.navigationBarTitleDisplayMode

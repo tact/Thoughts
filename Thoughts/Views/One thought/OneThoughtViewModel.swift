@@ -107,13 +107,6 @@ class OneThoughtViewModel: ObservableObject {
     }
   }
   
-  var shouldShowCancelEditButton: Bool {
-    switch kind {
-    case .existing: return true
-    default: return false
-    }
-  }
-  
   var navigationTitle: String {
     switch kind {
     case .new: return "Add thought"
@@ -124,6 +117,11 @@ class OneThoughtViewModel: ObservableObject {
   
   var shouldDismissOnDone: Bool {
     kind == .new
+  }
+  
+  var shouldEnableSave: Bool {
+    guard state == .editing else { return false }
+    return !title.isEmpty || !body.isEmpty
   }
   
   #if os(iOS)
