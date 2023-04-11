@@ -71,7 +71,7 @@ final class ThoughtsUITests: XCTestCase {
     app.keys["e"].tap()
     app.navigationBars["Add thought"].buttons["Done"].tap()
             
-    let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'New title'")
+    let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'New ttitle'")
     XCTAssertTrue(app.collectionViews.buttons.element(matching: buttonPredicate).exists)
   }
 }
