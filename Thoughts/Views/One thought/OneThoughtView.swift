@@ -167,6 +167,7 @@ struct OneThoughtView: View {
                   .help("Done")
               }
             )
+            .disabled(!viewModel.shouldEnableSave)
           }
         }
     }

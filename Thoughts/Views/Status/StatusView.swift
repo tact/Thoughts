@@ -15,8 +15,6 @@ import ThoughtsTypes
 struct StatusView: View {
   @StateObject var viewModel: StatusViewModel
   
-  #warning("re-test this once there is simulation of errors")
-  
   init(statusProvider: CloudTransactionStatusProvider) {
     self._viewModel = StateObject(
       wrappedValue: StatusViewModel(
