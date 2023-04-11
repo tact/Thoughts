@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "canopy",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Tact/Canopy/",
+      "state" : {
+        "revision" : "66e654d23b017cbfff4f55ce08225fecb895bab7",
+        "version" : "0.2.0"
+      }
+    },
+    {
       "identity" : "combine-schedulers",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/combine-schedulers",
@@ -41,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/pointfreeco/swift-dependencies",
       "state" : {
-        "revision" : "6bb1034e8a1bfbf46dfb766b6c09b7b17e1cba10",
-        "version" : "0.2.0"
+        "revision" : "0f34848e741315119703b1990e5c962929ed5dff",
+        "version" : "0.3.0"
       }
     },
     {
