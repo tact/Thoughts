@@ -62,22 +62,10 @@ final class StoreTests: XCTestCase {
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone +
           [
             .fetchDatabaseChanges(
-              .init(
-                changedRecordZoneIDs: [zoneID],
-                deletedRecordZoneIDs: [],
-                purgedRecordZoneIDs: [],
-                fetchDatabaseChangesResult: .success
-              )
+              .init(result: .success(.init(changedRecordZoneIDs: [zoneID], deletedRecordZoneIDs: [], purgedRecordZoneIDs: [])))
             ),
             .fetchZoneChanges(
-              .init(
-                recordWasChangedInZoneResults: [
-                  .init(recordID: thoughtRecord.recordID, result: .success(thoughtRecord))
-                ],
-                recordWithIDWasDeletedInZoneResults: [],
-                oneZoneFetchResults: [],
-                fetchZoneChangesResult: .init(result: .success(()))
-              )
+              .init(result: .success(.init(records: [.init(ckRecord: thoughtRecord)], deletedRecords: [])))
             )
           ],
         preferencesService: preferencesService

@@ -8,17 +8,16 @@
     static var accountAvailable: CloudKitService {
       CloudKitService(
         canopy: MockCanopy(
-          mockPrivateDatabase: ReplayingMockCKDatabase(
-            operationResults: [
-              .fetchDatabaseChanges(.blank)
-            ]
-          ),
-          mockContainer: ReplayingMockCKContainer(
+          container: ReplayingMockContainer(
             operationResults: [
               .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
               .accountStatus(.init(status: .available, error: nil)),
               .accountStatus(.init(status: .available, error: nil)),
               .accountStatus(.init(status: .available, error: nil))
+            ]
+          ), privateDatabase: ReplayingMockDatabase(
+            operationResults: [
+              .fetchDatabaseChanges(.blank)
             ]
           )
         ),
@@ -32,39 +31,36 @@
     static var populatedWithOneThought: CloudKitService {
       CloudKitService(
         canopy: MockCanopy(
-          mockPrivateDatabase: ReplayingMockCKDatabase(
-            operationResults: [
-              .fetchDatabaseChanges(
-                .init(
-                  changedRecordZoneIDs: [.init(zoneName: "Thoughts")],
-                  deletedRecordZoneIDs: [],
-                  purgedRecordZoneIDs: [],
-                  fetchDatabaseChangesResult: .success
-                )
-              ),
-              .fetchZoneChanges(
-                .init(
-                  recordWasChangedInZoneResults: [
-                    .init(
-                      recordID: .init(recordName: "recordID"),
-                      result: .success(mockThoughtRecord)
-                    )
-                  ],
-                  recordWithIDWasDeletedInZoneResults: [],
-                  oneZoneFetchResults: [.successForZoneID(.init(zoneName: "Thoughts"))],
-                  fetchZoneChangesResult: .init(
-                    result: .success(())
-                  )
-                )
-              )
-            ]
-          ),
-          mockContainer: ReplayingMockCKContainer(
+          container: ReplayingMockContainer(
             operationResults: [
               .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
               .accountStatus(.init(status: .available, error: nil)),
               .accountStatus(.init(status: .available, error: nil)),
               .accountStatus(.init(status: .available, error: nil))
+            ]
+          ), privateDatabase: ReplayingMockDatabase(
+            operationResults: [
+              .fetchDatabaseChanges(
+                .init(
+                  result: .success(
+                    .init(
+                      changedRecordZoneIDs: [.init(zoneName: "Thoughts")],
+                      deletedRecordZoneIDs: [],
+                      purgedRecordZoneIDs: []
+                    )
+                  )
+                )
+              ),
+              .fetchZoneChanges(
+                .init(
+                  result: .success(
+                    .init(
+                      records: [.mock(mockThoughtRecord)],
+                      deletedRecords: []
+                    )
+                  )
+                )
+              )
             ]
           )
         ),
@@ -75,17 +71,16 @@
     static var noAccountState: CloudKitService {
       CloudKitService(
         canopy: MockCanopy(
-          mockPrivateDatabase: ReplayingMockCKDatabase(
-            operationResults: [
-              .fetchDatabaseChanges(.blank)
-            ]
-          ),
-          mockContainer: ReplayingMockCKContainer(
+          container: ReplayingMockContainer(
             operationResults: [
               .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
               .accountStatus(.init(status: .noAccount, error: nil)),
               .accountStatus(.init(status: .noAccount, error: nil)),
               .accountStatus(.init(status: .noAccount, error: nil))
+            ]
+          ), privateDatabase: ReplayingMockDatabase(
+            operationResults: [
+              .fetchDatabaseChanges(.blank)
             ]
           )
         ),
@@ -99,17 +94,16 @@
     static var unknownAccountState: CloudKitService {
       CloudKitService(
         canopy: MockCanopy(
-          mockPrivateDatabase: ReplayingMockCKDatabase(
-            operationResults: [
-              .fetchDatabaseChanges(.blank)
-            ]
-          ),
-          mockContainer: ReplayingMockCKContainer(
+          container: ReplayingMockContainer(
             operationResults: [
               .userRecordID(.init(userRecordID: .init(recordName: "testUserRecordName"))),
               .accountStatus(.init(status: .couldNotDetermine, error: nil)),
               .accountStatus(.init(status: .couldNotDetermine, error: nil)),
               .accountStatus(.init(status: .couldNotDetermine, error: nil))
+            ]
+          ), privateDatabase: ReplayingMockDatabase(
+            operationResults: [
+              .fetchDatabaseChanges(.blank)
             ]
           )
         ),
@@ -120,13 +114,17 @@
       )
     }
   
-    private static var mockThoughtRecord: CKRecord {
-      let record = MockCKRecord(recordType: "Thought", recordID: .init(recordName: UUID().uuidString))
-      record.encryptedValues["title"] = "Thought from cloud"
-      record.encryptedValues["body"] = "Thought body from cloud"
-      record[MockCKRecord.testingCreatedAtKey] = ISO8601DateFormatter().date(from: "2023-03-08T10:25:00Z00:00")
-      record[MockCKRecord.testingModifiedAtKey] = ISO8601DateFormatter().date(from: "2023-03-08T10:26:00Z00:00")
-      return record
+    private static var mockThoughtRecord: MockCanopyResultRecord {
+      MockCanopyResultRecord(
+        recordID: .init(recordName: UUID().uuidString),
+        recordType: "Thought",
+        creationDate: ISO8601DateFormatter().date(from: "2023-03-08T10:25:00Z00:00"),
+        modificationDate: ISO8601DateFormatter().date(from: "2023-03-08T10:26:00Z00:00"),
+        encryptedValues: [
+          "title": "Thought from cloud",
+          "body": "Thought body from cloud"
+        ]
+      )
     }
   }
 #endif
