@@ -12,13 +12,12 @@
     static var blank: CloudKitService {
       CloudKitService(
         canopy: MockCanopy(
-          mockPrivateDatabase: ReplayingMockCKDatabase(
+          container: ReplayingMockContainer(
+            operationResults: [
+            ]
+          ), privateDatabase: ReplayingMockDatabase(
             operationResults: [
               .fetchDatabaseChanges(.blank)
-            ]
-          ),
-          mockContainer: ReplayingMockCKContainer(
-            operationResults: [
             ]
           )
         ),

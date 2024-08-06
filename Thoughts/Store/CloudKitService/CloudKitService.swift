@@ -20,7 +20,7 @@ actor CloudKitService {
   static func live(
     withPreferencesService preferencesService: PreferencesServiceType,
     tokenStore: TokenStoreType,
-    canopySettingsProvider: @escaping () -> CanopySettingsType
+    canopySettingsProvider: @escaping @Sendable () -> CanopySettingsType
   ) -> CloudKitService {
     CloudKitService(
       canopy: Canopy(
@@ -33,19 +33,17 @@ actor CloudKitService {
   
   #if DEBUG
     static func test(
-      containerOperationResults: [ReplayingMockCKContainer.OperationResult],
-      privateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult],
+      containerOperationResults: [ReplayingMockContainer.OperationResult],
+      privateDatabaseOperationResults: [ReplayingMockDatabase.OperationResult],
       preferencesService: PreferencesServiceType
     ) -> CloudKitService {
       CloudKitService(
         canopy: MockCanopy(
-          mockPrivateDatabase: ReplayingMockCKDatabase(
-            operationResults: privateDatabaseOperationResults
-          ),
-          mockContainer: ReplayingMockCKContainer(
+          container: ReplayingMockContainer(
             operationResults: containerOperationResults
-          ),
-          settingsProvider: { await preferencesService.canopySettings }
+          ), privateDatabase: ReplayingMockDatabase(
+            operationResults: privateDatabaseOperationResults
+          )
         ),
         preferencesService: preferencesService
       )

@@ -12,12 +12,12 @@
     }
   
     public struct MockCloudKitServiceContent: Codable {
-      public let containerOperationResults: [ReplayingMockCKContainer.OperationResult]
-      public let privateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult]
+      public let containerOperationResults: [ReplayingMockContainer.OperationResult]
+      public let privateDatabaseOperationResults: [ReplayingMockDatabase.OperationResult]
     
       public init(
-        containerOperationResults: [ReplayingMockCKContainer.OperationResult],
-        privateDatabaseOperationResults: [ReplayingMockCKDatabase.OperationResult]
+        containerOperationResults: [ReplayingMockContainer.OperationResult],
+        privateDatabaseOperationResults: [ReplayingMockDatabase.OperationResult]
       ) {
         self.containerOperationResults = containerOperationResults
         self.privateDatabaseOperationResults = privateDatabaseOperationResults
