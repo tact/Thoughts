@@ -36,7 +36,9 @@ struct CloudKitAccountStateSequence: AsyncSequence {
         mockEmitted = true
         return state
       case let .live(stream):
-        let nextStatus = await stream.first(where: { _ in true })
+        guard let nextStatus = await stream.first(where: { _ in true }) else {
+          return nil
+        }
         switch nextStatus {
         case .available: return .available
         case .couldNotDetermine: return .unknown

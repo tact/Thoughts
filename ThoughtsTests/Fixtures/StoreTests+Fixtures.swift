@@ -28,7 +28,8 @@ extension StoreTests {
   static var initialContainerOperationResults: [ReplayingMockContainer.OperationResult] = {
     [
       .accountStatus(.init(status: .available, error: nil)),
-      .userRecordID(.init(userRecordID: .init(recordName: testUserRecordName)))
+      .userRecordID(.init(userRecordID: .init(recordName: testUserRecordName))),
+      .accountStatusStream(.init(statuses: [.available], error: nil))
     ]
   }()
   
