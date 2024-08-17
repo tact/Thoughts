@@ -20,8 +20,8 @@ public struct Thought: Identifiable, Equatable, Hashable, Codable {
   
   public init(from record: CanopyResultRecord) {
     self.id = UUID(uuidString: record.recordID.recordName)!
-    self.title = record.encryptedValuesView["title"] as? String ?? ""
-    self.body = record.encryptedValuesView["body"] as? String ?? ""
+    self.title = record.encryptedValues["title"] as? String ?? ""
+    self.body = record.encryptedValues["body"] as? String ?? ""
     self.createdAt = record.creationDate
     self.modifiedAt = record.modificationDate
   }
