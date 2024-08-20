@@ -1,4 +1,4 @@
-import CloudKit
+import CanopyTypes
 import Foundation
 
 public struct Thought: Identifiable, Equatable, Hashable, Codable {
@@ -18,7 +18,7 @@ public struct Thought: Identifiable, Equatable, Hashable, Codable {
     self.modifiedAt = modifiedAt
   }
   
-  public init(from record: CKRecord) {
+  public init(from record: CanopyResultRecord) {
     self.id = UUID(uuidString: record.recordID.recordName)!
     self.title = record.encryptedValues["title"] as? String ?? ""
     self.body = record.encryptedValues["body"] as? String ?? ""

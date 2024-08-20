@@ -19,13 +19,13 @@ final class ThoughtTests: XCTestCase {
     let record = CKRecord(recordType: "Thought")
     record.encryptedValues["title"] = "Title"
     record.encryptedValues["body"] = "Body"
-    let thought = Thought(from: record)
+    let thought = Thought(from: .init(ckRecord: record))
     XCTAssertEqual(thought.title, "Title")
   }
 
   func test_init_with_ckrecord_without_values() {
     let record = CKRecord(recordType: "Thought")
-    let thought = Thought(from: record)
+    let thought = Thought(from: .init(ckRecord: record))
     XCTAssertEqual(thought.title, "")
     XCTAssertEqual(thought.body, "")
   }

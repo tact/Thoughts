@@ -62,22 +62,10 @@ final class StoreTests: XCTestCase {
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone +
           [
             .fetchDatabaseChanges(
-              .init(
-                changedRecordZoneIDs: [zoneID],
-                deletedRecordZoneIDs: [],
-                purgedRecordZoneIDs: [],
-                fetchDatabaseChangesResult: .success
-              )
+              .init(result: .success(.init(changedRecordZoneIDs: [zoneID], deletedRecordZoneIDs: [], purgedRecordZoneIDs: [])))
             ),
             .fetchZoneChanges(
-              .init(
-                recordWasChangedInZoneResults: [
-                  .init(recordID: thoughtRecord.recordID, result: .success(thoughtRecord))
-                ],
-                recordWithIDWasDeletedInZoneResults: [],
-                oneZoneFetchResults: [],
-                fetchZoneChangesResult: .init(result: .success(()))
-              )
+              .init(result: .success(.init(records: [.init(ckRecord: thoughtRecord)], deletedRecords: [])))
             )
           ],
         preferencesService: preferencesService
@@ -114,22 +102,10 @@ final class StoreTests: XCTestCase {
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
           .fetchDatabaseChanges(
-            .init(
-              changedRecordZoneIDs: [zoneID],
-              deletedRecordZoneIDs: [],
-              purgedRecordZoneIDs: [],
-              fetchDatabaseChangesResult: .success
-            )
+            .init(result: .success(.init(changedRecordZoneIDs: [zoneID], deletedRecordZoneIDs: [], purgedRecordZoneIDs: [])))
           ),
           .fetchZoneChanges(
-            .init(
-              recordWasChangedInZoneResults: [
-                .init(recordID: thoughtRecord.recordID, result: .success(thoughtRecord))
-              ],
-              recordWithIDWasDeletedInZoneResults: [],
-              oneZoneFetchResults: [],
-              fetchZoneChangesResult: .init(result: .success(()))
-            )
+            .init(result: .success(.init(records: [.init(ckRecord: thoughtRecord)], deletedRecords: [])))
           )
         ],
         preferencesService: preferencesService
@@ -218,20 +194,7 @@ final class StoreTests: XCTestCase {
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
-          .modify(
-            .init(
-              savedRecordResults: [
-                .init(
-                  recordID: thoughtRecordID,
-                  result: .success(thoughtRecord)
-                )
-              ],
-              deletedRecordIDResults: [],
-              modifyResult: .init(
-                result: .success(())
-              )
-            )
-          )
+          .modifyRecords(.init(result: .success(.init(savedRecords: [.init(ckRecord: thoughtRecord)], deletedRecordIDs: []))))
         ],
         preferencesService: preferencesService
       ),
@@ -269,20 +232,7 @@ final class StoreTests: XCTestCase {
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
-          .modify(
-            .init(
-              savedRecordResults: [
-                .init(
-                  recordID: thoughtRecordID,
-                  result: .failure(CKError(CKError.Code.networkUnavailable, userInfo: [CKErrorRetryAfterKey: 0.1]))
-                )
-              ],
-              deletedRecordIDResults: [],
-              modifyResult: .init(
-                result: .success(())
-              )
-            )
-          )
+          .modifyRecords(.init(result: .failure(.init(from: CKError(CKError.Code.networkUnavailable, userInfo: [CKErrorRetryAfterKey: 0.1])))))
         ],
         preferencesService: preferencesService
       ),
@@ -333,20 +283,7 @@ final class StoreTests: XCTestCase {
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
-          .modify(
-            .init(
-              savedRecordResults: [
-                .init(
-                  recordID: thoughtRecord.recordID,
-                  result: .success(thoughtRecord)
-                )
-              ],
-              deletedRecordIDResults: [],
-              modifyResult: .init(
-                result: .success(())
-              )
-            )
-          )
+          .modifyRecords(.init(result: .success(.init(savedRecords: [.init(ckRecord: thoughtRecord)], deletedRecordIDs: []))))
         ],
         preferencesService: preferencesService
       ),
@@ -390,20 +327,7 @@ final class StoreTests: XCTestCase {
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
-          .modify(
-            .init(
-              savedRecordResults: [],
-              deletedRecordIDResults: [
-                .init(
-                  recordID: thoughtRecord.recordID,
-                  result: .success(())
-                )
-              ],
-              modifyResult: .init(
-                result: .success(())
-              )
-            )
-          )
+          .modifyRecords(.init(result: .success(.init(savedRecords: [], deletedRecordIDs: [thoughtRecord.recordID]))))
         ],
         preferencesService: preferencesService
       ),
@@ -431,7 +355,6 @@ final class StoreTests: XCTestCase {
       title: "Previous title",
       body: "Previous body"
     )
-    let thoughtRecord = CloudKitService.ckRecord(for: thought)
     
     let store = Store(
       localCacheService: MockLocalCacheService(
@@ -440,20 +363,7 @@ final class StoreTests: XCTestCase {
       cloudKitService: CloudKitService.test(
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
-          .modify(
-            .init(
-              savedRecordResults: [],
-              deletedRecordIDResults: [
-                .init(
-                  recordID: thoughtRecord.recordID,
-                  result: .failure(CKError(CKError.Code.zoneBusy))
-                )
-              ],
-              modifyResult: .init(
-                result: .success(())
-              )
-            )
-          )
+          .modifyRecords(.init(result: .failure(.init(from: CKError(CKError.Code.zoneBusy)))))
         ],
         preferencesService: preferencesService
       ),
@@ -490,12 +400,7 @@ final class StoreTests: XCTestCase {
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
           .fetchDatabaseChanges(
-            .init(
-              changedRecordZoneIDs: [],
-              deletedRecordZoneIDs: [],
-              purgedRecordZoneIDs: [],
-              fetchDatabaseChangesResult: .success
-            )
+            .init(result: .success(.empty))
           )
         ],
         preferencesService: preferencesService
@@ -523,16 +428,7 @@ final class StoreTests: XCTestCase {
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
           .fetchDatabaseChanges(
-            .init(
-              changedRecordZoneIDs: [],
-              deletedRecordZoneIDs: [],
-              purgedRecordZoneIDs: [],
-              fetchDatabaseChangesResult: .init(
-                result: .failure(
-                  CKError(CKError.Code.networkUnavailable)
-                )
-              )
-            )
+            .init(result: .failure(.init(from: CKError(CKError.Code.networkUnavailable))))
           )
         ],
         preferencesService: preferencesService
@@ -577,24 +473,10 @@ final class StoreTests: XCTestCase {
         containerOperationResults: StoreTests.initialContainerOperationResults,
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone + [
           .fetchDatabaseChanges(
-            .init(
-              changedRecordZoneIDs: [thoughtsZoneID],
-              deletedRecordZoneIDs: [],
-              purgedRecordZoneIDs: [],
-              fetchDatabaseChangesResult: .success
-            )
+            .init(result: .success(.init(changedRecordZoneIDs: [thoughtsZoneID], deletedRecordZoneIDs: [], purgedRecordZoneIDs: [])))
           ),
           .fetchZoneChanges(
-            .init(
-              recordWasChangedInZoneResults: [],
-              recordWithIDWasDeletedInZoneResults: [
-                .init(recordID: thoughtRecord.recordID, recordType: "Thought")
-              ],
-              oneZoneFetchResults: [],
-              fetchZoneChangesResult: .init(
-                result: .success(())
-              )
-            )
+            .init(result: .success(.init(records: [], deletedRecords: [.init(recordID: thoughtRecord.recordID, recordType: "Thought")])))
           )
         ],
         preferencesService: preferencesService
@@ -624,7 +506,8 @@ final class StoreTests: XCTestCase {
       cloudKitService: CloudKitService.test(
         containerOperationResults: [
           .accountStatus(.init(status: .available, error: nil)),
-          .userRecordID(.init(userRecordID: nil, error: CKError(CKError.Code.networkUnavailable)))
+          .userRecordID(.init(userRecordID: nil, error: .init(from: CKError(CKError.Code.networkUnavailable)))),
+          .accountStatusStream(.init(statuses: [.available], error: nil))
         ],
         privateDatabaseOperationResults: StoreTests.initialPrivateDatabaseOperationsWhenCloudKitSetupIsDone,
         preferencesService: preferencesService

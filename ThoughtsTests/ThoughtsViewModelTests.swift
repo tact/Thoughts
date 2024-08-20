@@ -70,12 +70,18 @@ final class ThoughtsViewModelTests: XCTestCase {
       tokenStore: TestTokenStore()
     )
     let sut = await ThoughtsViewModel(store: store)
+    let navigationPath1 = await sut.navigationPath
+    XCTAssertEqual(navigationPath1, [])
     await MainActor.run {
       sut.navigationPath = [.existing(thought)]
     }
+
+    let navigationPath2 = await sut.navigationPath
+    XCTAssertEqual(navigationPath2, [.existing(thought)])
+
     await store.send(.delete(thought))
-    let navigationPath = await sut.navigationPath
-    XCTAssertEqual(navigationPath, [])
+    let navigationPath3 = await sut.navigationPath
+    XCTAssertEqual(navigationPath3, [])
   }
   
   func test_deletes_thought() async {

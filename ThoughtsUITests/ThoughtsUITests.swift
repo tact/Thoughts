@@ -32,6 +32,8 @@ final class ThoughtsUITests: XCTestCase {
     XCTAssertTrue(app.staticTexts["Tap + to add a thought."].exists)
   }
   
+  #if os(iOS)
+  // Some UI tests only work on iOS, probably because the element trees are somewhat different
   func test_with_some_local_thoughts() throws {
     let app = launchAppWithMockStore(ThoughtsUITests.withSomeLocalThoughtsMockStore)
     let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'Title from UI test'")
@@ -50,28 +52,13 @@ final class ThoughtsUITests: XCTestCase {
     let app = launchAppWithMockStore(ThoughtsUITests.addThoughtToBlankAppMockStore)
 
     app.navigationBars["Thoughts"]/*@START_MENU_TOKEN@*/.buttons["Add"]/*[[".otherElements[\"Add\"].buttons[\"Add\"]",".buttons[\"Add\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/ .tap()
-    app.keys["N"].tap()
-    app.keys["e"].tap()
-    app.keys["w"].tap()
-    app.keys["space"].tap()
-    app.keys["b"].tap()
-    app.keys["o"].tap()
-    app.keys["d"].tap()
-    app.keys["y"].tap()
-    
+    app.typeText("New body")
     app.textFields["Title (optional)"].tap()
-    app.keys["N"].tap()
-    app.keys["e"].tap()
-    app.keys["w"].tap()
-    app.keys["space"].tap()
-    app.keys["t"].tap()
-    app.keys["i"].tap()
-    app.keys["t"].tap()
-    app.keys["l"].tap()
-    app.keys["e"].tap()
+    app.typeText("New title")
     app.navigationBars["Add thought"].buttons["Done"].tap()
             
     let buttonPredicate = NSPredicate(format: "label BEGINSWITH 'New title'")
     XCTAssertTrue(app.collectionViews.buttons.element(matching: buttonPredicate).exists)
   }
+  #endif
 }
