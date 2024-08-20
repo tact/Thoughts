@@ -119,7 +119,6 @@
 		EA0B2086298E65D000462577 /* ThoughtsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThoughtsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA0B208A298E65D000462577 /* ThoughtsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITests.swift; sourceTree = "<group>"; };
 		EA0B208C298E65D000462577 /* ThoughtsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThoughtsUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		EA0B5CFE2C58CF1900D7DF7E /* Canopy */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Canopy; path = ../Canopy; sourceTree = "<group>"; };
 		EA103185298E679C004819F5 /* OneThoughtView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtView.swift; sourceTree = "<group>"; };
 		EA103188298E6B45004819F5 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		EA10318A298E6B6B004819F5 /* OneThoughtViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneThoughtViewModel.swift; sourceTree = "<group>"; };
@@ -225,7 +224,6 @@
 				EAF87FD529AA3E86004133CF /* ThoughtsTypes */,
 				EA0B206C298E65CF00462577 /* Products */,
 				EA588CED29913ED400DBACAA /* Frameworks */,
-				EA0B5CFE2C58CF1900D7DF7E /* Canopy */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1169,7 +1167,7 @@
 			repositoryURL = "https://github.com/Tact/Canopy/";
 			requirement = {
 				kind = upToNextMinorVersion;
-				minimumVersion = 0.2.0;
+				minimumVersion = 0.5.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
